@@ -42,11 +42,14 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES)
+list(APPEND CORE_SOURCE_FILES   src/configuration.cc
+                                src/individual.cc
+                                src/utils.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES})
 
-list(APPEND TEST_FILES)
+list(APPEND TEST_FILES  tests/individual_test.cc
+                        tests/utils_test.cc)
 
 ci_make_app(
         APP_NAME        epidemic
