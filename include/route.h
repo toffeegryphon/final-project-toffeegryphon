@@ -17,9 +17,10 @@ class Route {
   // Constructors
   Route() = default;
   explicit Route(const vec2& bounds);
+  Route(const vec2& bounds, const vec2& position);
 
   // Lifecycle
-  vec2 Update(float speed, const vec2& bounds);
+  void Update(float speed, const vec2& bounds);
 
   // Getters & Setters
   const vec2& GetPosition() const;

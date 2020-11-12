@@ -31,6 +31,9 @@ class Configuration {
   static constexpr float kDefaultMovementRadius = 3;
 
   static constexpr float kDefaultIndividualRadius = 10;
+
+  // Frames to travel from origin to opposite end of bounds
+  static constexpr float kTraversalFrames = 60;
 };
 
 }  // namespace epidemic

@@ -31,7 +31,8 @@ TEST_CASE("Route Update", "[route][update]") {
     vec2 to_travel = dest - pos;
     vec2 new_pos = pos + to_travel * speed / length(to_travel);
 
-    REQUIRE(route.Update(speed, bounds) == new_pos);
+    route.Update(speed, bounds);
+    REQUIRE(route.GetPosition() == new_pos);
     REQUIRE(route.GetDestinations().front() == dest);
   }
 
@@ -39,7 +40,8 @@ TEST_CASE("Route Update", "[route][update]") {
     float speed = 10000;
     vec2 dest = route.GetDestinations().front();
 
-    REQUIRE(route.Update(speed, bounds) == dest);
+    route.Update(speed, bounds);
+    REQUIRE(route.GetPosition() == dest);
     REQUIRE_FALSE(route.GetDestinations().front() == dest);
   }
 
@@ -48,7 +50,8 @@ TEST_CASE("Route Update", "[route][update]") {
     vec2 to_travel = dest - route.GetPosition();
     float speed = length(to_travel);
 
-    REQUIRE(route.Update(speed, bounds) == dest);
+    route.Update(speed, bounds);
+    REQUIRE(route.GetPosition() == dest);
     REQUIRE_FALSE(route.GetDestinations().front() == dest);
   }
 }
