@@ -49,7 +49,8 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
                                 src/location.cc
                                 src/city.cc)
 
-list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES})
+list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
+                            src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc
                         tests/utils_test.cc

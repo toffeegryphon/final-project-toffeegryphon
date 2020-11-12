@@ -131,7 +131,7 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
     d_2.push(individuals[2].GetPosition());
     individuals[0].SetDestinations(d_2);
 
-    individuals[3].SetPosition(vec2(15, 15));
+    individuals[3].SetPosition(vec2(8, 8));
     individuals[3].SetDestinations(d_2);
     individuals[3].SetHealthiness(0);
 

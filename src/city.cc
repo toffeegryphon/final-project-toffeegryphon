@@ -37,6 +37,10 @@ void City::Update() {
   UpdateSpread();
 }
 
+void City::Draw(const vec2& offset) const {
+  Location::Draw(offset);
+}
+
 // Getters & Setters
 
 const vec2& City::GetBounds() const {

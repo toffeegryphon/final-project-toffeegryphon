@@ -12,6 +12,7 @@ class City : private Location {
 
   // Lifecycle
   void Update() override;
+  void Draw(const vec2& offset) const override;
 
   // Getters & Setters
   const vec2& GetBounds() const override;

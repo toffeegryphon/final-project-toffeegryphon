@@ -13,6 +13,7 @@ void Location::Update() {
 }
 
 void Location::Draw(const vec2& offset) const {
+  // TODO Draw borders
   for (const Individual& individual : individuals_) {
     individual.Draw(offset);
   }
