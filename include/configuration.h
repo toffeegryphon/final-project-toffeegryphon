@@ -9,6 +9,8 @@ using glm::vec2;
 // TODO Possibly struct
 class Configuration {
  public:
+  // Individual
+
   static constexpr float kSymptomaticThreshold = 0.3f;
   static constexpr float kDyingThreshold = 0.5f;
   static constexpr float kDefaultSneezeRadius = 10.0f;
@@ -34,6 +36,11 @@ class Configuration {
 
   // Frames to travel from origin to opposite end of bounds
   static constexpr float kTraversalFrames = 60;
+
+  // City
+
+  static constexpr size_t kDefaultPopulationSize = 30;
+  static constexpr size_t kDefaultSickCount = 1;
 };
 
 }  // namespace epidemic

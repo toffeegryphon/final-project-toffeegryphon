@@ -11,12 +11,18 @@ using std::vector;
 
 class Location {
  public:
-  Location(const vec2& bounds);
+  // Constructors
+  explicit Location(const vec2& bounds);
 
+  // Lifecycle
   void Update();
   void Draw(const vec2& offset) const;
 
- private:
+  // Getters & Setters
+  virtual const vec2& GetBounds() const;
+  virtual const vector<Individual>& GetIndividuals() const;
+
+ protected:
   vec2 bounds_;
   vector<Individual> individuals_;
 };
