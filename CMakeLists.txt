@@ -44,12 +44,14 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
 list(APPEND CORE_SOURCE_FILES   src/configuration.cc
                                 src/individual.cc
-                                src/utils.cc)
+                                src/utils.cc
+                                src/route.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES})
 
 list(APPEND TEST_FILES  tests/individual_test.cc
-                        tests/utils_test.cc)
+                        tests/utils_test.cc
+                        tests/route_test.cc)
 
 ci_make_app(
         APP_NAME        epidemic
