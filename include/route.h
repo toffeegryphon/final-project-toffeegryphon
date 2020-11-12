@@ -24,6 +24,7 @@ class Route {
 
   // Getters & Setters
   const vec2& GetPosition() const;
+  void SetPosition(const vec2& position);
   const queue<vec2>& GetDestinations() const;
 
  private:

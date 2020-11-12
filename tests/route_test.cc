@@ -1,7 +1,6 @@
 #include <route.h>
 
 #include <catch2/catch.hpp>
-#include <cinder/gl/gl.h>
 
 namespace epidemic {
 
@@ -51,7 +50,8 @@ TEST_CASE("Route Update", "[route][update]") {
     float speed = length(to_travel);
 
     route.Update(speed, bounds);
-    REQUIRE(route.GetPosition() == dest);
+    REQUIRE(route.GetPosition().x == Approx(dest.x));
+    REQUIRE(route.GetPosition().y == Approx(dest.y));
     REQUIRE_FALSE(route.GetDestinations().front() == dest);
   }
 }
