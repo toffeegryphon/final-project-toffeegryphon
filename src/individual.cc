@@ -4,6 +4,7 @@
 namespace epidemic {
 
 using glm::length;
+using utils::GetRandom;
 using utils::GetRandomDeath;
 using utils::GetRandomHealthiness;
 using utils::GetRandomPosition;
@@ -37,6 +38,17 @@ Individual::Individual(float healthiness, float wanderlust, const vec2& bounds,
       id_(GetNextID()) {
 }
 
+// Interaction
+
+void Individual::CheckAndBecomeInfected(const Individual& by) {
+  if (status_ == Status::kUninfected &&
+      distance(by.GetPosition(), GetPosition()) <
+          Configuration::kDefaultSneezeRadius &&
+      GetRandom() > healthiness_) {
+    status_ = Status::kAsymptomatic;
+  }
+}
+
 // Lifecycle
 
 void Individual::Update(const vec2& bounds) {
@@ -55,8 +67,20 @@ size_t Individual::GetID() const {
   return id_;
 }
 
+Individual::Status Individual::GetStatus() const {
+  return status_;
+}
+
 const vec2& Individual::GetPosition() const {
   return route_.GetPosition();
+}
+
+void Individual::SetPosition(const vec2& position) {
+  route_.SetPosition(position);
+}
+
+void Individual::SetHealthiness(float healthiness) {
+  healthiness_ = healthiness;
 }
 
 // Private Methods

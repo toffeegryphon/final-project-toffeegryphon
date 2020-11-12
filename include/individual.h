@@ -30,14 +30,17 @@ class Individual {
              Status status, const vec2& position, const vec2& spread,
              const vec2& recovery, const vec2& death);
 
-  void Infect(const Individual& infector);
+  void CheckAndBecomeInfected(const Individual& by);
 
   void Update(const vec2& bounds);
   void Draw(const vec2& offset) const;
 
   size_t GetID() const;
+  Status GetStatus() const;
   const vec2& GetPosition() const;
+  void SetPosition(const vec2& position);
   bool IsSneezing() const;
+  void SetHealthiness(float healthiness);
 
  private:
   // ID
