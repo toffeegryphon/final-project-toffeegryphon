@@ -3,6 +3,8 @@
 
 namespace epidemic {
 
+using ci::gl::color;
+using ci::gl::drawSolidCircle;
 using glm::length;
 using utils::GetRandom;
 using utils::GetRandomDeath;
@@ -67,6 +69,29 @@ void Individual::Update(const vec2& bounds) {
 
   UpdateSneezeAndSymptoms();
   RecoverOrDie();
+}
+
+void Individual::Draw(const vec2& offset) const {
+  switch (status_) {
+    case Status::kUninfected:
+    case Status::kAsymptomatic:
+      color(0, 0, 1);
+      break;
+    case Status::kSymptomatic:
+      color(1, 1, 0);
+      break;
+    case Status::kDying:
+      color(1, 0, 0);
+      break;
+    case Status::kDead:
+      color(1, 1, 1);
+      break;
+    case Status::kRecovered:
+      color(0, 1, 0);
+      break;
+  }
+  drawSolidCircle(GetPosition() + offset,
+                  Configuration::kDefaultIndividualRadius);
 }
 
 // Getters & Setters

@@ -8,7 +8,6 @@
 namespace epidemic {
 
 using glm::vec2;
-using std::queue;
 
 class Individual {
  public:
@@ -21,7 +20,7 @@ class Individual {
     kRecovered
   };
 
-  Individual(const vec2& bounds);
+  explicit Individual(const vec2& bounds);
   Individual(const vec2& bounds, Status status);
   Individual(float healthiness, float wanderlust, const vec2& bounds);
   Individual(float healthiness, float wanderlust, const vec2& bounds,
