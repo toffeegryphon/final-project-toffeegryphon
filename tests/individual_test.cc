@@ -93,6 +93,8 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
 TEST_CASE("Individual Update", "[individual][update]") {
   vec2 bounds(100, 100);
 
+  // Movement
+
   SECTION("Moves if not kDead") {
     Individual i(bounds);
     vec2 pos = i.GetPosition();
@@ -108,6 +110,8 @@ TEST_CASE("Individual Update", "[individual][update]") {
 
     REQUIRE(i.GetPosition() == pos);
   }
+
+  // Sneeze and Symptomatic
 
   SECTION("Sneeze if at least kAsymptomatic and pass sneeze check") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
@@ -131,5 +135,101 @@ TEST_CASE("Individual Update", "[individual][update]") {
     i.Update(bounds);
 
     REQUIRE_FALSE(i.IsSneezing());
+  }
+
+  SECTION("Updates spread rate") {
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    float exp_rate = i.GetSpread().x + i.GetSpread().y;
+    i.Update(bounds);
+
+    REQUIRE(i.GetSpread().x == exp_rate);
+  }
+
+  SECTION("Increase state to kSymptomatic if cross threshold") {
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold + 0.1f));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == Individual::Status::kSymptomatic);
+  }
+
+  SECTION("Does not decrease state to kSymptomatic if kDead") {
+    Individual::Status status = Individual::Status::kDead;
+    Individual i(bounds, status);
+    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold + 0.1f));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == status);
+  }
+
+  SECTION("Does not decrease state to kSymptomatic if kDying") {
+    srand(3);
+    Individual::Status status = Individual::Status::kDying;
+    Individual i(bounds, status);
+    i.SetDeath(vec2(Configuration::kDyingThreshold + 0.1f, 0));
+    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold + 0.1f));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == status);
+  }
+
+  SECTION("Does not decrease state to kSymptomatic if kRecovered") {
+    Individual::Status status = Individual::Status::kRecovered;
+    Individual i(bounds, status);
+    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold + 0.1f));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == status);
+  }
+
+  // Recover or Die
+
+  SECTION("Recover if pass recover check") {
+    Individual i(bounds, Individual::Status::kSymptomatic);
+    i.SetRecovery(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == Individual::Status::kRecovered);
+  }
+
+  SECTION("Die if pass death check") {
+    Individual i(bounds, Individual::Status::kSymptomatic);
+    i.SetRecovery(vec2());
+    i.SetDeath(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == Individual::Status::kDead);
+  }
+
+  SECTION("No change if fail both checks") {
+    Individual::Status status = Individual::Status::kAsymptomatic;
+    Individual i(bounds, status);
+    i.SetSpread(vec2());
+    i.SetRecovery(vec2());
+    i.SetDeath(vec2());
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == status);
+  }
+
+  SECTION("Dying if cross dying threshold") {
+    srand(3);
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetSpread(vec2());
+    i.SetRecovery(vec2());
+    i.SetDeath(vec2(Configuration::kDyingThreshold + 0.1f, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.GetStatus() == Individual::Status::kDying);
+  }
+
+  SECTION("Updates spread rate if not dead or recovered") {
+    Individual i(bounds, Individual::Status::kDying);
+    float exp_recovery = i.GetRecovery().x + i.GetRecovery().y;
+    float exp_death = i.GetDeath().x + i.GetDeath().y;
+    i.Update(bounds);
+
+    REQUIRE(i.GetRecovery().x == exp_recovery);
+    REQUIRE(i.GetDeath().x == exp_death);
   }
 }

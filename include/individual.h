@@ -37,11 +37,22 @@ class Individual {
 
   size_t GetID() const;
   Status GetStatus() const;
+
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
+
   bool IsSneezing() const;
-  void SetSpread(const vec2& spread_chance_roc);
+
   void SetHealthiness(float healthiness);
+
+  const vec2& GetSpread() const;
+  void SetSpread(const vec2& spread_chance_roc);
+
+  const vec2& GetRecovery() const;
+  void SetRecovery(const vec2& recovery_chance_roc);
+
+  const vec2& GetDeath() const;
+  void SetDeath(const vec2& death_chance_roc);
 
  private:
   // ID
@@ -57,7 +68,7 @@ class Individual {
   float wanderlust_;
   Route route_;
 
-  void UpdateSneeze();
+  void UpdateSneezeAndSymptoms();
   // TODO Non instantaneous recovery
   void RecoverOrDie();
 };

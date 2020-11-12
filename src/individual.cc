@@ -7,6 +7,7 @@ using glm::length;
 using utils::GetRandom;
 using utils::GetRandomDeath;
 using utils::GetRandomHealthiness;
+using utils::GetRandomInRange;
 using utils::GetRandomPosition;
 using utils::GetRandomRecovery;
 using utils::GetRandomSpread;
@@ -60,11 +61,12 @@ void Individual::Update(const vec2& bounds) {
   float speed = length(bounds) / Configuration::kTraversalFrames;
   route_.Update(speed, bounds);
 
-  if (status_ == Status::kUninfected) {
+  if (status_ == Status::kUninfected || status_ == Status::kRecovered) {
     return;
   }
 
-  UpdateSneeze();
+  UpdateSneezeAndSymptoms();
+  RecoverOrDie();
 }
 
 // Getters & Setters
@@ -93,8 +95,28 @@ void Individual::SetHealthiness(float healthiness) {
   healthiness_ = healthiness;
 }
 
+const vec2& Individual::GetSpread() const {
+  return spread_;
+}
+
 void Individual::SetSpread(const vec2& spread_chance_roc) {
   spread_ = spread_chance_roc;
+}
+
+const vec2& Individual::GetRecovery() const {
+  return recovery_;
+}
+
+void Individual::SetRecovery(const vec2& recovery_chance_roc) {
+  recovery_ = recovery_chance_roc;
+}
+
+const vec2& Individual::GetDeath() const {
+  return death_;
+}
+
+void Individual::SetDeath(const vec2& death_chance_roc) {
+  death_ = death_chance_roc;
 }
 
 // Private Methods
@@ -105,10 +127,46 @@ size_t Individual::GetNextID() {
   return kNextID++;
 }
 
-void Individual::UpdateSneeze() {
+void Individual::UpdateSneezeAndSymptoms() {
   is_sneezing_ = GetRandom() < spread_.x;
   // TODO Possibly limit to at most some chance
   spread_.x += spread_.y;
+
+  if (spread_.x > Configuration::kSymptomaticThreshold) {
+    status_ = Status::kSymptomatic;
+  }
+}
+
+void Individual::RecoverOrDie() {
+  // Check
+
+  /*
+   * |--Recover--|--Nothing--|--Death--|
+   * 0                                 1
+   *    ^ Pass Recover check
+   *            Pass Death check ^
+   *      Fail checks ^
+   *
+   * |------Recover------|
+   *                |---Death---|
+   * 0                          1
+   *                |--^-| Considered recovered
+   */
+
+  float state = GetRandom();
+  if (state <= recovery_.x) {
+    status_ = Status::kRecovered;
+    spread_.y =
+        GetRandomInRange(Configuration::kDefaultSpreadRecoveredROCRange);
+  } else if (state > 1 - death_.x) {
+    status_ = Status::kDead;
+  } else if (death_.x > Configuration::kDyingThreshold) {
+    status_ = Status::kDying;
+  }
+
+  // Increment
+  recovery_.x += recovery_.y;
+  death_.x += death_.y;
 }
 
 }  // namespace epidemic
