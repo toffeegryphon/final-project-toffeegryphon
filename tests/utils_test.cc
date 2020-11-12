@@ -1,3 +1,4 @@
+#include <individual.h>
 #include <utils.h>
 
 #include <catch2/catch.hpp>
@@ -10,7 +11,7 @@ namespace epidemic {
 
 namespace utils {
 
-TEST_CASE("GetRandom") {
+TEST_CASE("GetRandom", "[random]") {
   srand(kSeed);
 
   SECTION("Mathematically correct within 0 and 1") {
@@ -18,7 +19,7 @@ TEST_CASE("GetRandom") {
   }
 }
 
-TEST_CASE("GetRandomInRange") {
+TEST_CASE("GetRandomInRange", "[random]") {
   srand(kSeed);
 
   SECTION("Mathematically correct within range from start") {
@@ -29,6 +30,31 @@ TEST_CASE("GetRandomInRange") {
   SECTION("Mathematically correct between 0 and end") {
     float end(100);
     REQUIRE(GetRandomInRange(end) == Approx(0.11597));
+  }
+}
+
+TEST_CASE("CompareX", "[comparison]") {
+  vec2 bounds(100, 100);
+
+  SECTION("Returns true if first has smaller x position than second") {
+    Individual first(bounds), second(bounds);
+    first.SetPosition(vec2(5, 10));
+    second.SetPosition(vec2(10, 5));
+    REQUIRE(CompareX(first, second));
+  }
+
+  SECTION("Returns false if first has larger x position than second") {
+    Individual first(bounds), second(bounds);
+    first.SetPosition(vec2(10, 5));
+    second.SetPosition(vec2(5, 10));
+    REQUIRE_FALSE(CompareX(first, second));
+  }
+
+  SECTION("Returns false if first has same x position second") {
+    Individual first(bounds), second(bounds);
+    first.SetPosition(vec2(10, 5));
+    second.SetPosition(vec2(10, 10));
+    REQUIRE_FALSE(CompareX(first, second));
   }
 }
 

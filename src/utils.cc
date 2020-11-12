@@ -50,6 +50,11 @@ vec2 GetRandomDeath() {
                             Configuration::kDefaultDeathROCRange);
 }
 
+bool CompareX(const Individual& first, const Individual& second) {
+  // TODO Maybe sort by y if x same
+  return first.GetPosition().x < second.GetPosition().x;
+}
+
 }  // namespace utils
 
 }  // namespace epidemic

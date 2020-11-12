@@ -2,6 +2,7 @@
 
 #include <cinder/gl/gl.h>
 #include <configuration.h>
+#include <individual.h>
 
 namespace epidemic {
 
@@ -30,6 +31,8 @@ vec2 GetRandomSpread();
 vec2 GetRandomRecovery();
 
 vec2 GetRandomDeath();
+
+bool CompareX(const Individual& first, const Individual& second);
 
 }  // namespace utils
 
