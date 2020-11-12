@@ -39,6 +39,7 @@ class Individual {
 
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
+  void SetDestinations(const queue<vec2>& destinations);
 
   bool IsSneezing() const;
 

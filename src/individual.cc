@@ -116,6 +116,10 @@ void Individual::SetPosition(const vec2& position) {
   route_.SetPosition(position);
 }
 
+void Individual::SetDestinations(const queue<vec2>& destinations) {
+  route_.SetDestinations(destinations);
+}
+
 void Individual::SetHealthiness(float healthiness) {
   healthiness_ = healthiness;
 }

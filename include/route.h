@@ -26,6 +26,7 @@ class Route {
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
   const queue<vec2>& GetDestinations() const;
+  void SetDestinations(const queue<vec2>& destinations);
 
  private:
   vec2 position_;

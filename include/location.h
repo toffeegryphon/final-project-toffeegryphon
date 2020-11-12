@@ -15,8 +15,8 @@ class Location {
   explicit Location(const vec2& bounds);
 
   // Lifecycle
-  void Update();
-  void Draw(const vec2& offset) const;
+  virtual void Update();
+  virtual void Draw(const vec2& offset) const;
 
   // Getters & Setters
   virtual const vec2& GetBounds() const;

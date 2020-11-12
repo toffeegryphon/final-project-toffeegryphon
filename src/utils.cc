@@ -50,6 +50,10 @@ vec2 GetRandomDeath() {
                             Configuration::kDefaultDeathROCRange);
 }
 
+float DistanceX(const Individual& first, const Individual& second) {
+  return fabs(first.GetPosition().x - second.GetPosition().x);
+}
+
 bool CompareX(const Individual& first, const Individual& second) {
   // TODO Maybe sort by y if x same
   return first.GetPosition().x < second.GetPosition().x;

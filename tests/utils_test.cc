@@ -33,6 +33,24 @@ TEST_CASE("GetRandomInRange", "[random]") {
   }
 }
 
+TEST_CASE("DistanceX") {
+  vec2 bounds(100, 100);
+
+  SECTION("Returns positive x distance if first greater") {
+    Individual first(bounds), second(bounds);
+    first.SetPosition(vec2(10, 10));
+    second.SetPosition(vec2(5, 5));
+    REQUIRE(DistanceX(first, second) == 5.0f);
+  }
+
+  SECTION("Returns positive x distance if second greater") {
+    Individual first(bounds), second(bounds);
+    first.SetPosition(vec2(5, 10));
+    second.SetPosition(vec2(10, 5));
+    REQUIRE(DistanceX(first, second) == 5.0f);
+  }
+}
+
 TEST_CASE("CompareX", "[comparison]") {
   vec2 bounds(100, 100);
 

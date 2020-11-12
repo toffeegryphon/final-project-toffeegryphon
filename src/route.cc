@@ -52,6 +52,10 @@ const queue<vec2>& Route::GetDestinations() const {
   return destinations_;
 }
 
+void Route::SetDestinations(const queue<vec2>& destinations) {
+  destinations_ = destinations;
+}
+
 // Private
 
 void Route::FillDestinations(const vec2& bounds) {

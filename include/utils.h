@@ -32,6 +32,8 @@ vec2 GetRandomRecovery();
 
 vec2 GetRandomDeath();
 
+float DistanceX(const Individual& first, const Individual& second);
+
 bool CompareX(const Individual& first, const Individual& second);
 
 }  // namespace utils
