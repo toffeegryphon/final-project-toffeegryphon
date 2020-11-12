@@ -59,6 +59,12 @@ void Individual::Update(const vec2& bounds) {
   // TODO Maybe member variable
   float speed = length(bounds) / Configuration::kTraversalFrames;
   route_.Update(speed, bounds);
+
+  if (status_ == Status::kUninfected) {
+    return;
+  }
+
+  UpdateSneeze();
 }
 
 // Getters & Setters
@@ -69,6 +75,10 @@ size_t Individual::GetID() const {
 
 Individual::Status Individual::GetStatus() const {
   return status_;
+}
+
+bool Individual::IsSneezing() const {
+  return is_sneezing_;
 }
 
 const vec2& Individual::GetPosition() const {
@@ -83,12 +93,22 @@ void Individual::SetHealthiness(float healthiness) {
   healthiness_ = healthiness;
 }
 
+void Individual::SetSpread(const vec2& spread_chance_roc) {
+  spread_ = spread_chance_roc;
+}
+
 // Private Methods
 
 size_t Individual::kNextID = 0;
 
 size_t Individual::GetNextID() {
   return kNextID++;
+}
+
+void Individual::UpdateSneeze() {
+  is_sneezing_ = GetRandom() < spread_.x;
+  // TODO Possibly limit to at most some chance
+  spread_.x += spread_.y;
 }
 
 }  // namespace epidemic

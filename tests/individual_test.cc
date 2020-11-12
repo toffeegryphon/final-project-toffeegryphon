@@ -108,4 +108,28 @@ TEST_CASE("Individual Update", "[individual][update]") {
 
     REQUIRE(i.GetPosition() == pos);
   }
+
+  SECTION("Sneeze if at least kAsymptomatic and pass sneeze check") {
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetSpread(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.IsSneezing());
+  }
+
+  SECTION("Not sneeze if kUninfected") {
+    Individual i(bounds, Individual::Status::kUninfected);
+    i.SetSpread(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE_FALSE(i.IsSneezing());
+  }
+
+  SECTION("Not sneeze if fail sneeze check") {
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetSpread(vec2(0, 0));
+    i.Update(bounds);
+
+    REQUIRE_FALSE(i.IsSneezing());
+  }
 }

@@ -40,6 +40,7 @@ class Individual {
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
   bool IsSneezing() const;
+  void SetSpread(const vec2& spread_chance_roc);
   void SetHealthiness(float healthiness);
 
  private:
@@ -56,8 +57,7 @@ class Individual {
   float wanderlust_;
   Route route_;
 
-  void Move();
-  void Sneeze();
+  void UpdateSneeze();
   // TODO Non instantaneous recovery
   void RecoverOrDie();
 };
