@@ -76,12 +76,10 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
     }
   }
 
-  SECTION(
-      "Transmission from single to many") {
+  SECTION("Transmission from single to many") {
     vector<Individual> individuals{
         Individual(bounds, Individual::Status::kAsymptomatic),
-        Individual(bounds),
-        Individual(bounds)};
+        Individual(bounds), Individual(bounds)};
     individuals[0].SetSpread(vec2(1, 0));
     individuals[0].SetPosition(vec2(50, 50));
 
@@ -105,14 +103,12 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
     }
   }
 
-  SECTION(
-      "Transmission separate clusters") {
+  SECTION("Transmission separate clusters") {
     vector<Individual> individuals{
         Individual(bounds, Individual::Status::kAsymptomatic),
         Individual(bounds),
         Individual(bounds, Individual::Status::kAsymptomatic),
-        Individual(bounds),
-        Individual(bounds)};
+        Individual(bounds), Individual(bounds)};
     individuals[0].SetSpread(vec2(1, 0));
     individuals[0].SetPosition(vec2(50, 50));
 
@@ -146,13 +142,13 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
       if (individual.GetID() == i_4) {
         REQUIRE(individual.GetStatus() == Individual::Status::kUninfected);
       } else {
-        REQUIRE_FALSE(individual.GetStatus() == Individual::Status::kUninfected);
+        REQUIRE_FALSE(individual.GetStatus() ==
+                      Individual::Status::kUninfected);
       }
     }
   }
 
-  SECTION(
-      "Not transmit if pass sneeze check but beyond spread radius") {
+  SECTION("Not transmit if pass sneeze check but beyond spread radius") {
     vector<Individual> individuals{
         Individual(bounds, Individual::Status::kAsymptomatic),
         Individual(bounds)};
@@ -178,8 +174,7 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
     }
   }
 
-  SECTION(
-      "Not transmit if within radius but fail sneeze check") {
+  SECTION("Not transmit if within radius but fail sneeze check") {
     vector<Individual> individuals{
         Individual(bounds, Individual::Status::kAsymptomatic),
         Individual(bounds)};
@@ -203,6 +198,102 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
         REQUIRE(individual.GetStatus() == Individual::Status::kUninfected);
       }
     }
+  }
+}
+
+TEST_CASE("City Add", "[city][interaction][add]") {
+  vec2 bounds(100, 100);
+  vector<Individual> individuals{Individual(bounds), Individual(bounds),
+                                 Individual(bounds)};
+
+  SECTION("Adds empty vector of individuals to empty city") {
+    City city(bounds, 0, 0);
+    city.Add(vector<Individual>{});
+    REQUIRE(city.GetIndividuals().empty());
+  }
+
+  SECTION("Adds filled vector of individuals to empty city") {
+    City city(bounds, 0, 0);
+    city.Add(individuals);
+    REQUIRE(city.GetIndividuals() == individuals);
+  }
+
+  SECTION("Adds empty vector of individuals to filled city") {
+    City city(bounds, 5, 1);
+    vector<Individual> original = city.GetIndividuals();
+    city.Add(vector<Individual>{});
+    REQUIRE(city.GetIndividuals() == original);
+  }
+
+  SECTION("Adds filled vector of individuals to filled city") {
+    City city(bounds, 5, 1);
+    vector<Individual> expected = city.GetIndividuals();
+    expected.insert(expected.end(), individuals.begin(), individuals.end());
+    city.Add(individuals);
+    REQUIRE(city.GetIndividuals() == expected);
+  }
+}
+
+TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
+  vec2 bounds(100, 100);
+
+  SECTION("Extracts individual exactly at position") {
+    City city(bounds, 1, 1);
+    vector<Individual> expected = city.GetIndividuals();
+    REQUIRE(city.ExtractIndividualsAt(expected[0].GetPosition()) == expected);
+  }
+
+  SECTION("Extracts individual within radius of position") {
+    City city(bounds, 1, 1);
+    vector<Individual> expected = city.GetIndividuals();
+    vec2 position(expected[0].GetPosition().x +
+                      0.9 * Configuration::kDefaultIndividualRadius,
+                  expected[0].GetPosition().y);
+    REQUIRE(city.ExtractIndividualsAt(position) == expected);
+  }
+
+  SECTION("Does not extract individuals outside of radius of position") {
+    City city(bounds, 1, 1);
+    vector<Individual> expected = city.GetIndividuals();
+    vec2 position(expected[0].GetPosition().x +
+                      1.1 * Configuration::kDefaultIndividualRadius,
+                  expected[0].GetPosition().y);
+    REQUIRE(city.ExtractIndividualsAt(position).empty());
+  }
+
+  SECTION("Does not extract individuals at radius of position") {
+    City city(bounds, 1, 1);
+    vector<Individual> expected = city.GetIndividuals();
+    vec2 position(
+        expected[0].GetPosition().x + Configuration::kDefaultIndividualRadius,
+        expected[0].GetPosition().y);
+    REQUIRE(city.ExtractIndividualsAt(position).empty());
+  }
+
+  SECTION("Extracts multiple individuals within radius of position") {
+    City city(bounds, 0, 0);
+    vector<Individual> source(3, Individual(bounds));
+    vec2 position(5, 5);
+    source[0].SetPosition(position);
+    source[1].SetPosition(position);
+    source[2].SetPosition(bounds);
+    city.Add(source);
+
+    REQUIRE(city.ExtractIndividualsAt(position) ==
+            vector<Individual>{source[0], source[1]});
+  }
+
+  SECTION("Removes extracted individuals from city individuals") {
+    City city(bounds, 0, 0);
+    vector<Individual> source(3, Individual(bounds));
+    vec2 position(5, 5);
+    source[0].SetPosition(position);
+    source[1].SetPosition(position);
+    source[2].SetPosition(bounds);
+    city.Add(source);
+
+    city.ExtractIndividualsAt(position);
+    REQUIRE(city.GetIndividuals() == vector<Individual>{source[2]});
   }
 }
 
