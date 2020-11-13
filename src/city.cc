@@ -36,7 +36,6 @@ void City::Add(const vector<Individual>& individuals) {
 }
 
 // Interaction
-// TODO Test
 vector<Individual> City::ExtractIndividualsAt(const vec2& position) {
   float radius = Configuration::kDefaultIndividualRadius;
   // TODO Binary search
