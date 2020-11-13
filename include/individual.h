@@ -54,6 +54,9 @@ class Individual {
   const vec2& GetDeath() const;
   void SetDeath(const vec2& death_chance_roc);
 
+  bool operator==(const Individual& rhs) const;
+  bool operator!=(const Individual& rhs) const;
+
  private:
   // ID
   static size_t kNextID;

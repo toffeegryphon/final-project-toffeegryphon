@@ -47,7 +47,8 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
                                 src/utils.cc
                                 src/route.cc
                                 src/location.cc
-                                src/city.cc)
+                                src/city.cc
+                                src/hand.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/epidemic_app.cc)
@@ -55,7 +56,8 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
 list(APPEND TEST_FILES  tests/individual_test.cc
                         tests/utils_test.cc
                         tests/route_test.cc
-                        tests/city_test.cc)
+                        tests/city_test.cc
+                        tests/hand_test.cc)
 
 ci_make_app(
         APP_NAME        epidemic

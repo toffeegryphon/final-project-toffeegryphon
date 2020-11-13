@@ -233,3 +233,13 @@ TEST_CASE("Individual Update", "[individual][update]") {
     REQUIRE(i.GetDeath().x == exp_death);
   }
 }
+
+TEST_CASE("Individual Equality", "[individual][operator][equality]") {
+  vec2 bounds(100, 100);
+  Individual first(bounds);
+  Individual second(first);
+
+  SECTION("Equal if IDs are equal") {
+    REQUIRE(first == second);
+  }
+}

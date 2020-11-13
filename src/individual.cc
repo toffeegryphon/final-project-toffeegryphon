@@ -148,6 +148,17 @@ void Individual::SetDeath(const vec2& death_chance_roc) {
   death_ = death_chance_roc;
 }
 
+// Operators
+
+bool Individual::operator==(const Individual& rhs) const {
+  return id_ == rhs.id_;
+}
+
+bool Individual::operator!=(const Individual& rhs) const {
+  return !(rhs == *this);
+}
+
+
 // Private Methods
 
 size_t Individual::kNextID = 0;
