@@ -25,7 +25,7 @@ class Location {
 
   // Interaction
   // TODO May need to test here too
-  virtual void Add(const vector<Individual>& individuals);
+  virtual vector<Individual> Add(const vector<Individual>& individuals);
   virtual vector<Individual> ExtractIndividualsAt(const vec2& position);
 
   // Lifecycle

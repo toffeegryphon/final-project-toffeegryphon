@@ -18,9 +18,10 @@ epidemic::Location::Location(Type type, const vec2& bounds)
 
 // Interaction
 
-void Location::Add(const vector<Individual>& individuals) {
+vector<Individual> Location::Add(const vector<Individual>& individuals) {
   individuals_.insert(individuals_.end(), individuals.begin(),
                       individuals.end());
+  return vector<Individual>();
 }
 
 // Interaction
@@ -49,7 +50,7 @@ vector<Individual> Location::ExtractIndividualsAt(const vec2& position) {
   size_t r_count = 0;
   for (size_t i : to_remove) {
     // TODO in this case maybe save the steps instead of abs index
-    individuals_.erase(individuals_.begin() + i - r_count++);
+    individuals_.erase(individuals_.begin() + (i - r_count++));
   }
 
   return individuals;

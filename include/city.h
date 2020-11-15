@@ -11,7 +11,7 @@ class City : private Location {
   City(const vec2& bounds, const vector<Individual>& individuals);
 
   // Interaction
-  void Add(const vector<Individual>& individuals) override;
+  vector<Individual> Add(const vector<Individual>& individuals) override;
   vector<Individual> ExtractIndividualsAt(const vec2& position) override;
 
   // Lifecycle

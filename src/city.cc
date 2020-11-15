@@ -28,8 +28,8 @@ City::City(const vec2& bounds, const vector<Individual>& individuals)
   individuals_ = individuals;
 }
 
-void City::Add(const vector<Individual>& individuals) {
-  Location::Add(individuals);
+vector<Individual> City::Add(const vector<Individual>& individuals) {
+  return Location::Add(individuals);
 }
 
 // Interaction

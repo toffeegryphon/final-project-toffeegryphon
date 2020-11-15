@@ -298,6 +298,14 @@ TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
     city.ExtractIndividualsAt(position);
     REQUIRE(city.GetIndividuals() == vector<Individual>{source[0]});
   }
+
+  SECTION("Clears if removing all individuals") {
+    City city(bounds, 0, 0);
+    vector<Individual> source(3, Individual(bounds));
+    city.Add(source);
+    city.ExtractIndividualsAt(source[0].GetPosition());
+    REQUIRE(city.GetIndividuals().empty());
+  }
 }
 
 }  // namespace epidemic

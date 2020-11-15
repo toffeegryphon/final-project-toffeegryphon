@@ -16,9 +16,9 @@ TEST_CASE("Isolation Constructor", "[isolation][constructor") {
 
 TEST_CASE("Isolation Add", "[isolation][interaction][add]") {
   vec2 bounds(100, 100);
-  vector<Individual> individuals{Individual(bounds), Individual(bounds),
-                                 Individual(bounds)};
-  Isolation isolation(bounds);
+  size_t capacity = 5;
+  vector<Individual> individuals(3, Individual(bounds));
+  Isolation isolation(bounds, capacity);
 
   SECTION("Adds empty vector of individuals to empty isolation") {
     isolation.Add(vector<Individual>{});
@@ -42,6 +42,50 @@ TEST_CASE("Isolation Add", "[isolation][interaction][add]") {
     isolation.Add(vector<Individual>{individuals[1], individuals[2]});
     REQUIRE(isolation.GetIndividuals() == individuals);
   }
+
+  SECTION("Adding less than capacity count returns empty vector") {
+    REQUIRE(isolation.Add(individuals).empty());
+  }
+
+  SECTION("Adding exactly capacity count adds all") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(source);
+    REQUIRE(isolation.GetIndividuals() == source);
+  }
+
+  SECTION("Adding exactly capacity count returns empty vector") {
+    vector<Individual> source(capacity, Individual(bounds));
+    REQUIRE(isolation.Add(source).empty());
+  }
+
+  SECTION("Adding over capacity adds until capacity reached") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(individuals);
+    isolation.Add(source);
+    vector<Individual> expected = individuals;
+    expected.insert(expected.end(), source.begin(), source.begin() + 2);
+    REQUIRE(isolation.GetIndividuals() == expected);
+  }
+
+  SECTION("Adding exactly capacity count returns vector containing not added") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(individuals);
+    vector<Individual> expected(source.begin() + 2, source.end());
+    REQUIRE(isolation.Add(source) == expected);
+  }
+
+  SECTION("Adding when already at capacity does not add") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(source);
+    isolation.Add(individuals);
+    REQUIRE(isolation.GetIndividuals() == source);
+  }
+
+  SECTION("Adding when at capacity returns vector containing not added") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(source);
+    REQUIRE(isolation.Add(individuals) == individuals);
+  }
 }
 
 TEST_CASE("Isolation ExtractIndividualsAt",
@@ -53,8 +97,8 @@ TEST_CASE("Isolation ExtractIndividualsAt",
 
   SECTION("Extracts individual exactly at position") {
     isolation.Add(individuals);
-    REQUIRE(isolation.ExtractIndividualsAt(individuals[0].GetPosition()) ==
-            vector<Individual>{individuals[0]});
+    REQUIRE(isolation.ExtractIndividualsAt(individuals[1].GetPosition()) ==
+            vector<Individual>{individuals[1]});
   }
 
   SECTION("Extracts individual within radius of position") {
@@ -104,6 +148,13 @@ TEST_CASE("Isolation ExtractIndividualsAt",
 
     isolation.ExtractIndividualsAt(position);
     REQUIRE(isolation.GetIndividuals() == vector<Individual>{source[2]});
+  }
+
+  SECTION("Clears if removing all individuals") {
+    vector<Individual> source(3, Individual(bounds));
+    isolation.Add(source);
+    isolation.ExtractIndividualsAt(source[0].GetPosition());
+    REQUIRE(isolation.GetIndividuals().empty());
   }
 }
 

@@ -8,6 +8,7 @@ using glm::vec2;
 
 // TODO Possibly struct
 class Configuration {
+  // TODO Improve, allow custom values
  public:
   // App
   static constexpr size_t kIsolationCount = 3;
@@ -45,6 +46,9 @@ class Configuration {
 
   static constexpr size_t kDefaultPopulationSize = 30;
   static constexpr size_t kDefaultSickCount = 1;
+
+  // Isolation
+  static constexpr size_t kIsolationDefaultCapacity = 3;
 };
 
 }  // namespace epidemic
