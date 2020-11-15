@@ -113,8 +113,32 @@ TEST_CASE("Individual Update", "[individual][update]") {
 
   // Sneeze and Symptomatic
 
-  SECTION("Sneeze if at least kAsymptomatic and pass sneeze check") {
+  SECTION("Sneeze if kAsymptomatic and pass sneeze check") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetSpread(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.IsSneezing());
+  }
+
+  SECTION("Sneeze if kSymptomatic and pass sneeze check") {
+    Individual i(bounds, Individual::Status::kSymptomatic);
+    i.SetSpread(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.IsSneezing());
+  }
+
+  SECTION("Sneeze if kDying and pass sneeze check") {
+    Individual i(bounds, Individual::Status::kDying);
+    i.SetSpread(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.IsSneezing());
+  }
+
+  SECTION("Sneeze if kRecovered and pass sneeze check") {
+    Individual i(bounds, Individual::Status::kRecovered);
     i.SetSpread(vec2(1, 0));
     i.Update(bounds);
 
@@ -143,6 +167,16 @@ TEST_CASE("Individual Update", "[individual][update]") {
     i.Update(bounds);
 
     REQUIRE(i.GetSpread().x == exp_rate);
+  }
+
+  SECTION("Updates spread rate to negative if become recovered") {
+    Individual i(bounds, Individual::Status::kAsymptomatic);
+    i.SetRecovery(vec2(1, 0));
+    i.Update(bounds);
+    float exp_rate = i.GetSpread().x;
+    i.Update(bounds);
+
+    REQUIRE(i.GetSpread().x < exp_rate);
   }
 
   SECTION("Increase state to kSymptomatic if cross threshold") {
@@ -223,7 +257,7 @@ TEST_CASE("Individual Update", "[individual][update]") {
     REQUIRE(i.GetStatus() == Individual::Status::kDying);
   }
 
-  SECTION("Updates spread rate if not dead or recovered") {
+  SECTION("Updates recover and death rate if not dead or recovered") {
     Individual i(bounds, Individual::Status::kDying);
     float exp_recovery = i.GetRecovery().x + i.GetRecovery().y;
     float exp_death = i.GetDeath().x + i.GetDeath().y;

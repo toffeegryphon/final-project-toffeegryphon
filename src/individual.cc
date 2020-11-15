@@ -63,11 +63,16 @@ void Individual::Update(const vec2& bounds) {
   float speed = length(bounds) / Configuration::kTraversalFrames;
   route_.Update(speed, bounds);
 
-  if (status_ == Status::kUninfected || status_ == Status::kRecovered) {
+  if (status_ == Status::kUninfected) {
     return;
   }
 
   UpdateSneezeAndSymptoms();
+
+  if (status_ == Status::kRecovered) {
+    return;
+  }
+
   RecoverOrDie();
 }
 
@@ -158,7 +163,6 @@ bool Individual::operator!=(const Individual& rhs) const {
   return !(rhs == *this);
 }
 
-
 // Private Methods
 
 size_t Individual::kNextID = 0;
@@ -172,7 +176,8 @@ void Individual::UpdateSneezeAndSymptoms() {
   // TODO Possibly limit to at most some chance
   spread_.x += spread_.y;
 
-  if (spread_.x > Configuration::kSymptomaticThreshold) {
+  if (status_ != Status::kRecovered &&
+      spread_.x > Configuration::kSymptomaticThreshold) {
     status_ = Status::kSymptomatic;
   }
 }
