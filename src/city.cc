@@ -4,8 +4,6 @@
 
 namespace epidemic {
 
-using glm::distance;
-using std::upper_bound;
 using utils::CompareX;
 using utils::DistanceX;
 
@@ -15,7 +13,7 @@ City::City(const vec2& bounds)
 }
 
 City::City(const vec2& bounds, size_t population_size, size_t sick_count)
-    : Location(bounds) {
+    : Location(Location::Type::kCity, bounds) {
   for (size_t i = 0; i < sick_count; ++i) {
     individuals_.emplace_back(bounds, Individual::Status::kAsymptomatic);
   }
@@ -26,43 +24,17 @@ City::City(const vec2& bounds, size_t population_size, size_t sick_count)
 }
 
 City::City(const vec2& bounds, const vector<Individual>& individuals)
-    : Location(bounds) {
+    : Location(Location::Type::kCity, bounds) {
   individuals_ = individuals;
 }
 
 void City::Add(const vector<Individual>& individuals) {
-  individuals_.insert(individuals_.end(), individuals.begin(),
-                      individuals.end());
+  Location::Add(individuals);
 }
 
 // Interaction
 vector<Individual> City::ExtractIndividualsAt(const vec2& position) {
-  float radius = Configuration::kDefaultIndividualRadius;
-  // TODO Binary search
-  vector<size_t> to_remove;
-  vector<Individual> individuals;
-
-  // TODO sort of hacky...
-  Individual target((vec2()));
-  target.SetPosition(vec2(position.x - radius, position.y));
-  auto lower =
-      upper_bound(individuals_.begin(), individuals_.end(), target, CompareX);
-  target.SetPosition(vec2(position.x + radius, position.y));
-  auto upper = upper_bound(lower, individuals_.end(), target, CompareX);
-
-  for (; lower != upper; ++lower) {
-    if (distance(lower->GetPosition(), position) < radius) {
-      individuals.push_back(*lower);
-      to_remove.push_back(lower - individuals_.begin());
-    }
-  }
-
-  for (size_t i : to_remove) {
-    // TODO in this case maybe save the steps instead of abs index
-    individuals_.erase(individuals_.begin() + i);
-  }
-
-  return individuals;
+  return Location::ExtractIndividualsAt(position);
 }
 
 // Lifecycle
@@ -79,6 +51,10 @@ void City::Draw(const vec2& offset) const {
 }
 
 // Getters & Setters
+
+Location::Type City::GetType() const {
+  return Location::GetType();
+}
 
 const vec2& City::GetBounds() const {
   return Location::GetBounds();

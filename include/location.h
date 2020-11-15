@@ -11,18 +11,29 @@ using std::vector;
 
 class Location {
  public:
+  enum Type {
+    kCity, kIsolation, kEmergency
+  };
+
   // Constructors
-  explicit Location(const vec2& bounds);
+  explicit Location(Type type, const vec2& bounds);
+
+  // Interaction
+  // TODO May need to test here too
+  virtual void Add(const vector<Individual>& individuals);
+  virtual vector<Individual> ExtractIndividualsAt(const vec2& position);
 
   // Lifecycle
   virtual void Update();
   virtual void Draw(const vec2& offset) const;
 
   // Getters & Setters
+  virtual Type GetType() const;
   virtual const vec2& GetBounds() const;
   virtual const vector<Individual>& GetIndividuals() const;
 
  protected:
+  Type type_;
   vec2 bounds_;
   vector<Individual> individuals_;
 };
