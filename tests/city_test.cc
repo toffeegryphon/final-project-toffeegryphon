@@ -290,13 +290,13 @@ TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
     City city(bounds, 0, 0);
     vector<Individual> source(3, Individual(bounds));
     vec2 position(5, 5);
-    source[0].SetPosition(position);
+    source[0].SetPosition(bounds);
     source[1].SetPosition(position);
-    source[2].SetPosition(bounds);
+    source[2].SetPosition(position);
     city.Add(source);
 
     city.ExtractIndividualsAt(position);
-    REQUIRE(city.GetIndividuals() == vector<Individual>{source[2]});
+    REQUIRE(city.GetIndividuals() == vector<Individual>{source[0]});
   }
 }
 

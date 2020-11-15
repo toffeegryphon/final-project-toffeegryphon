@@ -45,9 +45,11 @@ vector<Individual> Location::ExtractIndividualsAt(const vec2& position) {
     }
   }
 
+  // Already sorted
+  size_t r_count = 0;
   for (size_t i : to_remove) {
     // TODO in this case maybe save the steps instead of abs index
-    individuals_.erase(individuals_.begin() + i);
+    individuals_.erase(individuals_.begin() + i - r_count++);
   }
 
   return individuals;
