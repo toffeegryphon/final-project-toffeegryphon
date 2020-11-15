@@ -14,6 +14,7 @@ using utils::GetRandomPosition;
 using utils::GetRandomRecovery;
 using utils::GetRandomSpread;
 using utils::GetRandomWanderlust;
+using utils::IsInLocation;
 
 // Constructors
 
@@ -61,6 +62,12 @@ void Individual::Update(const vec2& bounds) {
 
   // TODO Maybe member variable
   float speed = length(bounds) / Configuration::kTraversalFrames;
+
+  if (!IsInLocation(route_.GetPosition(), Location::Data{bounds, vec2()})) {
+    route_.Update(speed * Configuration::kReturnFactor, bounds);
+    return;
+  }
+
   route_.Update(speed, bounds);
 
   if (status_ == Status::kUninfected) {

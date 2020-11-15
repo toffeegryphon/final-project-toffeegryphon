@@ -15,6 +15,11 @@ class Location {
     kCity, kIsolation, kEmergency
   };
 
+  struct Data {
+    vec2 size;
+    vec2 offset;
+  };
+
   // Constructors
   explicit Location(Type type, const vec2& bounds);
 

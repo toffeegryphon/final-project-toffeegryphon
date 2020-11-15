@@ -9,6 +9,9 @@ using glm::vec2;
 // TODO Possibly struct
 class Configuration {
  public:
+  // App
+  static constexpr size_t kIsolationCount = 3;
+
   // Individual
 
   static constexpr float kSymptomaticThreshold = 0.3f;
@@ -35,7 +38,8 @@ class Configuration {
   static constexpr float kDefaultIndividualRadius = 10;
 
   // Frames to travel from origin to opposite end of bounds
-  static constexpr float kTraversalFrames = 500;
+  static constexpr float kTraversalFrames = 1000;
+  static constexpr float kReturnFactor = 10.0f;
 
   // City
 

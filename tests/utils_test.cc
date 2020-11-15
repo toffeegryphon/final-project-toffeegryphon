@@ -76,6 +76,44 @@ TEST_CASE("CompareX", "[comparison]") {
   }
 }
 
+TEST_CASE("IsInLocation") {
+  SECTION("Returns true if position is entirely within bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(50, 50);
+    REQUIRE(IsInLocation(position, data));
+  }
+
+  SECTION("Returns false if position is exactly at left bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(20, 50);
+    REQUIRE_FALSE(IsInLocation(position, data));
+  }
+
+  SECTION("Returns false if position is exactly at right bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(120, 50);
+    REQUIRE_FALSE(IsInLocation(position, data));
+  }
+
+  SECTION("Returns false if position is exactly at top bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(50, 20);
+    REQUIRE_FALSE(IsInLocation(position, data));
+  }
+
+  SECTION("Returns false if position is exactly at bottom bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(50, 120);
+    REQUIRE_FALSE(IsInLocation(position, data));
+  }
+
+  SECTION("Returns false if position is out of bounds") {
+    Location::Data data{vec2(100, 100), vec2(20, 20)};
+    vec2 position(200, 200);
+    REQUIRE_FALSE(IsInLocation(position, data));
+  }
+}
+
 }  // namespace utils
 
 }  // namespace epidemic

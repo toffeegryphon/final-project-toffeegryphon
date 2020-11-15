@@ -3,6 +3,7 @@
 #include <cinder/gl/gl.h>
 #include <configuration.h>
 #include <individual.h>
+#include <location.h>
 
 namespace epidemic {
 
@@ -35,6 +36,8 @@ vec2 GetRandomDeath();
 float DistanceX(const Individual& first, const Individual& second);
 
 bool CompareX(const Individual& first, const Individual& second);
+
+bool IsInLocation(const vec2& position, const Location::Data& data);
 
 }  // namespace utils
 

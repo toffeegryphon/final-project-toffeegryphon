@@ -111,6 +111,20 @@ TEST_CASE("Individual Update", "[individual][update]") {
     REQUIRE(i.GetPosition() == pos);
   }
 
+  SECTION("Only moves if out of bounds") {
+    Individual::Status status = Individual::Status::kSymptomatic;
+    Individual i(bounds, status);
+    vec2 pos(200, 200);
+    i.SetPosition(pos);
+    i.SetSpread(vec2(1, 0));
+    i.SetRecovery(vec2(1, 0));
+    i.Update(bounds);
+
+    REQUIRE(i.GetPosition() != pos);
+    REQUIRE_FALSE(i.IsSneezing());
+    REQUIRE(i.GetStatus() == status);
+  }
+
   // Sneeze and Symptomatic
 
   SECTION("Sneeze if kAsymptomatic and pass sneeze check") {

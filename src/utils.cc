@@ -59,6 +59,12 @@ bool CompareX(const Individual& first, const Individual& second) {
   return first.GetPosition().x < second.GetPosition().x;
 }
 
+bool IsInLocation(const vec2& position, const Location::Data& data) {
+  return (
+      data.offset.x < position.x && position.x < data.offset.x + data.size.x &&
+      data.offset.y < position.y && position.y < data.offset.y + data.size.y);
+}
+
 }  // namespace utils
 
 }  // namespace epidemic
