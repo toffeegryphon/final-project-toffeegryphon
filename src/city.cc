@@ -7,6 +7,9 @@ namespace epidemic {
 using utils::CompareX;
 using utils::DistanceX;
 
+City::City() : City(vec2()) {
+}
+
 City::City(const vec2& bounds)
     : City(bounds, Configuration::kDefaultPopulationSize,
            Configuration::kDefaultSickCount) {

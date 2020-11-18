@@ -6,6 +6,7 @@ namespace epidemic {
 
 class City : private Location {
  public:
+  City();
   explicit City(const vec2& bounds);
   City(const vec2& bounds, size_t population_size, size_t sick_count);
   City(const vec2& bounds, const vector<Individual>& individuals);
