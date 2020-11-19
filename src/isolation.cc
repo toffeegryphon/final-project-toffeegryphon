@@ -18,19 +18,27 @@ Isolation::Isolation(const vec2& bounds, size_t capacity)
 
 vector<Individual> epidemic::Isolation::Add(
     const vector<Individual>& individuals) {
+  vector<Individual> rejected;
+
   size_t total = individuals_.size() + individuals.size();
   if (total > capacity_) {
     size_t limit = individuals.size() - total + capacity_;
     Location::Add(
         vector<Individual>(individuals.begin(), individuals.begin() + limit));
-    return vector<Individual>(individuals.begin() + limit, individuals.end());
+    rejected =
+        vector<Individual>(individuals.begin() + limit, individuals.end());
+  } else {
+    rejected = Location::Add(individuals);
   }
-  return Location::Add(individuals);
+  UpdateAdmission();
+  return rejected;
 }
 
 vector<Individual> epidemic::Isolation::ExtractIndividualsAt(
     const vec2& position) {
-  return Location::ExtractIndividualsAt(position);
+  vector<Individual> individuals = Location::ExtractIndividualsAt(position);
+  Discharge(&individuals);
+  return individuals;
 }
 
 // Lifecycle
@@ -57,6 +65,23 @@ const vec2& epidemic::Isolation::GetBounds() const {
 
 const vector<Individual>& epidemic::Isolation::GetIndividuals() const {
   return Location::GetIndividuals();
+}
+
+void Isolation::UpdateAdmission() {
+  for (size_t i = 0; i < individuals_.size(); ++i) {
+    queue<vec2> destinations;
+    destinations.push(vec2(bounds_.x * (i + 0.5) / capacity_, bounds_.y / 2));
+    Individual& individual = individuals_[i];
+    individual.SetDestinations(destinations);
+    individual.SetRouteMode(Route::Mode::kDeplete);
+  }
+}
+
+void Isolation::Discharge(vector<Individual>* individuals) {
+  for (Individual& individual : *individuals) {
+    individual.SetDestinations(queue<vec2>());
+    individual.SetRouteMode(Route::Mode::kContinuous);
+  }
 }
 
 }  // namespace epidemic

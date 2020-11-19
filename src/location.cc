@@ -34,6 +34,8 @@ vector<Individual> Location::ExtractIndividualsAt(const vec2& position) {
   // TODO sort of hacky...
   Individual target((vec2()));
   target.SetPosition(vec2(position.x - radius, position.y));
+
+  sort(individuals_.begin(), individuals_.end(), CompareX);
   auto lower =
       upper_bound(individuals_.begin(), individuals_.end(), target, CompareX);
   target.SetPosition(vec2(position.x + radius, position.y));

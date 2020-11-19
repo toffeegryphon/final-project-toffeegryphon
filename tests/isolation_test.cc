@@ -2,8 +2,13 @@
 #include <isolation.h>
 
 #include <catch2/catch.hpp>
+#include <unordered_set>
 
 namespace epidemic {
+
+using std::string;
+using std::to_string;
+using std::unordered_set;
 
 TEST_CASE("Isolation Constructor", "[isolation][constructor") {
   vec2 bounds(100, 100);
@@ -30,6 +35,24 @@ TEST_CASE("Isolation Add", "[isolation][interaction][add]") {
     REQUIRE(isolation.GetIndividuals() == individuals);
   }
 
+  SECTION("Adding to empty isolation sets non overlapping destinations") {
+    isolation.Add(individuals);
+    vector<Individual> warded = isolation.GetIndividuals();
+    unordered_set<string> positions;
+    for (const Individual& individual : warded) {
+      positions.insert(to_string(individual.GetDestinations().front().x) +
+                       to_string(individual.GetDestinations().front().y));
+    }
+    REQUIRE(positions.size() == warded.size());
+  }
+
+  SECTION("Adding to empty isolation sets route mode to kDeplete") {
+    isolation.Add(individuals);
+    for (const Individual& individual : isolation.GetIndividuals()) {
+      REQUIRE(individual.GetRouteMode() == Route::Mode::kDeplete);
+    }
+  }
+
   SECTION("Adds empty vector of individuals to filled isolation") {
     isolation.Add(individuals);
     vector<Individual> original = isolation.GetIndividuals();
@@ -41,6 +64,33 @@ TEST_CASE("Isolation Add", "[isolation][interaction][add]") {
     isolation.Add(vector<Individual>{individuals[0]});
     isolation.Add(vector<Individual>{individuals[1], individuals[2]});
     REQUIRE(isolation.GetIndividuals() == individuals);
+  }
+
+  SECTION("Adding to filled isolation sets non overlapping destinations") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(individuals);
+    isolation.Add(source);
+    vector<Individual> warded = isolation.GetIndividuals();
+    unordered_set<string> positions;
+    for (const Individual& individual : warded) {
+      positions.insert(to_string(individual.GetDestinations().front().x) +
+                       to_string(individual.GetDestinations().front().y));
+    }
+    REQUIRE(positions.size() == warded.size());
+  }
+
+  SECTION(
+      "Adding to filled isolation sets route mode to kDeplete only for "
+      "admitted") {
+    vector<Individual> source(capacity, Individual(bounds));
+    isolation.Add(individuals);
+    vector<Individual> rejected = isolation.Add(source);
+    for (const Individual& individual : isolation.GetIndividuals()) {
+      REQUIRE(individual.GetRouteMode() == Route::Mode::kDeplete);
+    }
+    for (const Individual& individual : rejected) {
+      REQUIRE(individual.GetRouteMode() == Route::Mode::kContinuous);
+    }
   }
 
   SECTION("Adding less than capacity count returns empty vector") {
@@ -155,6 +205,26 @@ TEST_CASE("Isolation ExtractIndividualsAt",
     isolation.Add(source);
     isolation.ExtractIndividualsAt(source[0].GetPosition());
     REQUIRE(isolation.GetIndividuals().empty());
+  }
+
+  SECTION("Empties destination queue for removed individuals only") {
+    isolation.Add(individuals);
+    vector<Individual> removed =
+        isolation.ExtractIndividualsAt(individuals[1].GetPosition());
+    REQUIRE(removed[0].GetDestinations().empty());
+    for (const Individual& individual : isolation.GetIndividuals()) {
+      REQUIRE_FALSE(individual.GetDestinations().empty());
+    }
+  }
+
+  SECTION("Sets route mode to kContinuous for removed individuals only") {
+    isolation.Add(individuals);
+    vector<Individual> removed =
+        isolation.ExtractIndividualsAt(individuals[1].GetPosition());
+    REQUIRE(removed[0].GetRouteMode() == Route::Mode::kContinuous);
+    for (const Individual& individual : isolation.GetIndividuals()) {
+      REQUIRE(individual.GetRouteMode() == Route::Mode::kDeplete);
+    }
   }
 }
 

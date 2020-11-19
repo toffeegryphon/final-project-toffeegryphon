@@ -63,12 +63,22 @@ TEST_CASE("Route Update kContinuous", "[route][update][continuous]") {
   SECTION("Refills destination queue if reaches minimum") {
     float speed = 10000;
 
-    for (size_t i = 0; i < Route::kQueueSize.second - Route::kQueueSize.first;
+    for (size_t i = 0; i <= Route::kQueueSize.second - Route::kQueueSize.first;
          ++i) {
       route.Update(speed, bounds);
     }
 
-    REQUIRE(route.GetDestinations().size() == Route::kQueueSize.second);
+    // Refill before move
+    REQUIRE(route.GetDestinations().size() == Route::kQueueSize.second - 1);
+  }
+
+  SECTION("Refills destination queue if empty") {
+    float speed = 10000;
+    route.SetDestinations(queue<vec2>());
+    route.Update(speed, bounds);
+
+    // Refill before move
+    REQUIRE(route.GetDestinations().size() == Route::kQueueSize.second - 1);
   }
 }
 

@@ -26,6 +26,9 @@ class Isolation : private Location {
 
  private:
   size_t capacity_;
+
+  void UpdateAdmission();
+  void Discharge(vector<Individual>* individuals);
 };
 
 }  // namespace epidemic

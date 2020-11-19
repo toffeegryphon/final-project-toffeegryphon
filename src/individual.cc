@@ -140,8 +140,16 @@ void Individual::SetPosition(const vec2& position) {
   route_.SetPosition(position);
 }
 
+const queue<vec2>& Individual::GetDestinations() const {
+  return route_.GetDestinations();
+}
+
 void Individual::SetDestinations(const queue<vec2>& destinations) {
   route_.SetDestinations(destinations);
+}
+
+Route::Mode Individual::GetRouteMode() const {
+  return route_.GetMode();
 }
 
 void Individual::SetRouteMode(Route::Mode mode) {

@@ -24,10 +24,10 @@ Route::Route(const vec2& bounds, const vec2& position)
 void Route::Update(float speed, const vec2& bounds) {
   switch (mode_) {
     case kContinuous:
-      MoveTowards(speed, destinations_.front());
       if (destinations_.size() <= kQueueSize.first) {
         FillDestinations(bounds);
       }
+      MoveTowards(speed, destinations_.front());
       break;
     case kDeplete:
       if (!destinations_.empty()) {

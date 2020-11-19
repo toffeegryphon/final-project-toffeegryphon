@@ -39,7 +39,9 @@ class Individual {
 
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
+  const queue<vec2>& GetDestinations() const;
   void SetDestinations(const queue<vec2>& destinations);
+  Route::Mode GetRouteMode() const;
   void SetRouteMode(Route::Mode mode);
 
   bool IsSneezing() const;
