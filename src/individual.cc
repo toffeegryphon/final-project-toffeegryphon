@@ -16,6 +16,12 @@ using utils::GetRandomSpread;
 using utils::GetRandomWanderlust;
 using utils::IsInLocation;
 
+#define DEBUG  // TODO Remember to remove all debug stuff!
+#ifdef DEBUG
+using ci::gl::drawStringRight;
+using std::to_string;
+#endif
+
 // Constructors
 
 Individual::Individual(const vec2& bounds)
@@ -104,6 +110,12 @@ void Individual::Draw(const vec2& offset) const {
   }
   drawSolidCircle(GetPosition() + offset,
                   Configuration::kDefaultIndividualRadius);
+
+#ifdef DEBUG
+  std::string text = to_string(static_cast<int>(status_)) + "|" +
+                     to_string(is_sneezing_) + "|" + to_string(spread_.x);
+  drawStringRight(text, GetPosition() + offset);
+#endif
 }
 
 // Getters & Setters
@@ -130,6 +142,10 @@ void Individual::SetPosition(const vec2& position) {
 
 void Individual::SetDestinations(const queue<vec2>& destinations) {
   route_.SetDestinations(destinations);
+}
+
+void Individual::SetRouteMode(Route::Mode mode) {
+  route_.SetMode(mode);
 }
 
 void Individual::SetHealthiness(float healthiness) {
@@ -181,7 +197,9 @@ size_t Individual::GetNextID() {
 void Individual::UpdateSneezeAndSymptoms() {
   is_sneezing_ = GetRandom() < spread_.x;
   // TODO Possibly limit to at most some chance
-  spread_.x += spread_.y;
+  if (0 <= spread_.x && spread_.x <= 1) {
+    spread_.x += spread_.y;
+  }
 
   if (status_ != Status::kRecovered &&
       spread_.x > Configuration::kSymptomaticThreshold) {
