@@ -54,6 +54,8 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
                                 src/scene_manager.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
+                            src/scenes/menu.cc
+                            src/scenes/game.cc
                             src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc
@@ -63,7 +65,8 @@ list(APPEND TEST_FILES  tests/individual_test.cc
                         tests/hand_test.cc
                         tests/isolation_test.cc
                         tests/view_test.cc
-                        tests/scene_manager_test.cc)
+                        tests/scene_manager_test.cc
+                        tests/scenes_test/menu_test.cc)
 
 ci_make_app(
         APP_NAME        epidemic
