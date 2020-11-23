@@ -43,7 +43,7 @@ vector<Individual> City::ExtractIndividualsAt(const vec2& position) {
 // Lifecycle
 void City::Update() {
   for (Individual& individual : individuals_) {
-    individual.Update(bounds_);
+    individual.Update(bounds_, type_);
   }
 
   UpdateSpread();

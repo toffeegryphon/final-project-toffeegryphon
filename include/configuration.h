@@ -15,9 +15,9 @@ class Configuration {
 
   // Individual
 
-  static constexpr float kSymptomaticThreshold = 0.3f;
+  static constexpr float kSymptomaticThreshold = 0.5f;
   static constexpr float kDyingThreshold = 0.5f;
-  static constexpr float kDefaultSneezeRadius = 10.0f;
+  static constexpr float kDefaultSneezeRadius = 30.0f;
 
   // Minimum Value, Range
 
@@ -49,6 +49,9 @@ class Configuration {
 
   // Isolation
   static constexpr size_t kIsolationDefaultCapacity = 3;
+  static constexpr bool kWillSpread = true;
+  static constexpr float kIsolationRecoveryFactor = 2.0f;
+  static constexpr float kIsolationDeathFactor = 0.5f;
 };
 
 }  // namespace epidemic

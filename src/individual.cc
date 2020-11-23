@@ -61,7 +61,7 @@ void Individual::CheckAndBecomeInfected(const Individual& by) {
 
 // Lifecycle
 
-void Individual::Update(const vec2& bounds) {
+void Individual::Update(const vec2& bounds, Location::Type location_type) {
   if (status_ == Status::kDead) {
     return;
   }
@@ -86,7 +86,7 @@ void Individual::Update(const vec2& bounds) {
     return;
   }
 
-  RecoverOrDie();
+  RecoverOrDie(location_type);
 }
 
 void Individual::Draw(const vec2& offset) const {
@@ -215,7 +215,7 @@ void Individual::UpdateSneezeAndSymptoms() {
   }
 }
 
-void Individual::RecoverOrDie() {
+void Individual::RecoverOrDie(Location::Type location_type) {
   // Check
 
   /*
@@ -243,8 +243,15 @@ void Individual::RecoverOrDie() {
   }
 
   // Increment
-  recovery_.x += recovery_.y;
-  death_.x += death_.y;
+  float recovery_factor = (location_type == Location::Type::kIsolation)
+                              ? Configuration::kIsolationRecoveryFactor
+                              : 1;
+  float death_factor = (location_type == Location::Type::kIsolation)
+                           ? Configuration::kIsolationDeathFactor
+                           : 1;
+
+  recovery_.x += recovery_factor * recovery_.y;
+  death_.x += death_factor * death_.y;
 }
 
 }  // namespace epidemic

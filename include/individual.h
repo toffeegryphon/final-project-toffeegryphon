@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cinder/gl/gl.h>
+#include <location.h>
 #include <route.h>
 
 #include <queue>
@@ -20,6 +21,8 @@ class Individual {
     kRecovered
   };
 
+  // Constructors
+
   explicit Individual(const vec2& bounds);
   Individual(const vec2& bounds, Status status);
   Individual(float healthiness, float wanderlust, const vec2& bounds);
@@ -29,10 +32,16 @@ class Individual {
              Status status, const vec2& position, const vec2& spread,
              const vec2& recovery, const vec2& death);
 
+  // Interaction
+
   void CheckAndBecomeInfected(const Individual& by);
 
-  void Update(const vec2& bounds);
+  // Lifecycle
+
+  void Update(const vec2& bounds, Location::Type location_type);
   void Draw(const vec2& offset) const;
+
+  // Getters & Setters
 
   size_t GetID() const;
   Status GetStatus() const;
@@ -76,7 +85,7 @@ class Individual {
 
   void UpdateSneezeAndSymptoms();
   // TODO Non instantaneous recovery
-  void RecoverOrDie();
+  void RecoverOrDie(Location::Type location_type);
 };
 
 }  // namespace epidemic

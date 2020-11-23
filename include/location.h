@@ -1,13 +1,13 @@
 #pragma once
 
 #include <cinder/gl/gl.h>
-#include <individual.h>
 
 namespace epidemic {
 
-using epidemic::Individual;
 using glm::vec2;
 using std::vector;
+
+class Individual;
 
 class Location {
  public:

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <individual.h>
 #include <location.h>
 
 namespace epidemic {

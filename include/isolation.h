@@ -1,5 +1,6 @@
 #pragma once
 
+#include <individual.h>
 #include <location.h>
 
 namespace epidemic {
@@ -29,6 +30,8 @@ class Isolation : private Location {
 
   void UpdateAdmission();
   void Discharge(vector<Individual>* individuals);
+
+  void UpdateSpread();
 };
 
 }  // namespace epidemic

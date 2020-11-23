@@ -3,6 +3,8 @@
 
 namespace epidemic {
 
+using std::any_of;
+
 // Constructors
 
 Isolation::Isolation(const vec2& bounds)
@@ -46,7 +48,13 @@ vector<Individual> epidemic::Isolation::ExtractIndividualsAt(
 void epidemic::Isolation::Update() {
   // TODO Update chances
   // TODO Spread check
-  Location::Update();
+  for (Individual& individual : individuals_) {
+    individual.Update(bounds_, type_);
+  }
+
+  // TODO Testing if after x frames and is asymptomatic set to symptomatic
+
+  UpdateSpread();
 }
 
 void epidemic::Isolation::Draw(const vec2& offset) const {
@@ -81,6 +89,16 @@ void Isolation::Discharge(vector<Individual>* individuals) {
   for (Individual& individual : *individuals) {
     individual.SetDestinations(queue<vec2>());
     individual.SetRouteMode(Route::Mode::kContinuous);
+  }
+}
+
+void Isolation::UpdateSpread() {
+  // TODO Consider whether spreading to all is good idea
+  if (any_of(individuals_.begin(), individuals_.end(),
+             [](const Individual& i) { return i.IsSneezing(); })) {
+    for (Individual& individual : individuals_) {
+      individual.CheckAndBecomeInfected(individual);
+    }
   }
 }
 

@@ -228,4 +228,54 @@ TEST_CASE("Isolation ExtractIndividualsAt",
   }
 }
 
+TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
+  vec2 bounds(100, 100);
+  vector<Individual> individuals{
+      Individual(bounds, Individual::Status::kAsymptomatic), Individual(bounds),
+      Individual(bounds)};
+  Isolation isolation(bounds);
+
+  SECTION("Updates position") {
+    isolation.Add(individuals);
+    isolation.Update();
+    for (size_t i = 0; i < individuals.size(); ++i) {
+      individuals[i].Update(bounds, Location::Type::kIsolation);
+      REQUIRE(isolation.GetIndividuals()[i] == individuals[i]);
+    }
+  }
+
+  SECTION("Checks to pass to all if one sneezes") {
+    individuals[0].SetSpread(vec2(1, 0));
+    individuals[1].SetSpread(vec2(0, 0));
+    individuals[1].SetHealthiness(0);
+    individuals[2].SetSpread(vec2(0, 0));
+    individuals[2].SetHealthiness(0);
+    isolation.Add(individuals);
+    isolation.Update();
+    for (const Individual& individual : isolation.GetIndividuals()) {
+      REQUIRE_FALSE(individual.GetStatus() == Individual::Status::kUninfected);
+    }
+  }
+
+  SECTION("Updates recovery chance with isolation multiplier") {
+    individuals[0].SetRecovery(vec2(0, 0.2));
+    isolation.Add(individuals);
+    isolation.Update();
+    float expected_recovery = individuals[0].GetRecovery().x +
+                              individuals[0].GetRecovery().y *
+                                  Configuration::kIsolationRecoveryFactor;
+    REQUIRE(isolation.GetIndividuals()[0].GetRecovery().x == expected_recovery);
+  }
+
+  SECTION("Updates death chance with isolation multiplier") {
+    individuals[0].SetDeath(vec2(0, 0.2));
+    isolation.Add(individuals);
+    isolation.Update();
+    float expected_death = individuals[0].GetDeath().x +
+                              individuals[0].GetDeath().y *
+                              Configuration::kIsolationDeathFactor;
+    REQUIRE(isolation.GetIndividuals()[0].GetDeath().x == expected_death);
+  }
+}
+
 }  // namespace epidemic
