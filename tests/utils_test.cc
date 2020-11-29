@@ -58,21 +58,21 @@ TEST_CASE("CompareX", "[comparison]") {
     Individual first(bounds), second(bounds);
     first.SetPosition(vec2(5, 10));
     second.SetPosition(vec2(10, 5));
-    REQUIRE(CompareX(first, second));
+    REQUIRE(CompareX(&first, &second));
   }
 
   SECTION("Returns false if first has larger x position than second") {
     Individual first(bounds), second(bounds);
     first.SetPosition(vec2(10, 5));
     second.SetPosition(vec2(5, 10));
-    REQUIRE_FALSE(CompareX(first, second));
+    REQUIRE_FALSE(CompareX(&first, &second));
   }
 
   SECTION("Returns false if first has same x position second") {
     Individual first(bounds), second(bounds);
     first.SetPosition(vec2(10, 5));
     second.SetPosition(vec2(10, 10));
-    REQUIRE_FALSE(CompareX(first, second));
+    REQUIRE_FALSE(CompareX(&first, &second));
   }
 }
 
@@ -111,6 +111,18 @@ TEST_CASE("IsInLocation") {
     Location::Data data{vec2(100, 100), vec2(20, 20)};
     vec2 position(200, 200);
     REQUIRE_FALSE(IsInLocation(position, data));
+  }
+}
+
+TEST_CASE("ToPointer") {
+  vec2 bounds(100, 100);
+  SECTION("Returns vector of pointers to objects in vector") {
+    vector<Individual> individuals(5, Individual(bounds));
+    vector<Individual*> ind_ptrs = ToPointers(&individuals);
+    REQUIRE(ind_ptrs.size() == individuals.size());
+    for (size_t i = 0; i < individuals.size(); ++i) {
+      REQUIRE(ind_ptrs[i] == &individuals[i]);
+    }
   }
 }
 

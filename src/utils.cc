@@ -54,15 +54,24 @@ float DistanceX(const Individual& first, const Individual& second) {
   return fabs(first.GetPosition().x - second.GetPosition().x);
 }
 
-bool CompareX(const Individual& first, const Individual& second) {
+bool CompareX(const Individual* first, const Individual* second) {
   // TODO Maybe sort by y if x same
-  return first.GetPosition().x < second.GetPosition().x;
+  return first->GetPosition().x < second->GetPosition().x;
 }
 
 bool IsInLocation(const vec2& position, const Location::Data& data) {
   return (
       data.offset.x < position.x && position.x < data.offset.x + data.size.x &&
       data.offset.y < position.y && position.y < data.offset.y + data.size.y);
+}
+
+vector<Individual*> ToPointers(vector<Individual>* source) {
+  vector<Individual*> individual_ptrs;
+  individual_ptrs.reserve(source->size());
+  for (Individual& individual : *source) {
+    individual_ptrs.push_back(&individual);
+  }
+  return individual_ptrs;
 }
 
 }  // namespace utils

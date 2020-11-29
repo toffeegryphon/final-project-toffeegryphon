@@ -25,8 +25,8 @@ class Location {
 
   // Interaction
   // TODO May need to test here too
-  virtual vector<Individual> Add(const vector<Individual>& individuals);
-  virtual vector<Individual> ExtractIndividualsAt(const vec2& position);
+  virtual vector<Individual*> Add(const vector<Individual*>& individuals);
+  virtual vector<Individual*> ExtractIndividualsAt(const vec2& position);
 
   // Lifecycle
   virtual void Update();
@@ -35,12 +35,12 @@ class Location {
   // Getters & Setters
   virtual Type GetType() const;
   virtual const vec2& GetBounds() const;
-  virtual const vector<Individual>& GetIndividuals() const;
+  virtual const vector<Individual*>& GetIndividuals() const;
 
  protected:
   Type type_;
   vec2 bounds_;
-  vector<Individual> individuals_;
+  vector<Individual*> individuals_;
 };
 
 }  // namespace epidemic

@@ -10,40 +10,43 @@ using utils::DistanceX;
 City::City() : City(vec2()) {
 }
 
-City::City(const vec2& bounds)
-    : City(bounds, Configuration::kDefaultPopulationSize,
-           Configuration::kDefaultSickCount) {
+City::City(const vec2& bounds) : City(bounds, vector<Individual*>()) {
 }
 
-City::City(const vec2& bounds, size_t population_size, size_t sick_count)
-    : Location(Location::Type::kCity, bounds) {
-  for (size_t i = 0; i < sick_count; ++i) {
-    individuals_.emplace_back(bounds, Individual::Status::kAsymptomatic);
-  }
+// City::City(const vec2& bounds)
+//    : City(bounds, Configuration::kDefaultPopulationSize,
+//           Configuration::kDefaultSickCount) {
+//}
 
-  for (size_t i = 0; i < population_size - sick_count; ++i) {
-    individuals_.emplace_back(bounds_);
-  }
-}
+// City::City(const vec2& bounds, size_t population_size, size_t sick_count)
+//    : Location(Location::Type::kCity, bounds) {
+//  for (size_t i = 0; i < sick_count; ++i) {
+//    individuals_.emplace_back(bounds, Individual::Status::kAsymptomatic);
+//  }
+//
+//  for (size_t i = 0; i < population_size - sick_count; ++i) {
+//    individuals_.emplace_back(bounds_);
+//  }
+//}
 
-City::City(const vec2& bounds, const vector<Individual>& individuals)
+City::City(const vec2& bounds, const vector<Individual*>& individuals)
     : Location(Location::Type::kCity, bounds) {
   individuals_ = individuals;
 }
 
-vector<Individual> City::Add(const vector<Individual>& individuals) {
+vector<Individual*> City::Add(const vector<Individual*>& individuals) {
   return Location::Add(individuals);
 }
 
 // Interaction
-vector<Individual> City::ExtractIndividualsAt(const vec2& position) {
+vector<Individual*> City::ExtractIndividualsAt(const vec2& position) {
   return Location::ExtractIndividualsAt(position);
 }
 
 // Lifecycle
 void City::Update() {
-  for (Individual& individual : individuals_) {
-    individual.Update(bounds_, type_);
+  for (Individual* individual : individuals_) {
+    individual->Update(bounds_, type_);
   }
 
   UpdateSpread();
@@ -62,7 +65,7 @@ Location::Type City::GetType() const {
 const vec2& City::GetBounds() const {
   return Location::GetBounds();
 }
-const vector<Individual>& City::GetIndividuals() const {
+const vector<Individual*>& City::GetIndividuals() const {
   return Location::GetIndividuals();
 }
 
@@ -71,23 +74,23 @@ const vector<Individual>& City::GetIndividuals() const {
 void City::UpdateSpread() {
   sort(individuals_.begin(), individuals_.end(), CompareX);
   for (size_t i = 0; i < individuals_.size(); ++i) {
-    const Individual& source = individuals_[i];
-    if (source.IsSneezing()) {
+    const Individual* source = individuals_[i];
+    if (source->IsSneezing()) {
       for (size_t j = i + 1; j < individuals_.size(); ++j) {
-        if (DistanceX(individuals_[j], source) >
+        if (DistanceX(*individuals_[j], *source) >
             Configuration::kDefaultSneezeRadius) {
           break;
         }
-        individuals_[j].CheckAndBecomeInfected(source);
+        individuals_[j]->CheckAndBecomeInfected(*source);
       }
 
       // TODO better way
       for (size_t j = i - 1; j < individuals_.size(); --j) {
-        if (DistanceX(individuals_[j], source) >
+        if (DistanceX(*individuals_[j], *source) >
             Configuration::kDefaultSneezeRadius) {
           break;
         }
-        individuals_[j].CheckAndBecomeInfected(source);
+        individuals_[j]->CheckAndBecomeInfected(*source);
       }
     }
   }

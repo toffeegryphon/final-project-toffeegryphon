@@ -3,25 +3,19 @@
 #include <scenes/game.h>
 #include <utils.h>
 
-// TODO Test
 namespace epidemic {
 
 using ci::gl::clear;
 using utils::IsInLocation;
+using utils::ToPointers;
 
 Game::Game(SceneManager* manager) : View(manager) {
-  // TODO Own private method
-  city_ = City(kCityData.size);
-  vec2 offset(
-      kCityData.offset.x + kCityData.size.x + kTemplateIsolationData.offset.x,
-      kTemplateIsolationData.offset.y);
-  for (size_t i = 0; i < Configuration::kIsolationCount; ++i) {
-    isolations_.emplace_back(
-        Isolation(kTemplateIsolationData.size),
-        Location::Data{kTemplateIsolationData.size, offset});
-    offset.y += kTemplateIsolationData.size.y + kTemplateIsolationData.offset.y;
-  }
+  GenerateIndividuals();
+  city_ = City(kCityData.size, ToPointers(&individuals_));
+  GenerateIsolations();
 }
+
+// Lifecycle
 
 void Game::Setup() {
   View::Setup();
@@ -91,6 +85,46 @@ void Game::MouseDrag(MouseEvent event) {
 
 void Game::MouseMove(MouseEvent event) {
   hand_.Update(event.getPos());
+}
+
+// Getters & Setters
+
+const vector<Individual>& Game::GetIndividuals() const {
+  return individuals_;
+}
+const City& Game::GetCity() const {
+  return city_;
+}
+
+// Private
+
+void Game::GenerateIndividuals() {
+  size_t sick_count = Configuration::kDefaultSickCount;
+  size_t population_size = Configuration::kDefaultPopulationSize;
+  for (size_t i = 0; i < sick_count; ++i) {
+    individuals_.emplace_back(kCityData.size,
+                              Individual::Status::kAsymptomatic);
+  }
+  for (size_t i = 0; i < population_size - sick_count; ++i) {
+    individuals_.emplace_back(kCityData.size);
+  }
+}
+
+void Game::GenerateIsolations() {
+  vec2 offset(
+      kCityData.offset.x + kCityData.size.x + kTemplateIsolationData.offset.x,
+      kTemplateIsolationData.offset.y);
+
+  for (size_t i = 0; i < Configuration::kIsolationCount; ++i) {
+    isolations_.emplace_back(
+        Isolation(kTemplateIsolationData.size),
+        Location::Data{kTemplateIsolationData.size, offset});
+    offset.y += kTemplateIsolationData.size.y + kTemplateIsolationData.offset.y;
+  }
+}
+
+const vector<pair<Isolation, Location::Data>>& Game::GetIsolations() const {
+  return isolations_;
 }
 
 }  // namespace epidemic

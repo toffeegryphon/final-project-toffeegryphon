@@ -18,18 +18,18 @@ epidemic::Location::Location(Type type, const vec2& bounds)
 
 // Interaction
 
-vector<Individual> Location::Add(const vector<Individual>& individuals) {
+vector<Individual*> Location::Add(const vector<Individual*>& individuals) {
   individuals_.insert(individuals_.end(), individuals.begin(),
                       individuals.end());
-  return vector<Individual>();
+  return vector<Individual*>();
 }
 
 // Interaction
-vector<Individual> Location::ExtractIndividualsAt(const vec2& position) {
+vector<Individual*> Location::ExtractIndividualsAt(const vec2& position) {
   float radius = Configuration::kDefaultIndividualRadius;
   // TODO Binary search
   vector<size_t> to_remove;
-  vector<Individual> individuals;
+  vector<Individual*> individuals;
 
   // TODO sort of hacky...
   Individual target((vec2()));
@@ -37,12 +37,12 @@ vector<Individual> Location::ExtractIndividualsAt(const vec2& position) {
 
   sort(individuals_.begin(), individuals_.end(), CompareX);
   auto lower =
-      upper_bound(individuals_.begin(), individuals_.end(), target, CompareX);
+      upper_bound(individuals_.begin(), individuals_.end(), &target, CompareX);
   target.SetPosition(vec2(position.x + radius, position.y));
-  auto upper = upper_bound(lower, individuals_.end(), target, CompareX);
+  auto upper = upper_bound(lower, individuals_.end(), &target, CompareX);
 
   for (; lower != upper; ++lower) {
-    if (distance(lower->GetPosition(), position) < radius) {
+    if (distance((*lower)->GetPosition(), position) < radius) {
       individuals.push_back(*lower);
       to_remove.push_back(lower - individuals_.begin());
     }
@@ -68,8 +68,8 @@ void Location::Draw(const vec2& offset) const {
   color(Color::gray(0.2f));
   drawSolidRect(Rectf(offset, bounds_ + offset));
 
-  for (const Individual& individual : individuals_) {
-    individual.Draw(offset);
+  for (const Individual* individual : individuals_) {
+    individual->Draw(offset);
   }
 }
 
@@ -83,7 +83,7 @@ const vec2& Location::GetBounds() const {
   return bounds_;
 }
 
-const vector<Individual>& Location::GetIndividuals() const {
+const vector<Individual*>& Location::GetIndividuals() const {
   return individuals_;
 }
 

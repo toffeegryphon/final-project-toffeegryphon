@@ -35,9 +35,11 @@ vec2 GetRandomDeath();
 
 float DistanceX(const Individual& first, const Individual& second);
 
-bool CompareX(const Individual& first, const Individual& second);
+bool CompareX(const Individual* first, const Individual* second);
 
 bool IsInLocation(const vec2& position, const Location::Data& data);
+
+vector<Individual*> ToPointers(vector<Individual>* source);
 
 }  // namespace utils
 

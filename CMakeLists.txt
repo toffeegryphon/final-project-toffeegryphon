@@ -66,6 +66,7 @@ list(APPEND TEST_FILES  tests/individual_test.cc
                         tests/isolation_test.cc
                         tests/view_test.cc
                         tests/scene_manager_test.cc
+                        tests/scenes_test/game_test.cc
                         tests/scenes_test/menu_test.cc)
 
 ci_make_app(

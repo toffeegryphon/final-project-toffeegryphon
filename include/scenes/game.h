@@ -14,6 +14,8 @@ class Game : public View {
  public:
   explicit Game(SceneManager* manager);
 
+  // Lifecycle
+
   void Setup() override;
   void Update() override;
   void Draw() override;
@@ -22,9 +24,14 @@ class Game : public View {
   void MouseDrag(MouseEvent event) override;
   void MouseMove(MouseEvent event) override;
 
+  // Getters & Setters
+  const vector<Individual>& GetIndividuals() const;
+  const City& GetCity() const;
+  const vector<pair<Isolation, Location::Data>>& GetIsolations() const;
+
  private:
   // Cannot be reordered
-  vector<Individual> individuals;
+  vector<Individual> individuals_;
 
   Location::Data kCityData{vec2{500, 500}, vec2{20, 20}};
   City city_;
@@ -33,10 +40,10 @@ class Game : public View {
   Location::Data kTemplateIsolationData{vec2{200, 100}, vec2{20, 20}};
   // TODO Maybe isolation manager
   vector<pair<Isolation, Location::Data>> isolations_;
-  // TODO Maybe here contain unordered_set of individuals,
-  // or have a separate handler class. Everything else just have
-  // vector of appropriate pointers.
   Hand hand_;
+
+  void GenerateIndividuals();
+  void GenerateIsolations();
 };
 
 }  // namespace epidemic

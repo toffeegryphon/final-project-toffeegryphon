@@ -11,8 +11,8 @@ class Isolation : private Location {
   Isolation(const vec2& bounds, size_t capacity);
 
   // Interaction
-  vector<Individual> Add(const vector<Individual>& individuals) override;
-  vector<Individual> ExtractIndividualsAt(const vec2& position) override;
+  vector<Individual*> Add(const vector<Individual*>& individuals) override;
+  vector<Individual*> ExtractIndividualsAt(const vec2& position) override;
 
   // Lifecycle
 
@@ -23,13 +23,13 @@ class Isolation : private Location {
 
   Type GetType() const override;
   const vec2& GetBounds() const override;
-  const vector<Individual>& GetIndividuals() const override;
+  const vector<Individual*>& GetIndividuals() const override;
 
  private:
   size_t capacity_;
 
   void UpdateAdmission();
-  void Discharge(vector<Individual>* individuals);
+  void Discharge(vector<Individual*>* individuals);
 
   void UpdateSpread();
 };
