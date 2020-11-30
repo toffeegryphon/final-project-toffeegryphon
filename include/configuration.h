@@ -12,6 +12,7 @@ class Configuration {
  public:
   // App
   static constexpr size_t kIsolationCount = 3;
+  static vec2 kDefaultWindowSize;
 
   // Individual
 

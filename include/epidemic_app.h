@@ -28,8 +28,6 @@ class EpidemicApp : public App {
   void mouseDrag(MouseEvent event) override;
 
  private:
-  const vec2 kWindowSize{800, 800};
-
   // https://stackoverflow.com/questions/57657546/how-to-downcast-in-c-to-call-a-child-function-from-a-parent-instance
   SceneManager manager_;
 };

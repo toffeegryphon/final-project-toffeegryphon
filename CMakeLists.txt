@@ -9,7 +9,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Warning flags
 if(MSVC)
     # warning level 3 and all warnings as errors
-    add_compile_options(/W3 /WX)
+#    add_compile_options(/W3 /WX)
+    add_compile_options(/W3)
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wpedantic -Werror)
@@ -56,6 +57,7 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/scenes/menu.cc
                             src/scenes/game.cc
+                            src/scenes/win.cc
                             src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc
@@ -74,6 +76,7 @@ ci_make_app(
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         apps/epidemic.cc ${SOURCE_FILES}
         INCLUDES        include
+        BLOCKS          Cinder-ImGui
 )
 
 ci_make_app(
@@ -82,6 +85,7 @@ ci_make_app(
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
         LIBRARIES       catch2
+        BLOCKS          Cinder-ImGui
 )
 
 if(MSVC)

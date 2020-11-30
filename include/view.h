@@ -12,10 +12,11 @@ class SceneManager;
 class View {
  public:
   explicit View(SceneManager* manager);
+  View(SceneManager* manager, bool with_im_gui);
 
   virtual void Setup();
   virtual void Update();
-  virtual void Draw();
+  void DrawExternal();
   virtual void MouseDown(MouseEvent event);
   virtual void MouseUp(MouseEvent event);
   virtual void MouseMove(MouseEvent event);
@@ -33,8 +34,11 @@ class View {
   // ID
   static size_t kNextID;
   static size_t GetNextID();
-
   size_t id_;
+
+  bool with_im_gui_;
+
+  virtual void Draw();
 };
 
 }  // namespace epidemic

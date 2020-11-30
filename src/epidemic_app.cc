@@ -1,6 +1,6 @@
+#include <CinderImGui.h>
 #include <configuration.h>
 #include <epidemic_app.h>
-#include <scenes/game.h>
 #include <scenes/menu.h>
 
 namespace epidemic {
@@ -11,13 +11,14 @@ using std::make_unique;
 EpidemicApp::EpidemicApp() {
   srand(static_cast<unsigned int>(time(nullptr)));
 
-  ci::app::setWindowSize(static_cast<int>(kWindowSize.x),
-                         static_cast<int>(kWindowSize.y));
+  ci::app::setWindowSize(static_cast<int>(Configuration::kDefaultWindowSize.x),
+                         static_cast<int>(Configuration::kDefaultWindowSize.y));
 
   manager_.SetScene(make_unique<Menu>(&manager_));
 }
 
 void EpidemicApp::setup() {
+  ImGui::initialize();
   manager_.GetScene().Setup();
 }
 
@@ -26,7 +27,7 @@ void EpidemicApp::update() {
 }
 
 void EpidemicApp::draw() {
-  manager_.GetScene().Draw();
+  manager_.GetScene().DrawExternal();
 }
 
 void EpidemicApp::mouseDown(MouseEvent event) {

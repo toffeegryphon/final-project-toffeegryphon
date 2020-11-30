@@ -1,6 +1,8 @@
 #include <configuration.h>
 
 namespace epidemic {
+vec2 Configuration::kDefaultWindowSize{800, 800};
+
 vec2 Configuration::kDefaultSpreadChanceRange{0.01, 0.3};
 vec2 Configuration::kDefaultSpreadInfectedROCRange{0.0001, 0.0005};
 vec2 Configuration::kDefaultSpreadRecoveredROCRange{-0.0005, -0.0001};
