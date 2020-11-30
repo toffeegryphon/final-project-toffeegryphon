@@ -1,11 +1,16 @@
 #include <cinder/gl/gl.h>
 #include <configuration.h>
+#include <scenes/end.h>
 #include <scenes/game.h>
+#include <scenes/menu.h>
 #include <utils.h>
+
+#include <unordered_set>
 
 namespace epidemic {
 
-using ci::gl::clear;
+using std::make_unique;
+using std::unordered_set;
 using utils::IsInLocation;
 using utils::ToPointers;
 
@@ -21,7 +26,31 @@ void Game::Setup() {
   View::Setup();
 }
 
+// TODO Test all updates
+
 void Game::Update() {
+  if (HasEnded()) {
+    // TODO better way to check end and get values
+    Win::Data data{0, 0, 0};
+    for (const Individual& individual : individuals_) {
+      switch (individual.GetStatus()) {
+        case Individual::Status::kUninfected:
+          ++data.uninfected;
+          break;
+        case Individual::Status::kRecovered:
+          ++data.recovered;
+          break;
+        case Individual::Status::kDead:
+          ++data.dead;
+          break;
+        default:
+          break;
+      }
+    }
+    manager_->SetScene(make_unique<Win>(manager_, data));
+    return;
+  }
+
   city_.Update();
 
   for (pair<Isolation, Location::Data>& isolation : isolations_) {
@@ -30,7 +59,6 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-  clear();
   for (const pair<Isolation, Location::Data>& isolation : isolations_) {
     isolation.first.Draw(isolation.second.offset);
   }
@@ -38,6 +66,8 @@ void Game::Draw() {
   city_.Draw(kCityData.offset);
   hand_.Draw();
 }
+
+// TODO Test mouse interaction
 
 void Game::MouseDown(MouseEvent event) {
   vec2 pos = event.getPos();
@@ -125,6 +155,23 @@ void Game::GenerateIsolations() {
 
 const vector<pair<Isolation, Location::Data>>& Game::GetIsolations() const {
   return isolations_;
+}
+
+bool Game::HasEnded() {
+  // Checking Win, might need to do a faster method using an event bus
+  size_t infected = 0;
+  unordered_set<Individual::Status> infected_statuses{
+      Individual::Status::kAsymptomatic, Individual::Status::kSymptomatic,
+      Individual::Status::kDying};
+  // TODO need to check that spread rates are 0 if there are still uninfected
+  // people
+  for (const Individual& individual : individuals_) {
+    if (infected_statuses.find(individual.GetStatus()) !=
+        infected_statuses.end()) {
+      ++infected;
+    }
+  }
+  return (infected == 0);
 }
 
 }  // namespace epidemic

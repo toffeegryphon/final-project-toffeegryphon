@@ -1,3 +1,4 @@
+#include <CinderImGui.h>
 #include <scenes/game.h>
 #include <scenes/menu.h>
 
@@ -5,7 +6,7 @@ namespace epidemic {
 
 using std::make_unique;
 
-Menu::Menu(SceneManager* scene_manager) : View(scene_manager) {
+Menu::Menu(SceneManager* scene_manager) : View(scene_manager, true) {
 }
 
 void Menu::Update() {
@@ -13,11 +14,13 @@ void Menu::Update() {
 }
 
 void Menu::Draw() {
-  View::Draw();
+  ImGui::Text("Epidemic");
+  if (ImGui::Button("start")) {
+    manager_->SetScene(make_unique<Game>(manager_));
+  }
 }
 
 void Menu::MouseDown(MouseEvent event) {
-  manager_->SetScene(make_unique<Game>(manager_));
 }
 
 }  // namespace epidemic

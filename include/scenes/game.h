@@ -4,6 +4,7 @@
 #include <hand.h>
 #include <isolation.h>
 #include <location.h>
+#include <scene_manager.h>
 #include <view.h>
 
 namespace epidemic {
@@ -44,6 +45,7 @@ class Game : public View {
 
   void GenerateIndividuals();
   void GenerateIsolations();
+  bool HasEnded();
 };
 
 }  // namespace epidemic

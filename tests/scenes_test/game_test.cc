@@ -46,4 +46,18 @@ TEST_CASE("Game Constructor") {
   }
 }
 
+TEST_CASE("Game Update") {
+  SceneManager manager;
+  Game game(&manager);
+
+  SECTION("Changes scene to win when no infected individuals are left") {
+    // TODO Implement after implementing custom settings
+  }
+
+  SECTION("Checks for win before updating") {
+    // TODO Implement after implementing custom settings
+  }
+
+}
+
 }  // namespace epidemic

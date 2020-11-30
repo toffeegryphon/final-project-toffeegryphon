@@ -57,7 +57,7 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/scenes/menu.cc
                             src/scenes/game.cc
-                            src/scenes/win.cc
+        src/scenes/end.cc
                             src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc

@@ -9,15 +9,17 @@ namespace epidemic {
 using ci::app::MouseEvent;
 using std::make_unique;
 
-TEST_CASE("Menu MouseDown", "[menu][ui]") {
-  SceneManager manager;
-  manager.SetScene(make_unique<Menu>(&manager));
-  size_t id_menu = manager.GetScene().GetID();
-
-  SECTION("Sets scene to Game on MouseDownEvent") {
-    manager.GetScene().MouseDown(MouseEvent());
-    REQUIRE_FALSE(manager.GetScene().GetID() == id_menu);
-  }
-}
+// TODO No longer works, because ImGui binds input with draw.
+// TODO Consider if still need to test or not
+//TEST_CASE("Menu MouseDown", "[menu][ui]") {
+//  SceneManager manager;
+//  manager.SetScene(make_unique<Menu>(&manager));
+//  size_t id_menu = manager.GetScene().GetID();
+//
+//  SECTION("Sets scene to Game on MouseDownEvent") {
+//    manager.GetScene().MouseDown(MouseEvent());
+//    REQUIRE_FALSE(manager.GetScene().GetID() == id_menu);
+//  }
+//}
 
 }  // namespace epidemic
