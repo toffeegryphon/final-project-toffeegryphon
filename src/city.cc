@@ -13,22 +13,6 @@ City::City() : City(vec2()) {
 City::City(const vec2& bounds) : City(bounds, vector<Individual*>()) {
 }
 
-// City::City(const vec2& bounds)
-//    : City(bounds, Configuration::kDefaultPopulationSize,
-//           Configuration::kDefaultSickCount) {
-//}
-
-// City::City(const vec2& bounds, size_t population_size, size_t sick_count)
-//    : Location(Location::Type::kCity, bounds) {
-//  for (size_t i = 0; i < sick_count; ++i) {
-//    individuals_.emplace_back(bounds, Individual::Status::kAsymptomatic);
-//  }
-//
-//  for (size_t i = 0; i < population_size - sick_count; ++i) {
-//    individuals_.emplace_back(bounds_);
-//  }
-//}
-
 City::City(const vec2& bounds, const vector<Individual*>& individuals)
     : Location(Location::Type::kCity, bounds) {
   individuals_ = individuals;

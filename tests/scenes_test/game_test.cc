@@ -12,7 +12,7 @@ TEST_CASE("Game Constructor") {
 
   SECTION("Initializes Individual vector with population size") {
     REQUIRE(game.GetIndividuals().size() ==
-            Configuration::kDefaultPopulationSize);
+            Configuration::kPopulationSize.value);
   }
 
   SECTION("Initializes Individual vector with correct number of sick") {
@@ -23,7 +23,7 @@ TEST_CASE("Game Constructor") {
         ++sick_count;
       }
     }
-    REQUIRE(sick_count == Configuration::kDefaultSickCount);
+    REQUIRE(sick_count == Configuration::kStartingSickCount.value);
   }
 
   SECTION("Initializes City with all Individuals") {

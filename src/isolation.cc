@@ -8,7 +8,7 @@ using std::any_of;
 // Constructors
 
 Isolation::Isolation(const vec2& bounds)
-    : Isolation(bounds, Configuration::kIsolationDefaultCapacity) {
+    : Isolation(bounds, Configuration::kIsolationCapacity.value) {
 }
 
 Isolation::Isolation(const vec2& bounds, size_t capacity)
@@ -53,8 +53,10 @@ void epidemic::Isolation::Update() {
   }
 
   // TODO Testing if after x frames and is asymptomatic set to symptomatic
-
-  UpdateSpread();
+  // TODO PRIORITY 1 IMPLEMENTATION
+  if (Configuration::kIsolationWillSpread.value) {
+    UpdateSpread();
+  }
 }
 
 void epidemic::Isolation::Draw(const vec2& offset) const {

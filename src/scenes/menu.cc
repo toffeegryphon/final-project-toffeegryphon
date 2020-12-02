@@ -45,9 +45,13 @@ void Menu::Draw() {
             property->value_range.second.x, property->value_range.first.x,
             property->value_range.first.y, property->format.c_str(),
             property->value_range.second.y);
-      } break;
-      default:
         break;
+      }
+      case Configuration::VType::kBool: {
+        auto* property = dynamic_cast<Configuration::Property<bool>*>(p);
+        ImGui::Checkbox(property->label.c_str(), &property->value);
+        break;
+      }
     }
   }
 }

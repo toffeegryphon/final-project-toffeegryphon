@@ -2,7 +2,6 @@
 #include <configuration.h>
 #include <scenes/end.h>
 #include <scenes/game.h>
-#include <scenes/menu.h>
 #include <utils.h>
 
 #include <unordered_set>
@@ -129,8 +128,8 @@ const City& Game::GetCity() const {
 // Private
 
 void Game::GenerateIndividuals() {
-  size_t sick_count = Configuration::kDefaultSickCount;
-  size_t population_size = Configuration::kDefaultPopulationSize;
+  size_t sick_count = Configuration::kStartingSickCount.value;
+  size_t population_size = Configuration::kPopulationSize.value;
   for (size_t i = 0; i < sick_count; ++i) {
     individuals_.emplace_back(kCityData.size,
                               Individual::Status::kAsymptomatic);

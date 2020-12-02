@@ -51,8 +51,6 @@ class Configuration {
   static void PopulateProperties();
 
   // App
-  static Property<int> kIsolationCount;
-
   static vec2 kWindowSize;
 
   // Individual
@@ -62,22 +60,19 @@ class Configuration {
   static Property<float> kSneezeRadius;
 
   // Minimum Value, Range
-
-  // TODO Dragfloat
   static Property<vec2> kSpreadChanceRange;
   static Property<vec2> kSpreadInfectedROCRange;
   static Property<vec2> kSpreadRecoveredROCRange;
 
-  static vec2 kDefaultRecoveryChanceRange;
-  static vec2 kDefaultRecoveryROCRange;
+  static Property<vec2> kRecoveryChanceRange;
+  static Property<vec2> kRecoveryROCRange;
 
-  static vec2 kDefaultDeathChanceRange;
-  static vec2 kDefaultDeathROCRange;
+  static Property<vec2> kDeathChanceRange;
+  static Property<vec2> kDeathROCRange;
 
   static vec2 kDefaultHealthinessRange;
+  // TODO Currently unused
   static vec2 kDefaultWanderlustRange;
-
-  static constexpr float kDefaultMovementRadius = 3;
 
   static constexpr float kDefaultIndividualRadius = 10;
 
@@ -86,12 +81,13 @@ class Configuration {
   static constexpr float kReturnFactor = 10.0f;
 
   // City
-  static constexpr size_t kDefaultPopulationSize = 30;
-  static constexpr size_t kDefaultSickCount = 1;
+  static Property<int> kPopulationSize;
+  static Property<int> kStartingSickCount;
 
   // Isolation
-  static constexpr size_t kIsolationDefaultCapacity = 3;
-  static constexpr bool kWillSpread = true;
+  static Property<int> kIsolationCount;
+  static Property<int> kIsolationCapacity;
+  static Property<bool> kIsolationWillSpread;
   static constexpr float kIsolationRecoveryFactor = 2.0f;
   static constexpr float kIsolationDeathFactor = 0.5f;
 };

@@ -260,7 +260,8 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     }
   }
 
-  SECTION("Checks to pass to all if one sneezes") {
+  SECTION("Checks to pass to all if WillSpread and one sneezes") {
+    Configuration::kIsolationWillSpread.value = true;
     ind_ptrs[0]->SetSpread(vec2(1, 0));
     ind_ptrs[1]->SetSpread(vec2(0, 0));
     ind_ptrs[1]->SetHealthiness(0);
@@ -271,6 +272,25 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     for (const Individual* individual : isolation.GetIndividuals()) {
       REQUIRE_FALSE(individual->GetStatus() == Individual::Status::kUninfected);
     }
+  }
+
+  SECTION("Does not check to pass to all if not WillSpread and one sneezes") {
+    Configuration::kIsolationWillSpread.value = false;
+    ind_ptrs[0]->SetSpread(vec2(1, 0));
+    ind_ptrs[1]->SetSpread(vec2(0, 0));
+    ind_ptrs[1]->SetHealthiness(0);
+    ind_ptrs[2]->SetSpread(vec2(0, 0));
+    ind_ptrs[2]->SetHealthiness(0);
+    isolation.Add(ind_ptrs);
+    isolation.Update();
+    size_t uninfected_count = 0;
+    for (const Individual* individual : isolation.GetIndividuals()) {
+      if (individual->GetStatus() == Individual::Status::kUninfected) {
+        ++uninfected_count;
+      }
+    }
+    REQUIRE(uninfected_count == ind_ptrs.size() - 1);
+    Configuration::kIsolationWillSpread.value = true;
   }
 
   SECTION("Updates recovery chance with isolation multiplier") {

@@ -41,13 +41,13 @@ vec2 GetRandomSpread() {
 
 // TODO TEST Take healthiness, has_recovered
 vec2 GetRandomRecovery() {
-  return GetRandomChanceROC(Configuration::kDefaultRecoveryChanceRange,
-                            Configuration::kDefaultRecoveryROCRange);
+  return GetRandomChanceROC(Configuration::kRecoveryChanceRange.value,
+                            Configuration::kRecoveryROCRange.value);
 }
 
 vec2 GetRandomDeath() {
-  return GetRandomChanceROC(Configuration::kDefaultDeathChanceRange,
-                            Configuration::kDefaultDeathROCRange);
+  return GetRandomChanceROC(Configuration::kDeathChanceRange.value,
+                            Configuration::kDeathROCRange.value);
 }
 
 float DistanceX(const Individual& first, const Individual& second) {
