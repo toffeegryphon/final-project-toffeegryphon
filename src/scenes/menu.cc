@@ -37,6 +37,15 @@ void Menu::Draw() {
                            property->format.c_str());
         break;
       }
+      case Configuration::VType::kVec2: {
+        auto* property = dynamic_cast<Configuration::Property<vec2>*>(p);
+        // https://github.com/ocornut/imgui/issues/779
+        ImGui::DragFloat2(
+            property->label.c_str(), reinterpret_cast<float*>(&property->value),
+            property->value_range.second.x, property->value_range.first.x,
+            property->value_range.first.y, property->format.c_str(),
+            property->value_range.second.y);
+      } break;
       default:
         break;
     }

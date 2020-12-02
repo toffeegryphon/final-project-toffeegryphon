@@ -17,10 +17,11 @@ class Configuration {
   enum Type { kRange, kOption };
   enum VType { kInt, kFloat, kVec2, kBool };
 
+  // TODO Test somehow
   struct BaseProperty {
    public:
     // TODO move into .cc
-    BaseProperty(Type type, VType v_type) : type(type), v_type(v_type) {};
+    BaseProperty(Type type, VType v_type) : type(type), v_type(v_type){};
     virtual ~BaseProperty() = default;
     Type type;
     VType v_type;
@@ -38,6 +39,8 @@ class Configuration {
 
     string label;
     T value;
+    // For vec2, pair.first is used for range and pair.second is used for step
+    // and power
     pair<T, T> value_range;
     vector<T> value_options;
     string format;
@@ -61,9 +64,9 @@ class Configuration {
   // Minimum Value, Range
 
   // TODO Dragfloat
-  static vec2 kDefaultSpreadChanceRange;
-  static vec2 kDefaultSpreadInfectedROCRange;
-  static vec2 kDefaultSpreadRecoveredROCRange;
+  static Property<vec2> kSpreadChanceRange;
+  static Property<vec2> kSpreadInfectedROCRange;
+  static Property<vec2> kSpreadRecoveredROCRange;
 
   static vec2 kDefaultRecoveryChanceRange;
   static vec2 kDefaultRecoveryROCRange;

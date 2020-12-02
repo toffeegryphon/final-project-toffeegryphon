@@ -22,7 +22,7 @@ void Win::Update() {
 
 void Win::Draw() {
   // TODO Abstract, use format string
-  string text = (data_.recovered > data_.dead)
+  string text = (data_.recovered + data_.uninfected > data_.dead)
                     ? "Congratulations! More recovered than died!"
                     : "Congratulations...?";
   text += "\nStats:\nUninfected: " + to_string(data_.uninfected) +

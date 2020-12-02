@@ -234,8 +234,7 @@ void Individual::RecoverOrDie(Location::Type location_type) {
   float state = GetRandom();
   if (state <= recovery_.x) {
     status_ = Status::kRecovered;
-    spread_.y =
-        GetRandomInRange(Configuration::kDefaultSpreadRecoveredROCRange);
+    spread_.y = GetRandomInRange(Configuration::kSpreadRecoveredROCRange.value);
   } else if (state > 1 - death_.x) {
     status_ = Status::kDead;
   } else if (death_.x > Configuration::kDyingThreshold.value) {

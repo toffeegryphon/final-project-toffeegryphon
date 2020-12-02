@@ -9,12 +9,16 @@ void Configuration::PopulateProperties() {
   kProperties.push_back(&kSymptomaticThreshold);
   kProperties.push_back(&kDyingThreshold);
   kProperties.push_back(&kSneezeRadius);
+
+  kProperties.push_back(&kSpreadChanceRange);
+  kProperties.push_back(&kSpreadInfectedROCRange);
+  kProperties.push_back(&kSpreadRecoveredROCRange);
 }
 
 Configuration::Property<int> Configuration::kIsolationCount{
     VType::kInt, "Isolation Count", 3, pair<int, int>(1, 5)};
 
-vec2 Configuration::kWindowSize{800, 800};
+vec2 Configuration::kWindowSize{1200, 800};
 
 // Individual
 Configuration::Property<float> Configuration::kSymptomaticThreshold{
@@ -27,9 +31,19 @@ Configuration::Property<float> Configuration::kSneezeRadius{
     VType::kFloat, "Sneeze Radius", 30.0f, pair<float, float>(10.0f, 100.0f),
     "%.f"};
 
-vec2 Configuration::kDefaultSpreadChanceRange{0.01, 0.3};
-vec2 Configuration::kDefaultSpreadInfectedROCRange{0.0001, 0.0005};
-vec2 Configuration::kDefaultSpreadRecoveredROCRange{-0.0005, -0.0001};
+Configuration::Property<vec2> Configuration::kSpreadChanceRange{
+    VType::kVec2, "Spread Chance Min, Range", vec2(0.01, 0.3),
+    pair<vec2, vec2>(vec2(0.0f, 1.0f), vec2(0.001f, 1.0f)), "%.3f"};
+
+Configuration::Property<vec2> Configuration::kSpreadInfectedROCRange{
+    VType::kVec2, "Spread (Infected) Rate of Change Min, Range",
+    vec2(0.0001, 0.0005),
+    pair<vec2, vec2>(vec2(0.0f, 1.0f), vec2(0.0001f, 1.0f)), "%.4f"};
+
+Configuration::Property<vec2> Configuration::kSpreadRecoveredROCRange{
+    VType::kVec2, "Spread (Recovered) Rate of Change Min, Range",
+    vec2(-0.0005, -0.0001),
+    pair<vec2, vec2>(vec2(-1.0f, 0.0f), vec2(0.0001f, 1.0f)), "%.4f"};
 
 vec2 Configuration::kDefaultRecoveryChanceRange{0.00, 0.000001};
 vec2 Configuration::kDefaultRecoveryROCRange{0.000001, 0.000001};

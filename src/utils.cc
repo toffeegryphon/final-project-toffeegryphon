@@ -35,8 +35,8 @@ vec2 GetRandomChanceROC(const vec2& chance_range, const vec2& roc_range) {
 }
 
 vec2 GetRandomSpread() {
-  return GetRandomChanceROC(Configuration::kDefaultSpreadChanceRange,
-                            Configuration::kDefaultSpreadInfectedROCRange);
+  return GetRandomChanceROC(Configuration::kSpreadChanceRange.value,
+                            Configuration::kSpreadInfectedROCRange.value);
 }
 
 // TODO TEST Take healthiness, has_recovered
