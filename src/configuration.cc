@@ -25,6 +25,8 @@ void Configuration::PopulateProperties() {
   kProperties.push_back(&kIsolationCount);
   kProperties.push_back(&kIsolationCapacity);
   kProperties.push_back(&kIsolationWillSpread);
+  kProperties.push_back(&kIsolationRecoveryFactor);
+  kProperties.push_back(&kIsolationDeathFactor);
 }
 
 vec2 Configuration::kWindowSize{1200, 800};
@@ -91,4 +93,10 @@ Configuration::Property<int> Configuration::kIsolationCapacity{
 Configuration::Property<bool> Configuration::kIsolationWillSpread{
     VType::kBool, "Isolation Will Perform Spread Check if Sneeze", true,
     pair<bool, bool>(false, true)};
+Configuration::Property<float> Configuration::kIsolationRecoveryFactor{
+    VType::kFloat, "Isolation Recovery Chance ROC Factor", 2.0f,
+    pair<float, float>(0.0f, 100.0f), "%.1f"};
+Configuration::Property<float> Configuration::kIsolationDeathFactor{
+    VType::kFloat, "Isolation Death Chance ROC Factor", 0.5f,
+    pair<float, float>(0.0f, 1.0f), "%.2f"};
 }  // namespace epidemic

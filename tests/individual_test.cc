@@ -459,9 +459,10 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
     Individual i(bounds, Individual::Status::kDying);
     float exp_recovery =
         i.GetRecovery().x +
-        i.GetRecovery().y * Configuration::kIsolationRecoveryFactor;
+        i.GetRecovery().y * Configuration::kIsolationRecoveryFactor.value;
     float exp_death =
-        i.GetDeath().x + i.GetDeath().y * Configuration::kIsolationDeathFactor;
+        i.GetDeath().x +
+        i.GetDeath().y * Configuration::kIsolationDeathFactor.value;
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetRecovery().x == exp_recovery);

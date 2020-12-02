@@ -243,10 +243,10 @@ void Individual::RecoverOrDie(Location::Type location_type) {
 
   // Increment
   float recovery_factor = (location_type == Location::Type::kIsolation)
-                              ? Configuration::kIsolationRecoveryFactor
+                              ? Configuration::kIsolationRecoveryFactor.value
                               : 1;
   float death_factor = (location_type == Location::Type::kIsolation)
-                           ? Configuration::kIsolationDeathFactor
+                           ? Configuration::kIsolationDeathFactor.value
                            : 1;
 
   recovery_.x += recovery_factor * recovery_.y;

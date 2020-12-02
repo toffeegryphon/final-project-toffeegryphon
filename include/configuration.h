@@ -88,8 +88,8 @@ class Configuration {
   static Property<int> kIsolationCount;
   static Property<int> kIsolationCapacity;
   static Property<bool> kIsolationWillSpread;
-  static constexpr float kIsolationRecoveryFactor = 2.0f;
-  static constexpr float kIsolationDeathFactor = 0.5f;
+  static Property<float> kIsolationRecoveryFactor;
+  static Property<float> kIsolationDeathFactor;
 };
 
 }  // namespace epidemic
