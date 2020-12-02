@@ -28,7 +28,7 @@ void View::DrawExternal() {
   clear();
   if (with_im_gui_) {
     ImGui::SetNextWindowPos(vec2());
-    ImGui::SetNextWindowSize(Configuration::kDefaultWindowSize);
+    ImGui::SetNextWindowSize(Configuration::kWindowSize);
     Begin("gui", nullptr,
           ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove);
   }

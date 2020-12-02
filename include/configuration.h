@@ -2,26 +2,65 @@
 
 #include <cinder/gl/gl.h>
 
+#include <utility>
+
 namespace epidemic {
 
 using glm::vec2;
+using std::move;
+using std::pair;
+using std::string;
+using std::vector;
 
-// TODO Possibly struct
 class Configuration {
-  // TODO Improve, allow custom values
  public:
+  enum Type { kRange, kOption };
+  enum VType { kInt, kFloat, kVec2, kBool };
+
+  struct BaseProperty {
+   public:
+    // TODO move into .cc
+    BaseProperty(Type type, VType v_type) : type(type), v_type(v_type) {};
+    virtual ~BaseProperty() = default;
+    Type type;
+    VType v_type;
+  };
+
+  template <typename T>
+  struct Property : public BaseProperty {
+    Property<T>(VType v_type, string label, T default_value,
+                pair<T, T> value_range, string format = "")
+        : BaseProperty{Type::kRange, v_type},
+          label(move(label)),
+          value(default_value),
+          value_range(value_range),
+          format(move(format)){};
+
+    string label;
+    T value;
+    pair<T, T> value_range;
+    vector<T> value_options;
+    string format;
+  };
+
+  static vector<BaseProperty*> kProperties;
+  // TODO Maybe should combine Getter and populator into one function
+  static void PopulateProperties();
+
   // App
-  static constexpr size_t kIsolationCount = 3;
-  static vec2 kDefaultWindowSize;
+  static Property<int> kIsolationCount;
+
+  static vec2 kWindowSize;
 
   // Individual
 
-  static constexpr float kSymptomaticThreshold = 0.5f;
-  static constexpr float kDyingThreshold = 0.5f;
-  static constexpr float kDefaultSneezeRadius = 30.0f;
+  static Property<float> kSymptomaticThreshold;
+  static Property<float> kDyingThreshold;
+  static Property<float> kSneezeRadius;
 
   // Minimum Value, Range
 
+  // TODO Dragfloat
   static vec2 kDefaultSpreadChanceRange;
   static vec2 kDefaultSpreadInfectedROCRange;
   static vec2 kDefaultSpreadRecoveredROCRange;
@@ -44,7 +83,6 @@ class Configuration {
   static constexpr float kReturnFactor = 10.0f;
 
   // City
-
   static constexpr size_t kDefaultPopulationSize = 30;
   static constexpr size_t kDefaultSickCount = 1;
 

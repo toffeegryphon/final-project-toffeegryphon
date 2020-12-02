@@ -1,7 +1,6 @@
 #include <configuration.h>
 #include <scene_manager.h>
 #include <scenes/game.h>
-#include <utils.h>
 
 #include <catch2/catch.hpp>
 
@@ -41,7 +40,7 @@ TEST_CASE("Game Constructor") {
   }
 
   SECTION("Initializes correct number of Isolations") {
-    REQUIRE(game.GetIsolations().size() == Configuration::kIsolationCount);
+    REQUIRE(game.GetIsolations().size() == Configuration::kIsolationCount.value);
     // TODO Probably should check location as well
   }
 }

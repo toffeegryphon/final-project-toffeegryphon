@@ -10,9 +10,10 @@ using std::make_unique;
 
 EpidemicApp::EpidemicApp() {
   srand(static_cast<unsigned int>(time(nullptr)));
+  Configuration::PopulateProperties();
 
-  ci::app::setWindowSize(static_cast<int>(Configuration::kDefaultWindowSize.x),
-                         static_cast<int>(Configuration::kDefaultWindowSize.y));
+  ci::app::setWindowSize(static_cast<int>(Configuration::kWindowSize.x),
+                         static_cast<int>(Configuration::kWindowSize.y));
 
   manager_.SetScene(make_unique<Menu>(&manager_));
 }

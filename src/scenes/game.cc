@@ -145,7 +145,7 @@ void Game::GenerateIsolations() {
       kCityData.offset.x + kCityData.size.x + kTemplateIsolationData.offset.x,
       kTemplateIsolationData.offset.y);
 
-  for (size_t i = 0; i < Configuration::kIsolationCount; ++i) {
+  for (int i = 0; i < Configuration::kIsolationCount.value; ++i) {
     isolations_.emplace_back(
         Isolation(kTemplateIsolationData.size),
         Location::Data{kTemplateIsolationData.size, offset});

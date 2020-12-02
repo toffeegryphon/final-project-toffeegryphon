@@ -53,7 +53,7 @@ Individual::Individual(float healthiness, float wanderlust, const vec2& bounds,
 void Individual::CheckAndBecomeInfected(const Individual& by) {
   if (status_ == Status::kUninfected &&
       distance(by.GetPosition(), GetPosition()) <
-          Configuration::kDefaultSneezeRadius &&
+          Configuration::kSneezeRadius.value &&
       GetRandom() > healthiness_) {
     status_ = Status::kAsymptomatic;
   }
@@ -210,7 +210,7 @@ void Individual::UpdateSneezeAndSymptoms() {
   }
 
   if (status_ != Status::kRecovered &&
-      spread_.x > Configuration::kSymptomaticThreshold) {
+      spread_.x > Configuration::kSymptomaticThreshold.value) {
     status_ = Status::kSymptomatic;
   }
 }
@@ -238,7 +238,7 @@ void Individual::RecoverOrDie(Location::Type location_type) {
         GetRandomInRange(Configuration::kDefaultSpreadRecoveredROCRange);
   } else if (state > 1 - death_.x) {
     status_ = Status::kDead;
-  } else if (death_.x > Configuration::kDyingThreshold) {
+  } else if (death_.x > Configuration::kDyingThreshold.value) {
     status_ = Status::kDying;
   }
 
