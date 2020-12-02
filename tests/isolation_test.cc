@@ -296,9 +296,9 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
   SECTION("Updates recovery chance with isolation multiplier") {
     ind_ptrs[0]->SetRecovery(vec2(0, 0.2));
     isolation.Add(ind_ptrs);
-    float expected_recovery =
-        ind_ptrs[0]->GetRecovery().x +
-        ind_ptrs[0]->GetRecovery().y * Configuration::kIsolationRecoveryFactor;
+    float expected_recovery = ind_ptrs[0]->GetRecovery().x +
+                              ind_ptrs[0]->GetRecovery().y *
+                                  Configuration::kIsolationRecoveryFactor.value;
     isolation.Update();
     REQUIRE(isolation.GetIndividuals()[0]->GetRecovery().x ==
             expected_recovery);
@@ -309,9 +309,61 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     isolation.Add(ind_ptrs);
     float expected_death =
         ind_ptrs[0]->GetDeath().x +
-        ind_ptrs[0]->GetDeath().y * Configuration::kIsolationDeathFactor;
+        ind_ptrs[0]->GetDeath().y * Configuration::kIsolationDeathFactor.value;
     isolation.Update();
     REQUIRE(isolation.GetIndividuals()[0]->GetDeath().x == expected_death);
+  }
+
+  SECTION("Updating n frames will change asymptomatic to symptomatic") {
+    isolation.Add(vector<Individual*>{ind_ptrs[0]});
+    for (int i = 0; i < Configuration::kIsolationDetectionFrames.value - 1;
+         ++i) {
+      isolation.Update();
+    }
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kAsymptomatic);
+    isolation.Update();
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kSymptomatic);
+  }
+
+  SECTION("Updating n frames will not change uninfected to symptomatic") {
+    ind_ptrs[1]->SetSpread(vec2(0, 0));
+    ind_ptrs[1]->SetHealthiness(0);
+    isolation.Add(vector<Individual*>{ind_ptrs[1]});
+    for (int i = 0; i < Configuration::kIsolationDetectionFrames.value; ++i) {
+      isolation.Update();
+    }
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kUninfected);
+  }
+
+  SECTION(
+      "Updating n frames from first infection will change asymptomatic to "
+      "symptomatic") {
+    ind_ptrs[0]->SetSpread(vec2(1, 0));
+    ind_ptrs[1]->SetSpread(vec2(0, 0));
+    ind_ptrs[1]->SetHealthiness(0);
+    isolation.Add(vector<Individual*>{ind_ptrs[1]});
+    for (int i = 0; i < Configuration::kIsolationDetectionFrames.value; ++i) {
+      isolation.Update();
+    }
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kUninfected);
+    isolation.Add(vector<Individual*>{ind_ptrs[0]});
+    isolation.Update();
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kAsymptomatic);
+    for (int i = 0; i < Configuration::kIsolationDetectionFrames.value - 1;
+         ++i) {
+      isolation.Update();
+    }
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kAsymptomatic);
+    isolation.Update();
+    REQUIRE(isolation.GetIndividuals()[0]->GetID() == ind_ptrs[1]->GetID());
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kSymptomatic);
   }
 }
 

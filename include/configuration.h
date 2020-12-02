@@ -90,6 +90,7 @@ class Configuration {
   static Property<bool> kIsolationWillSpread;
   static Property<float> kIsolationRecoveryFactor;
   static Property<float> kIsolationDeathFactor;
+  static Property<int> kIsolationDetectionFrames;
 };
 
 }  // namespace epidemic

@@ -128,6 +128,10 @@ Individual::Status Individual::GetStatus() const {
   return status_;
 }
 
+void Individual::SetStatus(Individual::Status status) {
+  status_ = status;
+}
+
 bool Individual::IsSneezing() const {
   return is_sneezing_;
 }

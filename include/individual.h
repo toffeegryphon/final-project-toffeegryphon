@@ -45,6 +45,7 @@ class Individual {
 
   size_t GetID() const;
   Status GetStatus() const;
+  void SetStatus(Status status);
 
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);

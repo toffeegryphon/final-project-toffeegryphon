@@ -20,6 +20,7 @@ Isolation::Isolation(const vec2& bounds, size_t capacity)
 
 vector<Individual*> epidemic::Isolation::Add(
     const vector<Individual*>& individuals) {
+  // TODO Only pass required number of individuals
   vector<Individual*> rejected;
 
   size_t total = individuals_.size() + individuals.size();
@@ -46,14 +47,22 @@ vector<Individual*> epidemic::Isolation::ExtractIndividualsAt(
 // Lifecycle
 
 void epidemic::Isolation::Update() {
-  // TODO Update chances
-  // TODO Spread check
   for (Individual* individual : individuals_) {
     individual->Update(bounds_, type_);
+    // C++ does not support get_or_default
+    auto it = frames_warded_.find(individual->GetID());
+    if (it != frames_warded_.end()) {
+      if (it->second >= Configuration::kIsolationDetectionFrames.value) {
+        individual->SetStatus(Individual::Status::kSymptomatic);
+      } else {
+        ++it->second;
+      }
+    } else if (individual->GetStatus() == Individual::Status::kAsymptomatic) {
+      // Start at 1, missed 1
+      frames_warded_[individual->GetID()] = 2;
+    }
   }
 
-  // TODO Testing if after x frames and is asymptomatic set to symptomatic
-  // TODO PRIORITY 1 IMPLEMENTATION
   if (Configuration::kIsolationWillSpread.value) {
     UpdateSpread();
   }
@@ -84,6 +93,11 @@ void Isolation::UpdateAdmission() {
     Individual* individual = individuals_[i];
     individual->SetDestinations(destinations);
     individual->SetRouteMode(Route::Mode::kDeplete);
+
+    // https://stackoverflow.com/questions/6952486/recommended-way-to-insert-elements-into-map
+    if (individual->GetStatus() == Individual::Status::kAsymptomatic) {
+      frames_warded_.insert(pair<size_t, size_t>(individual->GetID(), 1));
+    }
   }
 }
 

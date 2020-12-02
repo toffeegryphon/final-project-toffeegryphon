@@ -5,6 +5,8 @@
 
 namespace epidemic {
 
+using std::unordered_map;
+
 class Isolation : private Location {
  public:
   explicit Isolation(const vec2& bounds);
@@ -27,6 +29,7 @@ class Isolation : private Location {
 
  private:
   size_t capacity_;
+  unordered_map<size_t, size_t> frames_warded_;
 
   void UpdateAdmission();
   void Discharge(vector<Individual*>* individuals);

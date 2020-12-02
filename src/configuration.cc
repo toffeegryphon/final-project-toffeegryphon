@@ -27,6 +27,7 @@ void Configuration::PopulateProperties() {
   kProperties.push_back(&kIsolationWillSpread);
   kProperties.push_back(&kIsolationRecoveryFactor);
   kProperties.push_back(&kIsolationDeathFactor);
+  kProperties.push_back(&kIsolationDetectionFrames);
 }
 
 vec2 Configuration::kWindowSize{1200, 800};
@@ -99,4 +100,7 @@ Configuration::Property<float> Configuration::kIsolationRecoveryFactor{
 Configuration::Property<float> Configuration::kIsolationDeathFactor{
     VType::kFloat, "Isolation Death Chance ROC Factor", 0.5f,
     pair<float, float>(0.0f, 1.0f), "%.2f"};
+Configuration::Property<int> Configuration::kIsolationDetectionFrames{
+    VType::kInt, "Frames required to detect symptoms from onset", 10,
+    pair<int, int>(0, 1000)};
 }  // namespace epidemic
