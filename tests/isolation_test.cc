@@ -365,6 +365,17 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
             Individual::Status::kSymptomatic);
   }
+
+  SECTION("Updating n frames will not change kRecovering to kSymptomatic") {
+    ind_ptrs[0]->SetStatus(Individual::Status::kRecovering);
+    ind_ptrs[0]->SetSpread(vec2(0.5, -0.001));
+    isolation.Add(vector<Individual*>{ind_ptrs[0]});
+    for (int i = 0; i < Configuration::kIsolationDetectionFrames.value; ++i) {
+      isolation.Update();
+    }
+    REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
+            Individual::Status::kRecovering);
+  }
 }
 
 }  // namespace epidemic

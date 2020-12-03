@@ -13,11 +13,18 @@ using glm::vec2;
 class Individual {
  public:
   enum class Status {
+    // Chance of spread 0
     kUninfected,
+    // Chance of spread lower than kSymptomaticThreshold
     kAsymptomatic,
+    // Chance of spread higher than kSymptomaticThreshold
     kSymptomatic,
+    // Chance of death higher thank kDyingThreshold
     kDying,
     kDead,
+    // Chance of spread decreasing
+    kRecovering,
+    // Chance of spread 0
     kRecovered
   };
 

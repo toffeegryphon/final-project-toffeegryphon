@@ -44,7 +44,7 @@ Configuration::Property<float> Configuration::kSneezeRadius{
     "%.f"};
 
 Configuration::Property<vec2> Configuration::kSpreadChanceRange{
-    VType::kVec2, "Spread Chance Min, Range", vec2(0.01, 0.3),
+    VType::kVec2, "Spread Chance Min, Range", vec2(0.001, 0.003),
     pair<vec2, vec2>(vec2(0.0f, 1.0f), vec2(0.001f, 1.0f)), "%.3f"};
 
 Configuration::Property<vec2> Configuration::kSpreadInfectedROCRange{
@@ -95,7 +95,7 @@ Configuration::Property<bool> Configuration::kIsolationWillSpread{
     VType::kBool, "Isolation Will Perform Spread Check if Sneeze", true,
     pair<bool, bool>(false, true)};
 Configuration::Property<float> Configuration::kIsolationRecoveryFactor{
-    VType::kFloat, "Isolation Recovery Chance ROC Factor", 2.0f,
+    VType::kFloat, "Isolation Recovery Chance ROC Factor", 10.0f,
     pair<float, float>(0.0f, 100.0f), "%.1f"};
 Configuration::Property<float> Configuration::kIsolationDeathFactor{
     VType::kFloat, "Isolation Death Chance ROC Factor", 0.5f,

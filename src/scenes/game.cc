@@ -13,6 +13,12 @@ using std::unordered_set;
 using utils::IsInLocation;
 using utils::ToPointers;
 
+namespace {
+static unordered_set<Individual::Status> infected_statuses{
+    Individual::Status::kAsymptomatic, Individual::Status::kSymptomatic,
+    Individual::Status::kDying, Individual::Status::kRecovering};
+}  // namespace
+
 Game::Game(SceneManager* manager) : View(manager) {
   GenerateIndividuals();
   city_ = City(kCityData.size, ToPointers(&individuals_));
@@ -159,11 +165,6 @@ const vector<pair<Isolation, Location::Data>>& Game::GetIsolations() const {
 bool Game::HasEnded() {
   // Checking Win, might need to do a faster method using an event bus
   size_t infected = 0;
-  unordered_set<Individual::Status> infected_statuses{
-      Individual::Status::kAsymptomatic, Individual::Status::kSymptomatic,
-      Individual::Status::kDying};
-  // TODO need to check that spread rates are 0 if there are still uninfected
-  // people
   for (const Individual& individual : individuals_) {
     if (infected_statuses.find(individual.GetStatus()) !=
         infected_statuses.end()) {
@@ -172,5 +173,10 @@ bool Game::HasEnded() {
   }
   return (infected == 0);
 }
+
+// Powerups class
+// Masks - cost x per person
+// Lockdown - reduce budget
+// Testing - cost x per person per frequency
 
 }  // namespace epidemic

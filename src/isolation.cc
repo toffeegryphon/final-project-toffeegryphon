@@ -49,17 +49,20 @@ vector<Individual*> epidemic::Isolation::ExtractIndividualsAt(
 void epidemic::Isolation::Update() {
   for (Individual* individual : individuals_) {
     individual->Update(bounds_, type_);
-    // C++ does not support get_or_default
-    auto it = frames_warded_.find(individual->GetID());
-    if (it != frames_warded_.end()) {
-      if (it->second >= Configuration::kIsolationDetectionFrames.value) {
-        individual->SetStatus(Individual::Status::kSymptomatic);
+
+    if (individual->GetStatus() == Individual::Status::kAsymptomatic) {
+      // C++ does not support get_or_default
+      auto it = frames_warded_.find(individual->GetID());
+      if (it != frames_warded_.end()) {
+        if (it->second >= Configuration::kIsolationDetectionFrames.value) {
+          individual->SetStatus(Individual::Status::kSymptomatic);
+        } else {
+          ++it->second;
+        }
       } else {
-        ++it->second;
+        // Start at 1, missed 1
+        frames_warded_[individual->GetID()] = 2;
       }
-    } else if (individual->GetStatus() == Individual::Status::kAsymptomatic) {
-      // Start at 1, missed 1
-      frames_warded_[individual->GetID()] = 2;
     }
   }
 
@@ -96,12 +99,13 @@ void Isolation::UpdateAdmission() {
 
     // https://stackoverflow.com/questions/6952486/recommended-way-to-insert-elements-into-map
     if (individual->GetStatus() == Individual::Status::kAsymptomatic) {
-      frames_warded_.insert(pair<size_t, size_t>(individual->GetID(), 1));
+      frames_warded_.insert(pair<size_t, int>(individual->GetID(), 1));
     }
   }
 }
 
 void Isolation::Discharge(vector<Individual*>* individuals) {
+  // TODO Automated discharge as powerup maybe
   for (Individual* individual : *individuals) {
     individual->SetDestinations(queue<vec2>());
     individual->SetRouteMode(Route::Mode::kContinuous);

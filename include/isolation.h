@@ -29,7 +29,7 @@ class Isolation : private Location {
 
  private:
   size_t capacity_;
-  unordered_map<size_t, size_t> frames_warded_;
+  unordered_map<size_t, int> frames_warded_;
 
   void UpdateAdmission();
   void Discharge(vector<Individual*>* individuals);

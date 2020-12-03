@@ -76,13 +76,13 @@ void Individual::Update(const vec2& bounds, Location::Type location_type) {
 
   route_.Update(speed, bounds);
 
-  if (status_ == Status::kUninfected) {
+  if (status_ == Status::kUninfected || status_ == Status::kRecovered) {
     return;
   }
 
   UpdateSneezeAndSymptoms();
 
-  if (status_ == Status::kRecovered) {
+  if (status_ == Status::kRecovering) {
     return;
   }
 
@@ -104,9 +104,11 @@ void Individual::Draw(const vec2& offset) const {
     case Status::kDead:
       color(1, 1, 1);
       break;
+    case Status::kRecovering:
+      color(0, 1, 1);
+      break;
     case Status::kRecovered:
       color(0, 1, 0);
-      break;
   }
   drawSolidCircle(GetPosition() + offset,
                   Configuration::kDefaultIndividualRadius);
@@ -209,13 +211,19 @@ size_t Individual::GetNextID() {
 void Individual::UpdateSneezeAndSymptoms() {
   is_sneezing_ = GetRandom() < spread_.x;
   // TODO Possibly limit to at most some chance
-  if (0 <= spread_.x && spread_.x <= 1) {
+  // TODO Maybe this should be restricted to only in Isolation
+  if (spread_.x < 0) {
+    status_ = Status::kRecovered;
+    is_sneezing_ = false;
+  } else if (spread_.x < 1) {
     spread_.x += spread_.y;
-  }
 
-  if (status_ != Status::kRecovered &&
-      spread_.x > Configuration::kSymptomaticThreshold.value) {
-    status_ = Status::kSymptomatic;
+    if (status_ == Status::kAsymptomatic &&
+        spread_.x > Configuration::kSymptomaticThreshold.value) {
+      status_ = Status::kSymptomatic;
+    }
+  } else {
+    spread_.x = 1;
   }
 }
 
@@ -237,7 +245,7 @@ void Individual::RecoverOrDie(Location::Type location_type) {
 
   float state = GetRandom();
   if (state <= recovery_.x) {
-    status_ = Status::kRecovered;
+    status_ = Status::kRecovering;
     spread_.y = GetRandomInRange(Configuration::kSpreadRecoveredROCRange.value);
   } else if (state > 1 - death_.x) {
     status_ = Status::kDead;
