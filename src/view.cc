@@ -63,9 +63,9 @@ bool View::operator!=(const View& rhs) const {
   return !(rhs == *this);
 }
 
-size_t View::kNextID = 0;
+size_t View::next_id_ = 0;
 size_t View::GetNextID() {
-  return kNextID++;
+  return next_id_++;
 }
 
 void View::Draw() {

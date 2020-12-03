@@ -79,7 +79,7 @@ class Individual {
 
  private:
   // ID
-  static size_t kNextID;
+  static size_t next_id_;
   static size_t GetNextID();
 
   size_t id_;

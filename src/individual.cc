@@ -202,10 +202,10 @@ bool Individual::operator!=(const Individual& rhs) const {
 
 // Private Methods
 
-size_t Individual::kNextID = 0;
+size_t Individual::next_id_ = 0;
 
 size_t Individual::GetNextID() {
-  return kNextID++;
+  return next_id_++;
 }
 
 void Individual::UpdateSneezeAndSymptoms() {
