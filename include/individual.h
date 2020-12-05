@@ -30,22 +30,64 @@ class Individual {
 
   // Constructors
 
+  /**
+   * Initializes Individual with random position within bounds and default
+   * Status of kUninfected, along with other attributes at random
+   *
+   * @param bounds To generate position within
+   */
   explicit Individual(const vec2& bounds);
+
+  /**
+   * Initializes Individual with random position within bounds and given status
+   * and other attributes at random
+   *
+   * @param bounds To generate position within
+   * @param status To be set
+   */
   Individual(const vec2& bounds, Status status);
-  Individual(float healthiness, float wanderlust, const vec2& bounds);
-  Individual(float healthiness, float wanderlust, const vec2& bounds,
-             Status status);
+
+  /**
+   * Initializes Individual with given attributes
+   * @param healthiness
+   * @param wanderlust
+   * @param bounds
+   * @param status
+   * @param position
+   * @param spread
+   * @param recovery
+   * @param death
+   */
   Individual(float healthiness, float wanderlust, const vec2& bounds,
              Status status, const vec2& position, const vec2& spread,
              const vec2& recovery, const vec2& death);
 
   // Interaction
 
+  /**
+   * Checks if by is within range, and infects this if healthiness check fails
+   *
+   * @param by Source that spread
+   */
   void CheckAndBecomeInfected(const Individual& by);
 
   // Lifecycle
 
+  /**
+   * Updates this attributes, updates whether this is sneezing in this cycle,
+   * and checks whether this begins recovery or dies
+   *
+   * @param bounds Of parent Location
+   * @param location_type Of parent Location, influences proportion of attribute
+   * updates
+   */
   void Update(const vec2& bounds, Location::Type location_type);
+
+  /**
+   * Draws this at offset, with color depending on status
+   *
+   * @param offset From origin to draw this at
+   */
   void Draw(const vec2& offset) const;
 
   // Getters & Setters
@@ -54,6 +96,7 @@ class Individual {
   Status GetStatus() const;
   void SetStatus(Status status);
 
+  // Route Related
   const vec2& GetPosition() const;
   void SetPosition(const vec2& position);
   const queue<vec2>& GetDestinations() const;
@@ -91,8 +134,20 @@ class Individual {
   float wanderlust_;
   Route route_;
 
+  /**
+   * Updates whether this will be sneezing in the current cycle and whether this
+   * becomes kSymptomatic
+   */
   void UpdateSneezeAndSymptoms();
+
   // TODO Non instantaneous recovery
+  /**
+   * Performs recover and death checks, influenced by location_type, and updates
+   * status to recovering or death if either passes, updating spread chance and
+   * rate of change (ROC) if recovering
+   *
+   * @param location_type Of parent Location
+   */
   void RecoverOrDie(Location::Type location_type);
 };
 

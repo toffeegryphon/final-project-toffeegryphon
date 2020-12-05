@@ -47,7 +47,10 @@ class Configuration {
   };
 
   static vector<BaseProperty*> kProperties;
-  // TODO Maybe should combine Getter and populator into one function
+  // TODO Maybe should combine Getter and populate into one function
+  /**
+   * Adds all properties defined within this function to kProperties
+   */
   static void PopulateProperties();
 
   // App

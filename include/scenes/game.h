@@ -17,12 +17,43 @@ class Game : public View {
 
   // Lifecycle
 
-  void Setup() override;
+  /**
+   * Updates all Locations in this if game has yet to end, otherwise set View to
+   * End
+   */
   void Update() override;
+
+  /**
+   * Draws all Locations
+   */
   void Draw() override;
+
+  /**
+   * Picks individuals in Location at position of event into Hand
+   * @param event Mouse down MouseEvent
+   */
   void MouseDown(MouseEvent event) override;
+
+  /**
+   * Drops all individuals in hand into Location that contains position of
+   * event, returning all overflow to City
+   *
+   * @param event Mouse up MouseEvent
+   */
   void MouseUp(MouseEvent event) override;
+
+  /**
+   * Updates position of hand to position of event
+   *
+   * @param event Mouse drag MouseEvent
+   */
   void MouseDrag(MouseEvent event) override;
+
+  /**
+   * Updates position of hand to position of event
+   *
+   * @param event Mouse move MouseEvent
+   */
   void MouseMove(MouseEvent event) override;
 
   // Getters & Setters
@@ -43,8 +74,24 @@ class Game : public View {
   vector<pair<Isolation, Location::Data>> isolations_;
   Hand hand_;
 
+  /**
+   * Generates a total of Configuration::kPopulationSize individuals with
+   * Configuration::kStartingSickCount sick
+   */
   void GenerateIndividuals();
+
+  /**
+   * Generates a total of Configuration::kIsolationCount Isolation wards
+   * according to template with associated data
+   */
   void GenerateIsolations();
+
+  /**
+   * Returns true if no more individuals with infected statuses remain
+   * (kAsymptomatic, kSymptomatic, kDying, kRecovering)
+   *
+   * @return True if no more infected individuals remain
+   */
   bool HasEnded();
 };
 

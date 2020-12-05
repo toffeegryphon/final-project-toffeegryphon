@@ -215,7 +215,7 @@ void Individual::UpdateSneezeAndSymptoms() {
   if (spread_.x < 0) {
     status_ = Status::kRecovered;
     is_sneezing_ = false;
-  } else if (spread_.x < 1) {
+  } else if (spread_.x <= 1) {
     spread_.x += spread_.y;
 
     if (status_ == Status::kAsymptomatic &&

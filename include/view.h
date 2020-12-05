@@ -11,17 +11,81 @@ class SceneManager;
 
 class View {
  public:
+  // Constructors
+
+  /**
+   * Initializes View with SceneManager pointer and by default without ImGui
+   * active
+   *
+   * @param manager SceneManager to manage this View
+   */
   explicit View(SceneManager* manager);
+
+  /**
+   * Initializes View with SceneManager pointer and ImGui active if
+   * with_im_gui is true
+   *
+   * @param manager SceneManager to manage this View
+   * @param with_im_gui Whether to set ImGui active in drawing this View
+   */
   View(SceneManager* manager, bool with_im_gui);
 
+  // Lifecycle
+
+  /**
+   * Optional setup hook to be called by Cinder, only called for the very first
+   * View
+   */
   virtual void Setup();
+
+  /**
+   * Update hook to be called by Cinder
+   */
   virtual void Update();
+
+  /**
+   * Draw hook that clears screen and calls overridden Draw method, to be called
+   * by Cinder
+   */
   void DrawExternal();
+
+  /**
+   * Optional MouseDown hook to be called by Cinder when a mouse down event is
+   * triggered
+   *
+   * @param event Mouse down MouseEvent
+   */
   virtual void MouseDown(MouseEvent event);
+
+  /**
+   * Optional MouseUp hook to be called by Cinder when a mouse up event is
+   * triggered
+   *
+   * @param event Mouse up MouseEvent
+   */
   virtual void MouseUp(MouseEvent event);
+
+  /**
+   * Optional MouseMove hook to be called by Cinder when a mouse move event is
+   * triggered
+   *
+   * @param event Mouse move MouseEvent
+   */
   virtual void MouseMove(MouseEvent event);
+
+  /**
+   * Optional MouseDrag hook to be called by Cinder when a mouse drag event is
+   * triggered
+   *
+   * @param event Mouse drag MouseEvent
+   */
   virtual void MouseDrag(MouseEvent event);
 
+  /**
+   * Returns unique ID of this View
+   *
+   * @return Unique ID of this View
+   */
   size_t GetID() const;
 
   bool operator==(const View& rhs) const;
@@ -38,6 +102,10 @@ class View {
 
   bool with_im_gui_;
 
+  /**
+   * Draw method to override to draw elements in this View, calling clear is not
+   * required
+   */
   virtual void Draw();
 };
 

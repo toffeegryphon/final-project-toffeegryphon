@@ -7,10 +7,17 @@ namespace epidemic {
 
 class Menu : public View {
  public:
-  explicit Menu(SceneManager* scene_manager);
-  void Update() override;
+  /**
+   * Initializes Menu with parent manager
+   * @param manager Of this
+   */
+  explicit Menu(SceneManager* manager);
+
+  /**
+   * Draws start button and Configuration options from
+   * Configuration::kProperties
+   */
   void Draw() override;
-  void MouseDown(MouseEvent event) override;
 };
 
 }  // namespace epidemic

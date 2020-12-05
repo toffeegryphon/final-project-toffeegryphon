@@ -10,19 +10,11 @@ using std::string;
 using std::to_string;
 using std::make_unique;
 
-Win::Win(SceneManager* manager, const Win::Data& data) : View(manager, true) {
+End::End(SceneManager* manager, const End::Data& data) : View(manager, true) {
   data_ = data;
 }
 
-void Win::Setup() {
-  View::Setup();
-}
-
-void Win::Update() {
-  View::Update();
-}
-
-void Win::Draw() {
+void End::Draw() {
   // TODO Abstract, use format string
   string text = (data_.recovered + data_.uninfected > data_.dead)
                     ? "Congratulations! More recovered than died!"
@@ -36,10 +28,6 @@ void Win::Draw() {
     manager_->SetScene(make_unique<Menu>(manager_));
     return;
   }
-}
-
-void Win::MouseDown(MouseEvent event) {
-  View::MouseDown(event);
 }
 
 }  // namespace epidemic

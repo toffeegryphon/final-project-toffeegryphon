@@ -7,11 +7,7 @@ namespace epidemic {
 
 using std::make_unique;
 
-Menu::Menu(SceneManager* scene_manager) : View(scene_manager, true) {
-}
-
-void Menu::Update() {
-  View::Update();
+Menu::Menu(SceneManager* manager) : View(manager, true) {
 }
 
 void Menu::Draw() {
@@ -54,9 +50,6 @@ void Menu::Draw() {
       }
     }
   }
-}
-
-void Menu::MouseDown(MouseEvent event) {
 }
 
 }  // namespace epidemic

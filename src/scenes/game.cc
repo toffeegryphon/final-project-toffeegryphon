@@ -27,16 +27,12 @@ Game::Game(SceneManager* manager) : View(manager) {
 
 // Lifecycle
 
-void Game::Setup() {
-  View::Setup();
-}
-
 // TODO Test all updates
 
 void Game::Update() {
   if (HasEnded()) {
     // TODO better way to check end and get values
-    Win::Data data{0, 0, 0};
+    End::Data data{0, 0, 0};
     for (const Individual& individual : individuals_) {
       switch (individual.GetStatus()) {
         case Individual::Status::kUninfected:
@@ -52,7 +48,7 @@ void Game::Update() {
           break;
       }
     }
-    manager_->SetScene(make_unique<Win>(manager_, data));
+    manager_->SetScene(make_unique<End>(manager_, data));
     return;
   }
 
@@ -163,7 +159,7 @@ const vector<pair<Isolation, Location::Data>>& Game::GetIsolations() const {
 }
 
 bool Game::HasEnded() {
-  // Checking Win, might need to do a faster method using an event bus
+  // Checking End, might need to do a faster method using an event bus
   size_t infected = 0;
   for (const Individual& individual : individuals_) {
     if (infected_statuses.find(individual.GetStatus()) !=
