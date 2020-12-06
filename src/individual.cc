@@ -16,7 +16,6 @@ using utils::GetRandomSpread;
 using utils::GetRandomWanderlust;
 using utils::IsInLocation;
 
-#define DEBUG  // TODO Remember to remove all debug stuff!
 #ifdef DEBUG
 using ci::gl::drawStringRight;
 using std::to_string;

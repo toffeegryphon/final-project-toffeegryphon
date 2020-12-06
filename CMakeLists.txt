@@ -2,9 +2,12 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 11)
 project(epidemic)
 
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    add_compile_definitions(DEBUG)
+endif()
 
 # Warning flags
 if(MSVC)
@@ -57,7 +60,7 @@ list(APPEND CORE_SOURCE_FILES   src/configuration.cc
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/scenes/menu.cc
                             src/scenes/game.cc
-        src/scenes/end.cc
+                            src/scenes/end.cc
                             src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc
