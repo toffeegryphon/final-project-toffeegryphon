@@ -18,6 +18,9 @@ class Menu : public View {
    * Configuration::kProperties
    */
   void Draw() override;
+
+ private:
+  void DrawSettings();
 };
 
 }  // namespace epidemic

@@ -16,6 +16,10 @@ void Menu::Draw() {
     manager_->SetScene(make_unique<Game>(manager_));
   }
 
+  DrawSettings();
+}
+
+void Menu::DrawSettings() {
   for (Configuration::BaseProperty* p : Configuration::kProperties) {
     switch (p->v_type) {
       case Configuration::VType::kInt: {
