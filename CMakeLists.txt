@@ -64,6 +64,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/epidemic_app.cc)
 
 list(APPEND TEST_FILES  tests/individual_test.cc
+                        tests/configuration_test.cc
                         tests/utils_test.cc
                         tests/route_test.cc
                         tests/city_test.cc

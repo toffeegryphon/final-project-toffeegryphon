@@ -6,6 +6,9 @@
 
 namespace epidemic {
 
+using std::make_unique;
+using std::unordered_map;
+
 TEST_CASE("Game Constructor") {
   SceneManager manager;
   Game game(&manager);
@@ -40,22 +43,52 @@ TEST_CASE("Game Constructor") {
 
   SECTION("Initializes correct number of Isolations") {
     REQUIRE(game.GetIsolations().size() == cfg::kIsolationCount.value);
-    // TODO Probably should check location as well
+    // TODO Probably should check position and offset of Isolation as well
   }
 }
 
 TEST_CASE("Game Update") {
   SceneManager manager;
-  Game game(&manager);
 
   SECTION("Changes scene to win when no infected individuals are left") {
-    // TODO Implement after implementing custom settings
+    cfg::kPopulationSize.value = 1;
+    cfg::kStartingSickCount.value = 0;
+    manager.SetScene(make_unique<Game>(&manager));
+    View& game = manager.GetScene();
+    game.Update();
+    REQUIRE_FALSE(manager.GetScene() == game);
   }
 
-  SECTION("Checks for win before updating") {
-    // TODO Implement after implementing custom settings
+  SECTION("Update does not reorder individuals") {
+    cfg::kPopulationSize.value = 5;
+    Game game(&manager);
+    vector<size_t> ids;
+    for (const Individual& individual : game.GetIndividuals()) {
+      ids.push_back(individual.GetID());
+    }
+    game.Update();
+    vector<size_t> new_ids;
+    for (const Individual& individual : game.GetIndividuals()) {
+      new_ids.push_back(individual.GetID());
+    }
+    REQUIRE(new_ids == ids);
   }
 
+  SECTION("Updates all locations") {
+    // Currently unable to test Isolation
+    cfg::kPopulationSize.value = 2;
+    cfg::kStartingSickCount.value = 1;
+    Game game(&manager);
+    unordered_map<size_t, vec2> id_to_position;
+    for (const Individual& individual : game.GetIndividuals()) {
+      id_to_position[individual.GetID()] = individual.GetPosition();
+    }
+    game.Update();
+    for (const Individual& individual : game.GetIndividuals()) {
+      REQUIRE_FALSE(individual.GetPosition() ==
+                    id_to_position[individual.GetID()]);
+    }
+  }
 }
 
 }  // namespace epidemic
