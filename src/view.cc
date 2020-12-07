@@ -5,6 +5,8 @@
 
 namespace epidemic {
 
+using cfg::kWindowSize;
+
 using ci::gl::clear;
 using glm::vec2;
 using ImGui::Begin;
@@ -28,7 +30,7 @@ void View::DrawExternal() {
   clear();
   if (with_im_gui_) {
     ImGui::SetNextWindowPos(vec2());
-    ImGui::SetNextWindowSize(Configuration::kWindowSize);
+    ImGui::SetNextWindowSize(kWindowSize);
     Begin("gui", nullptr,
           ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove |
               ImGuiWindowFlags_NoResize);

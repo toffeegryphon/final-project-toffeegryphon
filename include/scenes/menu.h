@@ -9,17 +9,20 @@ class Menu : public View {
  public:
   /**
    * Initializes Menu with parent manager
+   *
    * @param manager Of this
    */
   explicit Menu(SceneManager* manager);
 
   /**
-   * Draws start button and Configuration options from
-   * Configuration::kProperties
+   * Draws start button and cfg options from cfg::kProperties
    */
   void Draw() override;
 
  private:
+  /**
+   * Draws each Property as editable settings
+   */
   void DrawSettings();
 };
 

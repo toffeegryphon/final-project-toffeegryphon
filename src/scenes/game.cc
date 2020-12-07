@@ -8,6 +8,10 @@
 
 namespace epidemic {
 
+using cfg::kIsolationCount;
+using cfg::kPopulationSize;
+using cfg::kStartingSickCount;
+
 using std::make_unique;
 using std::unordered_set;
 using utils::IsInLocation;
@@ -130,8 +134,8 @@ const City& Game::GetCity() const {
 // Private
 
 void Game::GenerateIndividuals() {
-  size_t sick_count = Configuration::kStartingSickCount.value;
-  size_t population_size = Configuration::kPopulationSize.value;
+  size_t sick_count = kStartingSickCount.value;
+  size_t population_size = kPopulationSize.value;
   for (size_t i = 0; i < sick_count; ++i) {
     individuals_.emplace_back(kCityData.size,
                               Individual::Status::kAsymptomatic);
@@ -146,7 +150,7 @@ void Game::GenerateIsolations() {
       kCityData.offset.x + kCityData.size.x + kTemplateIsolationData.offset.x,
       kTemplateIsolationData.offset.y);
 
-  for (int i = 0; i < Configuration::kIsolationCount.value; ++i) {
+  for (int i = 0; i < kIsolationCount.value; ++i) {
     isolations_.emplace_back(
         Isolation(kTemplateIsolationData.size),
         Location::Data{kTemplateIsolationData.size, offset});
@@ -170,6 +174,7 @@ bool Game::HasEnded() {
   return (infected == 0);
 }
 
+// TODO Remove
 // Powerups class
 // Masks - cost x per person
 // Lockdown - reduce budget

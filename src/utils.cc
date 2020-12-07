@@ -23,11 +23,11 @@ float GetRandomInRange(float end) {
 }
 
 float GetRandomHealthiness() {
-  return GetRandomInRange(Configuration::kDefaultHealthinessRange);
+  return GetRandomInRange(cfg::kDefaultHealthinessRange);
 }
 
 float GetRandomWanderlust() {
-  return GetRandomInRange(Configuration::kDefaultWanderlustRange);
+  return GetRandomInRange(cfg::kDefaultWanderlustRange);
 }
 
 vec2 GetRandomChanceROC(const vec2& chance_range, const vec2& roc_range) {
@@ -35,19 +35,19 @@ vec2 GetRandomChanceROC(const vec2& chance_range, const vec2& roc_range) {
 }
 
 vec2 GetRandomSpread() {
-  return GetRandomChanceROC(Configuration::kSpreadChanceRange.value,
-                            Configuration::kSpreadInfectedROCRange.value);
+  return GetRandomChanceROC(cfg::kSpreadChanceRange.value,
+                            cfg::kSpreadInfectedROCRange.value);
 }
 
 // TODO TEST Take healthiness, has_recovered
 vec2 GetRandomRecovery() {
-  return GetRandomChanceROC(Configuration::kRecoveryChanceRange.value,
-                            Configuration::kRecoveryROCRange.value);
+  return GetRandomChanceROC(cfg::kRecoveryChanceRange.value,
+                            cfg::kRecoveryROCRange.value);
 }
 
 vec2 GetRandomDeath() {
-  return GetRandomChanceROC(Configuration::kDeathChanceRange.value,
-                            Configuration::kDeathROCRange.value);
+  return GetRandomChanceROC(cfg::kDeathChanceRange.value,
+                            cfg::kDeathROCRange.value);
 }
 
 float DistanceX(const Individual& first, const Individual& second) {

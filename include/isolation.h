@@ -13,7 +13,7 @@ class Isolation : private Location {
 
   /**
    * Initializes Isolation ward with Type of kIsolation, size of bounds, and
-   * capacity provided by Configuration
+   * capacity provided by cfg
    *
    * @param bounds Of this
    */
@@ -53,9 +53,9 @@ class Isolation : private Location {
 
   /**
    * Updates each Individual, sets their statuses to kSymptomatic if
-   * Configuration::kIsolationDetectionFrames frames have passed since first
+   * cfg::kIsolationDetectionFrames frames have passed since first
    * infection since entering Isolation, and checks and sets spread if activated
-   * in Configuration::kIsolationWillSpread
+   * in cfg::kIsolationWillSpread
    */
   void Update() override;
 

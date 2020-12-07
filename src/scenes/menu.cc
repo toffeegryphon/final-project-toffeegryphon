@@ -5,6 +5,9 @@
 
 namespace epidemic {
 
+using cfg::BaseProperty;
+using cfg::kProperties;
+using cfg::VType;
 using std::make_unique;
 
 Menu::Menu(SceneManager* manager) : View(manager, true) {
@@ -20,25 +23,25 @@ void Menu::Draw() {
 }
 
 void Menu::DrawSettings() {
-  for (Configuration::BaseProperty* p : Configuration::kProperties) {
+  for (BaseProperty* p : kProperties) {
     switch (p->v_type) {
-      case Configuration::VType::kInt: {
-        auto* property = dynamic_cast<Configuration::Property<int>*>(p);
+      case VType::kInt: {
+        auto* property = dynamic_cast<cfg::Property<int>*>(p);
         ImGui::SliderInt(property->label.c_str(), &property->value,
                          property->value_range.first,
                          property->value_range.second);
         break;
       }
-      case Configuration::VType::kFloat: {
-        auto* property = dynamic_cast<Configuration::Property<float>*>(p);
+      case VType::kFloat: {
+        auto* property = dynamic_cast<cfg::Property<float>*>(p);
         ImGui::SliderFloat(property->label.c_str(), &property->value,
                            property->value_range.first,
                            property->value_range.second,
                            property->format.c_str());
         break;
       }
-      case Configuration::VType::kVec2: {
-        auto* property = dynamic_cast<Configuration::Property<vec2>*>(p);
+      case VType::kVec2: {
+        auto* property = dynamic_cast<cfg::Property<vec2>*>(p);
         // https://github.com/ocornut/imgui/issues/779
         ImGui::DragFloat2(
             property->label.c_str(), reinterpret_cast<float*>(&property->value),
@@ -47,8 +50,8 @@ void Menu::DrawSettings() {
             property->value_range.second.y);
         break;
       }
-      case Configuration::VType::kBool: {
-        auto* property = dynamic_cast<Configuration::Property<bool>*>(p);
+      case VType::kBool: {
+        auto* property = dynamic_cast<cfg::Property<bool>*>(p);
         ImGui::Checkbox(property->label.c_str(), &property->value);
         break;
       }

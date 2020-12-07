@@ -263,7 +263,7 @@ TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
     City city(bounds, src_ptrs);
     vector<Individual*> expected = city.GetIndividuals();
     vec2 position(expected[0]->GetPosition().x +
-                      0.9 * Configuration::kDefaultIndividualRadius,
+                      0.9 * cfg::kDefaultIndividualRadius,
                   expected[0]->GetPosition().y);
     REQUIRE(city.ExtractIndividualsAt(position) == expected);
   }
@@ -272,7 +272,7 @@ TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
     City city(bounds, src_ptrs);
     vector<Individual*> expected = city.GetIndividuals();
     vec2 position(expected[0]->GetPosition().x +
-                      1.1 * Configuration::kDefaultIndividualRadius,
+                      1.1 * cfg::kDefaultIndividualRadius,
                   expected[0]->GetPosition().y);
     REQUIRE(city.ExtractIndividualsAt(position).empty());
   }
@@ -281,7 +281,7 @@ TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
     City city(bounds, src_ptrs);
     vector<Individual*> expected = city.GetIndividuals();
     vec2 position(
-        expected[0]->GetPosition().x + Configuration::kDefaultIndividualRadius,
+        expected[0]->GetPosition().x + cfg::kDefaultIndividualRadius,
         expected[0]->GetPosition().y);
     REQUIRE(city.ExtractIndividualsAt(position).empty());
   }

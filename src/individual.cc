@@ -51,8 +51,7 @@ Individual::Individual(float healthiness, float wanderlust, const vec2& bounds,
 
 void Individual::CheckAndBecomeInfected(const Individual& by) {
   if (status_ == Status::kUninfected &&
-      distance(by.GetPosition(), GetPosition()) <
-          Configuration::kSneezeRadius.value &&
+      distance(by.GetPosition(), GetPosition()) < cfg::kSneezeRadius.value &&
       GetRandom() > healthiness_) {
     status_ = Status::kAsymptomatic;
   }
@@ -66,10 +65,10 @@ void Individual::Update(const vec2& bounds, Location::Type location_type) {
   }
 
   // TODO Maybe member variable
-  float speed = length(bounds) / Configuration::kTraversalFrames;
+  float speed = length(bounds) / cfg::kTraversalFrames;
 
   if (!IsInLocation(route_.GetPosition(), Location::Data{bounds, vec2()})) {
-    route_.Update(speed * Configuration::kReturnFactor, bounds);
+    route_.Update(speed * cfg::kReturnFactor, bounds);
     return;
   }
 
@@ -109,8 +108,7 @@ void Individual::Draw(const vec2& offset) const {
     case Status::kRecovered:
       color(0, 1, 0);
   }
-  drawSolidCircle(GetPosition() + offset,
-                  Configuration::kDefaultIndividualRadius);
+  drawSolidCircle(GetPosition() + offset, cfg::kDefaultIndividualRadius);
 
 #ifdef DEBUG
   std::string text = to_string(static_cast<int>(status_)) + "|" +
@@ -218,7 +216,7 @@ void Individual::UpdateSneezeAndSymptoms() {
     spread_.x += spread_.y;
 
     if (status_ == Status::kAsymptomatic &&
-        spread_.x > Configuration::kSymptomaticThreshold.value) {
+        spread_.x > cfg::kSymptomaticThreshold.value) {
       status_ = Status::kSymptomatic;
     }
   } else {
@@ -245,19 +243,19 @@ void Individual::RecoverOrDie(Location::Type location_type) {
   float state = GetRandom();
   if (state <= recovery_.x) {
     status_ = Status::kRecovering;
-    spread_.y = GetRandomInRange(Configuration::kSpreadRecoveredROCRange.value);
+    spread_.y = GetRandomInRange(cfg::kSpreadRecoveredROCRange.value);
   } else if (state > 1 - death_.x) {
     status_ = Status::kDead;
-  } else if (death_.x > Configuration::kDyingThreshold.value) {
+  } else if (death_.x > cfg::kDyingThreshold.value) {
     status_ = Status::kDying;
   }
 
   // Increment
   float recovery_factor = (location_type == Location::Type::kIsolation)
-                              ? Configuration::kIsolationRecoveryFactor.value
+                              ? cfg::kIsolationRecoveryFactor.value
                               : 1;
   float death_factor = (location_type == Location::Type::kIsolation)
-                           ? Configuration::kIsolationDeathFactor.value
+                           ? cfg::kIsolationDeathFactor.value
                            : 1;
 
   recovery_.x += recovery_factor * recovery_.y;

@@ -11,8 +11,7 @@ TEST_CASE("Game Constructor") {
   Game game(&manager);
 
   SECTION("Initializes Individual vector with population size") {
-    REQUIRE(game.GetIndividuals().size() ==
-            Configuration::kPopulationSize.value);
+    REQUIRE(game.GetIndividuals().size() == cfg::kPopulationSize.value);
   }
 
   SECTION("Initializes Individual vector with correct number of sick") {
@@ -23,7 +22,7 @@ TEST_CASE("Game Constructor") {
         ++sick_count;
       }
     }
-    REQUIRE(sick_count == Configuration::kStartingSickCount.value);
+    REQUIRE(sick_count == cfg::kStartingSickCount.value);
   }
 
   SECTION("Initializes City with all Individuals") {
@@ -40,7 +39,7 @@ TEST_CASE("Game Constructor") {
   }
 
   SECTION("Initializes correct number of Isolations") {
-    REQUIRE(game.GetIsolations().size() == Configuration::kIsolationCount.value);
+    REQUIRE(game.GetIsolations().size() == cfg::kIsolationCount.value);
     // TODO Probably should check location as well
   }
 }

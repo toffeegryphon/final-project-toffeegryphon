@@ -5,9 +5,8 @@
 
 #include <catch2/catch.hpp>
 
-using epidemic::Configuration;
-using epidemic::Individual;
-using epidemic::Location;
+namespace epidemic {
+
 using glm::vec2;
 
 TEST_CASE("Individual ID", "[individual][property]") {
@@ -29,7 +28,7 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
     vec2 position(10, 10);
     individual.SetPosition(position);
     other.SetPosition(
-        vec2(position.x + Configuration::kSneezeRadius.value / 2, position.y));
+        vec2(position.x + cfg::kSneezeRadius.value / 2, position.y));
 
     individual.SetHealthiness(0.0f);
     individual.CheckAndBecomeInfected(other);
@@ -41,8 +40,7 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
     Individual individual(bounds), other(bounds);
     vec2 position(10, 10);
     individual.SetPosition(position);
-    other.SetPosition(
-        vec2(position.x + Configuration::kSneezeRadius.value, position.y));
+    other.SetPosition(vec2(position.x + cfg::kSneezeRadius.value, position.y));
 
     individual.SetHealthiness(0.0f);
     individual.CheckAndBecomeInfected(other);
@@ -54,8 +52,8 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
     Individual individual(bounds), other(bounds);
     vec2 position(10, 10);
     individual.SetPosition(position);
-    other.SetPosition(vec2(
-        position.x + Configuration::kSneezeRadius.value + 1.0f, position.y));
+    other.SetPosition(
+        vec2(position.x + cfg::kSneezeRadius.value + 1.0f, position.y));
 
     individual.SetHealthiness(0.0f);
     individual.CheckAndBecomeInfected(other);
@@ -70,7 +68,7 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
     vec2 position(10, 10);
     individual.SetPosition(position);
     other.SetPosition(
-        vec2(position.x + Configuration::kSneezeRadius.value / 2, position.y));
+        vec2(position.x + cfg::kSneezeRadius.value / 2, position.y));
 
     individual.SetHealthiness(0.0f);
     individual.CheckAndBecomeInfected(other);
@@ -83,7 +81,7 @@ TEST_CASE("Individual CheckAndBecomeInfected", "[individual]") {
     vec2 position(10, 10);
     individual.SetPosition(position);
     other.SetPosition(
-        vec2(position.x + Configuration::kSneezeRadius.value / 2, position.y));
+        vec2(position.x + cfg::kSneezeRadius.value / 2, position.y));
 
     individual.SetHealthiness(1.0f);
     individual.CheckAndBecomeInfected(other);
@@ -198,7 +196,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
 
   SECTION("Increase state to kSymptomatic if cross threshold") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == Individual::Status::kSymptomatic);
@@ -207,7 +205,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
   SECTION("Does not decrease state to kSymptomatic if kDead") {
     Individual::Status status = Individual::Status::kDead;
     Individual i(bounds, status);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -217,8 +215,8 @@ TEST_CASE("Individual Update City", "[individual][update]") {
     srand(3);
     Individual::Status status = Individual::Status::kDying;
     Individual i(bounds, status);
-    i.SetDeath(vec2(Configuration::kDyingThreshold.value + 0.1f, 0));
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -227,7 +225,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
   SECTION("Does not decrease state to kSymptomatic if kRecovering") {
     Individual::Status status = Individual::Status::kRecovering;
     Individual i(bounds, status);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -268,7 +266,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
     i.SetSpread(vec2());
     i.SetRecovery(vec2());
-    i.SetDeath(vec2(Configuration::kDyingThreshold.value + 0.1f, 0));
+    i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == Individual::Status::kDying);
@@ -384,7 +382,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
 
   SECTION("Increase state to kSymptomatic if cross threshold") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == Individual::Status::kSymptomatic);
@@ -393,7 +391,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
   SECTION("Does not decrease state to kSymptomatic if kDead") {
     Individual::Status status = Individual::Status::kDead;
     Individual i(bounds, status);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -403,8 +401,8 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
     srand(3);
     Individual::Status status = Individual::Status::kDying;
     Individual i(bounds, status);
-    i.SetDeath(vec2(Configuration::kDyingThreshold.value + 0.1f, 0));
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -413,7 +411,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
   SECTION("Does not decrease state to kSymptomatic if kRecovering") {
     Individual::Status status = Individual::Status::kRecovering;
     Individual i(bounds, status);
-    i.SetSpread(vec2(0, Configuration::kSymptomaticThreshold.value + 0.1f));
+    i.SetSpread(vec2(0, cfg::kSymptomaticThreshold.value + 0.1f));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == status);
@@ -461,7 +459,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
     Individual i(bounds, Individual::Status::kAsymptomatic);
     i.SetSpread(vec2());
     i.SetRecovery(vec2());
-    i.SetDeath(vec2(Configuration::kDyingThreshold.value + 0.1f, 0));
+    i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetStatus() == Individual::Status::kDying);
@@ -473,10 +471,9 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
     Individual i(bounds, Individual::Status::kDying);
     float exp_recovery =
         i.GetRecovery().x +
-        i.GetRecovery().y * Configuration::kIsolationRecoveryFactor.value;
+        i.GetRecovery().y * cfg::kIsolationRecoveryFactor.value;
     float exp_death =
-        i.GetDeath().x +
-        i.GetDeath().y * Configuration::kIsolationDeathFactor.value;
+        i.GetDeath().x + i.GetDeath().y * cfg::kIsolationDeathFactor.value;
     i.Update(bounds, location_type);
 
     REQUIRE(i.GetRecovery().x == exp_recovery);
@@ -493,3 +490,5 @@ TEST_CASE("Individual Equality", "[individual][operator][equality]") {
     REQUIRE(first == second);
   }
 }
+
+}  // namespace epidemic

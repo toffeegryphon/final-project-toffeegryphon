@@ -61,8 +61,7 @@ void City::UpdateSpread() {
     const Individual* source = individuals_[i];
     if (source->IsSneezing()) {
       for (size_t j = i + 1; j < individuals_.size(); ++j) {
-        if (DistanceX(*individuals_[j], *source) >
-            Configuration::kSneezeRadius.value) {
+        if (DistanceX(*individuals_[j], *source) > cfg::kSneezeRadius.value) {
           break;
         }
         individuals_[j]->CheckAndBecomeInfected(*source);
@@ -70,8 +69,7 @@ void City::UpdateSpread() {
 
       // TODO better way
       for (size_t j = i - 1; j < individuals_.size(); --j) {
-        if (DistanceX(*individuals_[j], *source) >
-            Configuration::kSneezeRadius.value) {
+        if (DistanceX(*individuals_[j], *source) > cfg::kSneezeRadius.value) {
           break;
         }
         individuals_[j]->CheckAndBecomeInfected(*source);

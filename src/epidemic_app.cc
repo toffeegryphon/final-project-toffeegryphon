@@ -5,16 +5,17 @@
 
 namespace epidemic {
 
+using cfg::PopulateProperties;
 using cinder::app::MouseEvent;
 using std::make_unique;
 
 EpidemicApp::EpidemicApp() {
   srand(static_cast<unsigned int>(time(nullptr)));
-  Configuration::PopulateProperties();
+  PopulateProperties();
 
-  ci::app::setWindowPos(100, 100);
-  ci::app::setWindowSize(static_cast<int>(Configuration::kWindowSize.x),
-                         static_cast<int>(Configuration::kWindowSize.y));
+  setWindowPos(100, 100);
+  setWindowSize(static_cast<int>(cfg::kWindowSize.x),
+                static_cast<int>(cfg::kWindowSize.y));
 
   manager_.SetScene(make_unique<Menu>(&manager_));
 }

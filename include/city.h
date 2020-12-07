@@ -70,7 +70,7 @@ class City : private Location {
  private:
   /**
    * Checks for sneezing individuals and performs spreading of disease between
-   * individuals within Configuration::kSneezeRadius range
+   * individuals within cfg::kSneezeRadius range
    */
   void UpdateSpread();
 };

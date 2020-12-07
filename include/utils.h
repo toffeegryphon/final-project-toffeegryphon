@@ -45,16 +45,14 @@ float GetRandomInRange(const vec2& start_range);
 float GetRandomInRange(float end);
 
 /**
- * Returns random float representing healthiness within range provided by
- * Configuration
+ * Returns random float representing healthiness within range provided by cfg
  *
  * @return Random float healthiness
  */
 float GetRandomHealthiness();
 
 /**
- * Returns random float representing wanderlust within range provided by
- * Configuration
+ * Returns random float representing wanderlust within range provided by cfg
  *
  * @return Random float wanderlust
  */
@@ -72,7 +70,7 @@ vec2 GetRandomChanceROC(const vec2& chance_range, const vec2& roc_range);
 
 /**
  * Returns random vec2 of spread chance, rate of change (ROC) within ranges
- * provided by Configuration
+ * provided by cfg
  *
  * @return Random vec2 representing spread chance, ROC
  */
@@ -81,7 +79,7 @@ vec2 GetRandomSpread();
 // TODO Take healthiness, has_recovered
 /**
  * Returns random vec2 of recovery chance, rate of change (ROC) within ranges
- * provided by Configuration
+ * provided by cfg
  *
  * @return Random vec2 representing recovery chance, ROC
  */
@@ -89,7 +87,7 @@ vec2 GetRandomRecovery();
 
 /**
  * Returns random vec2 of death chance, rate of change (ROC) within ranges
- * provided by Configuration
+ * provided by cfg
  *
  * @return Random vec2 representing death chance, ROC
  */

@@ -4,6 +4,8 @@
 
 namespace epidemic {
 
+using cfg::kDefaultIndividualRadius;
+
 using ci::Color;
 using ci::Rectf;
 using ci::gl::color;
@@ -26,7 +28,7 @@ vector<Individual*> Location::Add(const vector<Individual*>& individuals) {
 
 // Interaction
 vector<Individual*> Location::ExtractIndividualsAt(const vec2& position) {
-  float radius = Configuration::kDefaultIndividualRadius;
+  float radius = kDefaultIndividualRadius;
   // TODO Binary search
   vector<size_t> to_remove;
   vector<Individual*> individuals;

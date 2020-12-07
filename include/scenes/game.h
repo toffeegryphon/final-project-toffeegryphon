@@ -75,14 +75,14 @@ class Game : public View {
   Hand hand_;
 
   /**
-   * Generates a total of Configuration::kPopulationSize individuals with
-   * Configuration::kStartingSickCount sick
+   * Generates a total of cfg::kPopulationSize individuals with
+   * cfg::kStartingSickCount sick
    */
   void GenerateIndividuals();
 
   /**
-   * Generates a total of Configuration::kIsolationCount Isolation wards
-   * according to template with associated data
+   * Generates a total of cfg::kIsolationCount Isolation wards according to
+   * template with associated data
    */
   void GenerateIsolations();
 

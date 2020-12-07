@@ -8,7 +8,7 @@ using std::any_of;
 // Constructors
 
 Isolation::Isolation(const vec2& bounds)
-    : Isolation(bounds, Configuration::kIsolationCapacity.value) {
+    : Isolation(bounds, cfg::kIsolationCapacity.value) {
 }
 
 Isolation::Isolation(const vec2& bounds, size_t capacity)
@@ -54,7 +54,7 @@ void epidemic::Isolation::Update() {
       // C++ does not support get_or_default
       auto it = frames_warded_.find(individual->GetID());
       if (it != frames_warded_.end()) {
-        if (it->second >= Configuration::kIsolationDetectionFrames.value) {
+        if (it->second >= cfg::kIsolationDetectionFrames.value) {
           individual->SetStatus(Individual::Status::kSymptomatic);
         } else {
           ++it->second;
@@ -66,7 +66,7 @@ void epidemic::Isolation::Update() {
     }
   }
 
-  if (Configuration::kIsolationWillSpread.value) {
+  if (cfg::kIsolationWillSpread.value) {
     UpdateSpread();
   }
 }
