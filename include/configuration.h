@@ -104,6 +104,9 @@ extern Property<int> kIsolationDetectionFrames;
 constexpr float kInfoMargins = 50;
 constexpr float kInfoIndividualRadius = 10;
 
+const string kEndWin = "Congratulations! More recovered than died!";
+const string kEndLose = "Congratulations...?";
+
 }  // namespace cfg
 
 }  // namespace epidemic

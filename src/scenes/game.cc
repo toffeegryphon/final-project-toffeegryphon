@@ -1,7 +1,6 @@
 #include <CinderImGui.h>
 #include <cinder/gl/gl.h>
 #include <configuration.h>
-#include <scenes/end.h>
 #include <scenes/game.h>
 #include <utils.h>
 
@@ -35,24 +34,7 @@ Game::Game(SceneManager* manager) : View(manager) {
 
 void Game::Update() {
   if (HasEnded()) {
-    // TODO better way to check end and get values
-    End::Data data{0, 0, 0};
-    for (const Individual& individual : individuals_) {
-      switch (individual.GetStatus()) {
-        case Individual::Status::kUninfected:
-          ++data.uninfected;
-          break;
-        case Individual::Status::kRecovered:
-          ++data.recovered;
-          break;
-        case Individual::Status::kDead:
-          ++data.dead;
-          break;
-        default:
-          break;
-      }
-    }
-    manager_->SetScene(make_unique<End>(manager_, data));
+    manager_->SetScene(make_unique<End>(manager_, CalculateEndData()));
     return;
   }
 
@@ -174,6 +156,26 @@ bool Game::HasEnded() {
     }
   }
   return (infected == 0);
+}
+
+End::Data Game::CalculateEndData() {
+  End::Data data{0, 0, 0};
+  for (const Individual& individual : individuals_) {
+    switch (individual.GetStatus()) {
+      case Individual::Status::kUninfected:
+        ++data.uninfected;
+        break;
+      case Individual::Status::kRecovered:
+        ++data.recovered;
+        break;
+      case Individual::Status::kDead:
+        ++data.dead;
+        break;
+      default:
+        break;
+    }
+  }
+  return data;
 }
 
 }  // namespace epidemic

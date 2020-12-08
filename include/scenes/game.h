@@ -5,6 +5,7 @@
 #include <isolation.h>
 #include <location.h>
 #include <scene_manager.h>
+#include <scenes/end.h>
 #include <view.h>
 
 namespace epidemic {
@@ -93,6 +94,13 @@ class Game : public View {
    * @return True if no more infected individuals remain
    */
   bool HasEnded();
+
+  /**
+   * Calculates End Data for game
+   *
+   * @return End Data for game
+   */
+  End::Data CalculateEndData();
 };
 
 }  // namespace epidemic

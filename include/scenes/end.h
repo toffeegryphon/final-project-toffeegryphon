@@ -5,6 +5,8 @@
 
 namespace epidemic {
 
+using std::string;
+
 class End : public View {
  public:
   /**
@@ -35,6 +37,8 @@ class End : public View {
 
  private:
   Data data_;
+
+  string GetText();
 };
 
 }  // namespace epidemic
