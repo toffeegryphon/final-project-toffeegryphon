@@ -33,7 +33,11 @@ void City::Update() {
     individual->Update(bounds_, type_);
   }
 
-  UpdateSpread();
+  frame_ = (frame_ + 1) % cfg::kSpreadCheckFrequency.value;
+  if (frame_ == 0) {
+    UpdateSpread();
+  }
+//  UpdateSpread();
 }
 
 void City::Draw(const vec2& offset) const {

@@ -79,6 +79,7 @@ class Location {
   Type type_;
   vec2 bounds_;
   vector<Individual*> individuals_;
+  size_t frame_ = 0;
 };
 
 }  // namespace epidemic

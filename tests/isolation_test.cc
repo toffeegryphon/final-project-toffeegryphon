@@ -165,26 +165,25 @@ TEST_CASE("Isolation ExtractIndividualsAt",
 
   SECTION("Extracts individual within radius of position") {
     isolation.Add(ind_ptrs);
-    vec2 position(ind_ptrs[0]->GetPosition().x +
-                      0.9 * cfg::kDefaultIndividualRadius,
-                  ind_ptrs[0]->GetPosition().y);
+    vec2 position(
+        ind_ptrs[0]->GetPosition().x + 0.9 * cfg::kDefaultIndividualRadius,
+        ind_ptrs[0]->GetPosition().y);
     REQUIRE(isolation.ExtractIndividualsAt(position) ==
             vector<Individual*>{ind_ptrs[0]});
   }
 
   SECTION("Does not extract individuals outside of radius of position") {
     isolation.Add(ind_ptrs);
-    vec2 position(ind_ptrs[0]->GetPosition().x +
-                      1.1 * cfg::kDefaultIndividualRadius,
-                  ind_ptrs[0]->GetPosition().y);
+    vec2 position(
+        ind_ptrs[0]->GetPosition().x + 1.1 * cfg::kDefaultIndividualRadius,
+        ind_ptrs[0]->GetPosition().y);
     REQUIRE(isolation.ExtractIndividualsAt(position).empty());
   }
 
   SECTION("Does not extract individuals at radius of position") {
     isolation.Add(ind_ptrs);
-    vec2 position(
-        ind_ptrs[0]->GetPosition().x + cfg::kDefaultIndividualRadius,
-        ind_ptrs[0]->GetPosition().y);
+    vec2 position(ind_ptrs[0]->GetPosition().x + cfg::kDefaultIndividualRadius,
+                  ind_ptrs[0]->GetPosition().y);
     REQUIRE(isolation.ExtractIndividualsAt(position).empty());
   }
 
@@ -244,6 +243,7 @@ TEST_CASE("Isolation ExtractIndividualsAt",
 }
 
 TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
+  cfg::kSpreadCheckFrequency.value = 1;
   vec2 bounds(100, 100);
   vector<Individual> individuals{
       Individual(bounds, Individual::Status::kAsymptomatic), Individual(bounds),
@@ -274,6 +274,33 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     }
   }
 
+  SECTION(
+      "Checks to pass to all if WillSpread and one sneezes only every "
+      "cfg::kSpreadCheckFrequency frames") {
+    cfg::kIsolationWillSpread.value = true;
+    cfg::kSpreadCheckFrequency.value = 5;
+    ind_ptrs[0]->SetSpread(vec2(1, 0));
+    ind_ptrs[1]->SetSpread(vec2(0, 0));
+    ind_ptrs[1]->SetHealthiness(0);
+    ind_ptrs[2]->SetSpread(vec2(0, 0));
+    ind_ptrs[2]->SetHealthiness(0);
+    isolation.Add(vector<Individual*>{ind_ptrs[0], ind_ptrs[1]});
+    for (int f = 0; f < cfg::kSpreadCheckFrequency.value - 1; ++f) {
+      isolation.Update();
+    }
+    REQUIRE(ind_ptrs[1]->GetStatus() == Individual::Status::kUninfected);
+    isolation.Update();
+    REQUIRE(ind_ptrs[1]->GetStatus() == Individual::Status::kAsymptomatic);
+
+    isolation.Add(vector<Individual*>{ind_ptrs[2]});
+    for (int f = 0; f < cfg::kSpreadCheckFrequency.value - 1; ++f) {
+      isolation.Update();
+    }
+    REQUIRE(ind_ptrs[2]->GetStatus() == Individual::Status::kUninfected);
+    isolation.Update();
+    REQUIRE(ind_ptrs[2]->GetStatus() == Individual::Status::kAsymptomatic);
+  }
+
   SECTION("Does not check to pass to all if not WillSpread and one sneezes") {
     cfg::kIsolationWillSpread.value = false;
     ind_ptrs[0]->SetSpread(vec2(1, 0));
@@ -296,8 +323,9 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
   SECTION("Updates recovery chance with isolation multiplier") {
     ind_ptrs[0]->SetRecovery(vec2(0, 0.2));
     isolation.Add(ind_ptrs);
-    float expected_recovery = ind_ptrs[0]->GetRecovery().x +
-                              ind_ptrs[0]->GetRecovery().y * cfg::kIsolationRecoveryFactor.value;
+    float expected_recovery =
+        ind_ptrs[0]->GetRecovery().x +
+        ind_ptrs[0]->GetRecovery().y * cfg::kIsolationRecoveryFactor.value;
     isolation.Update();
     REQUIRE(isolation.GetIndividuals()[0]->GetRecovery().x ==
             expected_recovery);
@@ -315,8 +343,7 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
 
   SECTION("Updating n frames will change asymptomatic to symptomatic") {
     isolation.Add(vector<Individual*>{ind_ptrs[0]});
-    for (int i = 0; i < cfg::kIsolationDetectionFrames.value - 1;
-         ++i) {
+    for (int i = 0; i < cfg::kIsolationDetectionFrames.value - 1; ++i) {
       isolation.Update();
     }
     REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
@@ -353,8 +380,7 @@ TEST_CASE("Isolation Update", "[isolation][lifecycle][update]") {
     isolation.Update();
     REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==
             Individual::Status::kAsymptomatic);
-    for (int i = 0; i < cfg::kIsolationDetectionFrames.value - 1;
-         ++i) {
+    for (int i = 0; i < cfg::kIsolationDetectionFrames.value - 1; ++i) {
       isolation.Update();
     }
     REQUIRE(isolation.GetIndividuals()[0]->GetStatus() ==

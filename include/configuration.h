@@ -88,6 +88,9 @@ static constexpr float kDefaultIndividualRadius = 10;
 static constexpr float kTraversalFrames = 1000;
 static constexpr float kReturnFactor = 10.0f;
 
+// Location
+extern Property<int> kSpreadCheckFrequency;
+
 // City
 extern Property<int> kPopulationSize;
 extern Property<int> kStartingSickCount;

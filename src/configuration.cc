@@ -20,6 +20,9 @@ void PopulateProperties() {
   kProperties.push_back(&kDeathChanceRange);
   kProperties.push_back(&kDeathROCRange);
 
+  // Location
+  kProperties.push_back(&kSpreadCheckFrequency);
+
   // City
   kProperties.push_back(&kPopulationSize);
   kProperties.push_back(&kStartingSickCount);
@@ -51,7 +54,7 @@ Property<float> kSneezeRadius{VType::kFloat, "Sneeze Radius", 30.0f,
 
 // Minimum Value, Range
 Property<vec2> kSpreadChanceRange{
-    VType::kVec2, "Spread Chance Min, Range", vec2(0.001, 0.003),
+    VType::kVec2, "Spread Chance Min, Range", vec2(0.010, 0.010),
     pair<vec2, vec2>(vec2(0.0f, 1.0f), vec2(0.001f, 1.0f)), "%.3f"};
 Property<vec2> kSpreadInfectedROCRange{
     VType::kVec2, "Spread Chance (Infected) Rate of Change Min, Range",
@@ -81,6 +84,10 @@ Property<vec2> kDeathROCRange{
 vec2 kDefaultHealthinessRange{-0.5, 0.3};
 // TODO Currently unused
 vec2 kDefaultWanderlustRange{0.9, 3};
+
+// Location
+Property<int> kSpreadCheckFrequency{
+    VType::kInt, "Spread Check Frequency (frames)", 10, pair<int, int>(1, 200)};
 
 // City
 Property<int> kPopulationSize{VType::kInt, "Population Size", 30,

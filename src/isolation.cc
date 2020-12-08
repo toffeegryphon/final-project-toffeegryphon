@@ -67,7 +67,11 @@ void epidemic::Isolation::Update() {
   }
 
   if (cfg::kIsolationWillSpread.value) {
-    UpdateSpread();
+    frame_ = (frame_ + 1) % cfg::kSpreadCheckFrequency.value;
+    if (frame_ == 0) {
+      UpdateSpread();
+    }
+    // UpdateSpread();
   }
 }
 

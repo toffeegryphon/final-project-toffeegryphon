@@ -26,6 +26,7 @@ TEST_CASE("City Constructor", "[city][constructor") {
 }
 
 TEST_CASE("City Update", "[city][lifecycle][update]") {
+  cfg::kSpreadCheckFrequency.value = 1;
   vec2 bounds(100, 100);
 
   // TODO Generator or put in Utils
@@ -201,6 +202,50 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
         REQUIRE(individual->GetStatus() == Individual::Status::kUninfected);
       }
     }
+  }
+
+  SECTION("Transmission check only every cfg::kSpreadCheckFrequency frames") {
+    cfg::kSpreadCheckFrequency.value = 5;
+    vector<Individual> individuals{
+        Individual(bounds, Individual::Status::kAsymptomatic),
+        Individual(bounds)};
+
+    individuals[0].SetSpread(vec2(1, 0));
+    individuals[0].SetPosition(vec2(50, 50));
+
+    queue<vec2> destinations;
+    destinations.push(individuals[0].GetPosition());
+    individuals[0].SetDestinations(destinations);
+    individuals[0].SetRouteMode(Route::Mode::kDeplete);
+
+    individuals[1].SetPosition(vec2(55, 55));
+    individuals[1].SetDestinations(destinations);
+    individuals[1].SetRouteMode(Route::Mode::kDeplete);
+    individuals[1].SetHealthiness(0);
+
+    City city(bounds, ToPointers(&individuals));
+
+    for (int f = 0; f < cfg::kSpreadCheckFrequency.value - 1; ++f) {
+      city.Update();
+    }
+
+    REQUIRE(individuals[1].GetStatus() == Individual::Status::kUninfected);
+    city.Update();
+    REQUIRE(individuals[1].GetStatus() == Individual::Status::kAsymptomatic);
+
+    Individual after(bounds);
+    after.SetPosition(vec2(55, 55));
+    after.SetDestinations(destinations);
+    after.SetRouteMode(Route::Mode::kDeplete);
+    after.SetHealthiness(0);
+    city.Add(vector<Individual*>{&after});
+
+    for (int f = 0; f < cfg::kSpreadCheckFrequency.value - 1; ++f) {
+      city.Update();
+    }
+    REQUIRE(after.GetStatus() == Individual::Status::kUninfected);
+    city.Update();
+    REQUIRE(after.GetStatus() == Individual::Status::kAsymptomatic);
   }
 }
 
