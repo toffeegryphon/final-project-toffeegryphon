@@ -32,8 +32,8 @@ Individual::Individual(const vec2& bounds, Status status)
                  GetRandomRecovery(), GetRandomDeath()) {
 }
 
-Individual::Individual(float healthiness, const vec2& bounds,
-                       Status status, const vec2& position, const vec2& spread,
+Individual::Individual(float healthiness, const vec2& bounds, Status status,
+                       const vec2& position, const vec2& spread,
                        const vec2& recovery, const vec2& death)
     : healthiness_(healthiness),
       status_(status),
@@ -86,26 +86,7 @@ void Individual::Update(const vec2& bounds, Location::Type location_type) {
 }
 
 void Individual::Draw(const vec2& offset) const {
-  switch (status_) {
-    case Status::kUninfected:
-    case Status::kAsymptomatic:
-      color(0, 0, 1);
-      break;
-    case Status::kSymptomatic:
-      color(1, 1, 0);
-      break;
-    case Status::kDying:
-      color(1, 0, 0);
-      break;
-    case Status::kDead:
-      color(1, 1, 1);
-      break;
-    case Status::kRecovering:
-      color(0, 1, 1);
-      break;
-    case Status::kRecovered:
-      color(0, 1, 0);
-  }
+  color(utils::GetColor(status_));
   drawSolidCircle(GetPosition() + offset, cfg::kDefaultIndividualRadius);
 
 #ifdef DEBUG

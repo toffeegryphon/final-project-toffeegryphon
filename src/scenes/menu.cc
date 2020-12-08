@@ -2,6 +2,7 @@
 #include <configuration.h>
 #include <scenes/game.h>
 #include <scenes/menu.h>
+#include <utils.h>
 
 namespace epidemic {
 
@@ -9,6 +10,7 @@ using cfg::BaseProperty;
 using cfg::kProperties;
 using cfg::VType;
 using std::make_unique;
+using utils::DrawIndividualInfo;
 
 Menu::Menu(SceneManager* manager) : View(manager, true) {
 }
@@ -20,6 +22,8 @@ void Menu::Draw() {
   }
 
   DrawSettings();
+
+  DrawIndividualInfo();
 }
 
 void Menu::DrawSettings() {

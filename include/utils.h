@@ -9,6 +9,7 @@ namespace epidemic {
 
 namespace utils {
 
+using ci::Color;
 using glm::vec2;
 
 // Generation
@@ -84,6 +85,28 @@ vec2 GetRandomRecovery();
  * @return Random vec2 representing death chance, ROC
  */
 vec2 GetRandomDeath();
+
+/**
+ * Returns color corresponding to status
+ *
+ * @param status To get color of
+ * @return Color corresponding to status
+ */
+Color GetColor(Individual::Status status);
+
+/**
+ * Returns label corresponding to status
+ *
+ * @param status To get label of
+ * @return Label corresponding to status
+ */
+string GetLabel(Individual::Status status);
+
+/**
+ * Draws a full length information bar regarding individual color and label at
+ * the bottom of the screen in own ImGui window
+ */
+void DrawIndividualInfo();
 
 // Calculation & Comparison
 

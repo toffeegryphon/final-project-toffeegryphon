@@ -32,8 +32,8 @@ void View::DrawExternal() {
     ImGui::SetNextWindowPos(vec2());
     ImGui::SetNextWindowSize(kWindowSize);
     Begin("gui", nullptr,
-          ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove |
-              ImGuiWindowFlags_NoResize);
+          ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus |
+              ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
   }
   Draw();
   if (with_im_gui_) {

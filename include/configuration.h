@@ -100,6 +100,10 @@ extern Property<float> kIsolationRecoveryFactor;
 extern Property<float> kIsolationDeathFactor;
 extern Property<int> kIsolationDetectionFrames;
 
+// UI
+constexpr float kInfoMargins = 50;
+constexpr float kInfoIndividualRadius = 10;
+
 }  // namespace cfg
 
 }  // namespace epidemic

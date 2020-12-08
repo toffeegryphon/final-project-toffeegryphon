@@ -1,3 +1,4 @@
+#include <CinderImGui.h>
 #include <cinder/gl/gl.h>
 #include <configuration.h>
 #include <scenes/end.h>
@@ -14,6 +15,7 @@ using cfg::kStartingSickCount;
 
 using std::make_unique;
 using std::unordered_set;
+using utils::DrawIndividualInfo;
 using utils::IsInLocation;
 using utils::ToPointers;
 
@@ -68,6 +70,8 @@ void Game::Draw() {
 
   city_.Draw(kCityData.offset);
   hand_.Draw();
+
+  DrawIndividualInfo();
 }
 
 // TODO Test mouse interaction
