@@ -60,11 +60,7 @@ vector<Individual*> Location::ExtractIndividualsAt(const vec2& position) {
 
 // Lifecycle
 
-void Location::Update() {
-}
-
 void Location::Draw(const vec2& offset) const {
-  // TODO Not Hardcode, maybe different colors as well
   color(Color::gray(0.2f));
   drawSolidRect(Rectf(offset, bounds_ + offset));
 

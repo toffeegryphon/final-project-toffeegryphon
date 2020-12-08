@@ -14,7 +14,7 @@ class Location {
   /**
    * Location Types
    */
-  enum Type { kCity, kIsolation, kEmergency };
+  enum Type { kCity, kIsolation };
 
   /**
    * Container for size and offset of a Location
@@ -60,7 +60,7 @@ class Location {
   /**
    * Virtual update hook to be overridden and called by parent View
    */
-  virtual void Update();
+  virtual void Update() {};
 
   /**
    * Draws this with a background and all the Individuals within this at offset

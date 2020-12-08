@@ -20,12 +20,6 @@ View::View(SceneManager* manager, bool with_im_gui)
     : id_(GetNextID()), manager_(manager), with_im_gui_(with_im_gui) {
 }
 
-void View::Setup() {
-}
-
-void View::Update() {
-}
-
 void View::DrawExternal() {
   clear();
   if (with_im_gui_) {
@@ -39,18 +33,6 @@ void View::DrawExternal() {
   if (with_im_gui_) {
     End();
   }
-}
-
-void View::MouseDown(MouseEvent event) {
-}
-
-void View::MouseUp(MouseEvent event) {
-}
-
-void View::MouseMove(MouseEvent event) {
-}
-
-void View::MouseDrag(MouseEvent event) {
 }
 
 size_t View::GetID() const {
@@ -68,9 +50,6 @@ bool View::operator!=(const View& rhs) const {
 size_t View::next_id_ = 0;
 size_t View::GetNextID() {
   return next_id_++;
-}
-
-void View::Draw() {
 }
 
 }  // namespace epidemic
