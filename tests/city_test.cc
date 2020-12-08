@@ -29,7 +29,6 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
   cfg::kSpreadCheckFrequency.value = 1;
   vec2 bounds(100, 100);
 
-  // TODO Generator or put in Utils
   vector<Individual> source{
       Individual(bounds, Individual::Status::kAsymptomatic),
       Individual(bounds, Individual::Status::kAsymptomatic), Individual(bounds),
@@ -252,7 +251,6 @@ TEST_CASE("City Update", "[city][lifecycle][update]") {
 TEST_CASE("City Add", "[city][interaction][add]") {
   vec2 bounds(100, 100);
 
-  // TODO Generator or put in Utils
   vector<Individual> source{
       Individual(bounds, Individual::Status::kAsymptomatic),
       Individual(bounds, Individual::Status::kAsymptomatic), Individual(bounds),
@@ -294,7 +292,6 @@ TEST_CASE("City Add", "[city][interaction][add]") {
 TEST_CASE("City ExtractIndividualsAt", "[city][interaction][extract]") {
   vec2 bounds(100, 100);
 
-  // TODO Generator or put in Utils
   vector<Individual> src{Individual(bounds, Individual::Status::kAsymptomatic)};
   vector<Individual*> src_ptrs = ToPointers(&src);
 

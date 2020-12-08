@@ -29,9 +29,6 @@ void Hand::Update(const vec2& position) {
 void Hand::Draw() {
   vec2 zero;
   for (Individual* individual : individuals_) {
-    // TODO maybe instead can let indiv have a draw func that takes in position
-    // to draw at
-    // TODO also spread out, do not cluster
     individual->Draw(zero);
   }
 }

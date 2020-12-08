@@ -66,7 +66,6 @@ void Route::SetDestinations(const queue<vec2>& destinations) {
 // Private
 
 void Route::FillDestinations(const vec2& bounds) {
-  // TODO Implement wanderlust here
   for (size_t i = destinations_.size(); i < kQueueSize.second; ++i) {
     destinations_.push(GetRandomPosition(bounds));
   }
@@ -78,7 +77,6 @@ void Route::MoveTowards(float speed, const vec2& destination) {
   position_ =
       (travel_ratio >= 1) ? destination : position_ + to_travel * travel_ratio;
 
-  // TODO Implement pos and revert to old method (min of 1 and ratio)
   if (position_ == destination) {
     destinations_.pop();
   }

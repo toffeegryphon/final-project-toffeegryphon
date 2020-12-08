@@ -212,7 +212,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
   }
 
   SECTION("Does not decrease state to kSymptomatic if kDying") {
-    srand(3);
+    srand(2);
     Individual::Status status = Individual::Status::kDying;
     Individual i(bounds, status);
     i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
@@ -262,7 +262,7 @@ TEST_CASE("Individual Update City", "[individual][update]") {
   }
 
   SECTION("Dying if cross dying threshold") {
-    srand(3);
+    srand(2);
     Individual i(bounds, Individual::Status::kAsymptomatic);
     i.SetSpread(vec2());
     i.SetRecovery(vec2());
@@ -398,7 +398,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
   }
 
   SECTION("Does not decrease state to kSymptomatic if kDying") {
-    srand(3);
+    srand(2);
     Individual::Status status = Individual::Status::kDying;
     Individual i(bounds, status);
     i.SetDeath(vec2(cfg::kDyingThreshold.value + 0.1f, 0));
@@ -455,7 +455,7 @@ TEST_CASE("Individual Update Isolation", "[individual][update]") {
   }
 
   SECTION("Dying if cross dying threshold") {
-    srand(3);
+    srand(2);
     Individual i(bounds, Individual::Status::kAsymptomatic);
     i.SetSpread(vec2());
     i.SetRecovery(vec2());

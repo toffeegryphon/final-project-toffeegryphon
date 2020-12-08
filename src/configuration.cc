@@ -82,8 +82,6 @@ Property<vec2> kDeathROCRange{
     pair<vec2, vec2>(vec2(-1.0f, 1.0f), vec2(0.0000001f, 1.0f)), "%.7f"};
 
 vec2 kDefaultHealthinessRange{-0.5, 0.3};
-// TODO Currently unused
-vec2 kDefaultWanderlustRange{0.9, 3};
 
 // Location
 Property<int> kSpreadCheckFrequency{

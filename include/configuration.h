@@ -45,7 +45,6 @@ struct Property : public BaseProperty {
 };
 
 extern vector<BaseProperty*> kProperties;
-// TODO Maybe should combine Getter and populate into one function
 /**
  * Adds all properties defined within this function to kProperties
  */
@@ -79,8 +78,6 @@ extern Property<vec2> kDeathChanceRange;
 extern Property<vec2> kDeathROCRange;
 
 extern vec2 kDefaultHealthinessRange;
-// TODO Currently unused
-extern vec2 kDefaultWanderlustRange;
 
 static constexpr float kDefaultIndividualRadius = 10;
 

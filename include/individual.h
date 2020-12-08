@@ -50,7 +50,6 @@ class Individual {
   /**
    * Initializes Individual with given attributes
    * @param healthiness
-   * @param wanderlust
    * @param bounds
    * @param status
    * @param position
@@ -58,7 +57,7 @@ class Individual {
    * @param recovery
    * @param death
    */
-  Individual(float healthiness, float wanderlust, const vec2& bounds,
+  Individual(float healthiness, const vec2& bounds,
              Status status, const vec2& position, const vec2& spread,
              const vec2& recovery, const vec2& death);
 
@@ -131,7 +130,6 @@ class Individual {
   Status status_;
   vec2 spread_, recovery_, death_;
 
-  float wanderlust_;
   Route route_;
 
   /**
@@ -140,7 +138,6 @@ class Individual {
    */
   void UpdateSneezeAndSymptoms();
 
-  // TODO Non instantaneous recovery
   /**
    * Performs recover and death checks, influenced by location_type, and updates
    * status to recovering or death if either passes, updating spread chance and

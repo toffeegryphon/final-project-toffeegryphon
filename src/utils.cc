@@ -26,10 +26,6 @@ float GetRandomHealthiness() {
   return GetRandomInRange(cfg::kDefaultHealthinessRange);
 }
 
-float GetRandomWanderlust() {
-  return GetRandomInRange(cfg::kDefaultWanderlustRange);
-}
-
 vec2 GetRandomChanceROC(const vec2& chance_range, const vec2& roc_range) {
   return vec2{GetRandomInRange(chance_range), GetRandomInRange(roc_range)};
 }
@@ -39,7 +35,6 @@ vec2 GetRandomSpread() {
                             cfg::kSpreadInfectedROCRange.value);
 }
 
-// TODO TEST Take healthiness, has_recovered
 vec2 GetRandomRecovery() {
   return GetRandomChanceROC(cfg::kRecoveryChanceRange.value,
                             cfg::kRecoveryROCRange.value);
@@ -55,7 +50,6 @@ float DistanceX(const Individual& first, const Individual& second) {
 }
 
 bool CompareX(const Individual* first, const Individual* second) {
-  // TODO Maybe sort by y if x same
   return first->GetPosition().x < second->GetPosition().x;
 }
 

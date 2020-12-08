@@ -41,14 +41,13 @@ position.
 1. Implement Controls: Isolation and Emergency wards, dragging and
 dropping individuals, and the simulation behind wards (e.g. 
 increasing recovery rate, decrease death rate)
-2. Implement Economy: Decide between actual economy with changes in
-actual monetary values, or just a weekly budget and reserves.
-3. Implement Power Ups: e.g. masks, lockdown, testing.
+2. Work on settings and difficulty selection.
 
 #### Week 3
 1. General improvement and cleaning up, removal of half-baked
 features.
-2. Work on settings and difficulty selection.
+2. Improve implementations.
+3. Update UI.
 
 #### Stretch Goals
 1. Add other causes of sickness to occupy beds
@@ -58,6 +57,9 @@ features.
 5. Fetch rates and chances from online sources
 6. Better animations
 7. Cheat codes
+8. Implement Economy: Decide between actual economy with changes in
+   actual monetary values, or just a weekly budget and reserves.
+9. Implement Power Ups: e.g. masks, lockdown, testing.
 
 ### Specifics
 

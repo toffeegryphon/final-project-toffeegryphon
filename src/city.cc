@@ -71,7 +71,6 @@ void City::UpdateSpread() {
         individuals_[j]->CheckAndBecomeInfected(*source);
       }
 
-      // TODO better way
       for (size_t j = i - 1; j < individuals_.size(); --j) {
         if (DistanceX(*individuals_[j], *source) > cfg::kSneezeRadius.value) {
           break;

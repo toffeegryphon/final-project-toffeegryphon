@@ -13,7 +13,6 @@ using utils::GetRandomInRange;
 using utils::GetRandomPosition;
 using utils::GetRandomRecovery;
 using utils::GetRandomSpread;
-using utils::GetRandomWanderlust;
 using utils::IsInLocation;
 
 #ifdef DEBUG
@@ -28,16 +27,15 @@ Individual::Individual(const vec2& bounds)
 }
 
 Individual::Individual(const vec2& bounds, Status status)
-    : Individual(GetRandomHealthiness(), GetRandomWanderlust(), bounds, status,
+    : Individual(GetRandomHealthiness(), bounds, status,
                  GetRandomPosition(bounds), GetRandomSpread(),
                  GetRandomRecovery(), GetRandomDeath()) {
 }
 
-Individual::Individual(float healthiness, float wanderlust, const vec2& bounds,
+Individual::Individual(float healthiness, const vec2& bounds,
                        Status status, const vec2& position, const vec2& spread,
                        const vec2& recovery, const vec2& death)
     : healthiness_(healthiness),
-      wanderlust_(wanderlust),
       status_(status),
       route_(bounds, position),
       spread_(spread),
@@ -207,8 +205,7 @@ size_t Individual::GetNextID() {
 
 void Individual::UpdateSneezeAndSymptoms() {
   is_sneezing_ = GetRandom() < spread_.x;
-  // TODO Possibly limit to at most some chance
-  // TODO Maybe this should be restricted to only in Isolation
+
   if (spread_.x < 0) {
     status_ = Status::kRecovered;
     is_sneezing_ = false;

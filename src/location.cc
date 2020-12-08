@@ -29,11 +29,10 @@ vector<Individual*> Location::Add(const vector<Individual*>& individuals) {
 // Interaction
 vector<Individual*> Location::ExtractIndividualsAt(const vec2& position) {
   float radius = kDefaultIndividualRadius;
-  // TODO Binary search
+
   vector<size_t> to_remove;
   vector<Individual*> individuals;
 
-  // TODO sort of hacky...
   Individual target((vec2()));
   target.SetPosition(vec2(position.x - radius, position.y));
 
@@ -53,7 +52,6 @@ vector<Individual*> Location::ExtractIndividualsAt(const vec2& position) {
   // Already sorted
   size_t r_count = 0;
   for (size_t i : to_remove) {
-    // TODO in this case maybe save the steps instead of abs index
     individuals_.erase(individuals_.begin() + (i - r_count++));
   }
 

@@ -117,7 +117,6 @@ void Isolation::Discharge(vector<Individual*>* individuals) {
 }
 
 void Isolation::UpdateSpread() {
-  // TODO Consider whether spreading to all is good idea
   if (any_of(individuals_.begin(), individuals_.end(),
              [](const Individual* i) { return i->IsSneezing(); })) {
     for (Individual* individual : individuals_) {

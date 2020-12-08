@@ -164,6 +164,9 @@ TEST_CASE("Isolation ExtractIndividualsAt",
   }
 
   SECTION("Extracts individual within radius of position") {
+    ind_ptrs[0]->SetPosition(vec2(50, 50));
+    ind_ptrs[1]->SetPosition(vec2(0, 0));
+    ind_ptrs[2]->SetPosition(vec2(90, 90));
     isolation.Add(ind_ptrs);
     vec2 position(
         ind_ptrs[0]->GetPosition().x + 0.9 * cfg::kDefaultIndividualRadius,
@@ -181,6 +184,9 @@ TEST_CASE("Isolation ExtractIndividualsAt",
   }
 
   SECTION("Does not extract individuals at radius of position") {
+    ind_ptrs[0]->SetPosition(vec2(50, 50));
+    ind_ptrs[1]->SetPosition(vec2(0, 0));
+    ind_ptrs[2]->SetPosition(vec2(90, 90));
     isolation.Add(ind_ptrs);
     vec2 position(ind_ptrs[0]->GetPosition().x + cfg::kDefaultIndividualRadius,
                   ind_ptrs[0]->GetPosition().y);

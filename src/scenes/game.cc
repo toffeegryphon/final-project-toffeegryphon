@@ -31,8 +31,6 @@ Game::Game(SceneManager* manager) : View(manager) {
 
 // Lifecycle
 
-// TODO Test all updates
-
 void Game::Update() {
   if (HasEnded()) {
     // TODO better way to check end and get values
@@ -103,7 +101,7 @@ void Game::MouseUp(MouseEvent event) {
   for (pair<Isolation, Location::Data>& isolation : isolations_) {
     if (IsInLocation(pos, isolation.second)) {
       hand_.Update(pos - isolation.second.offset);
-      // Handle overflow TODO maybe better way to write
+      // Handle overflow
       hand_.Add(isolation.first.Add(hand_.Release()));
       break;
     }
@@ -173,11 +171,5 @@ bool Game::HasEnded() {
   }
   return (infected == 0);
 }
-
-// TODO Remove
-// Powerups class
-// Masks - cost x per person
-// Lockdown - reduce budget
-// Testing - cost x per person per frequency
 
 }  // namespace epidemic
