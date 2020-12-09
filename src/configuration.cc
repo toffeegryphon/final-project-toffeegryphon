@@ -4,6 +4,11 @@ namespace epidemic {
 
 namespace cfg {
 
+using std::fmax;
+using std::fmin;
+using std::max;
+using std::min;
+
 void PopulateProperties() {
   // Individual
   kProperties.push_back(&kSymptomaticThreshold);
@@ -34,6 +39,40 @@ void PopulateProperties() {
   kProperties.push_back(&kIsolationRecoveryFactor);
   kProperties.push_back(&kIsolationDeathFactor);
   kProperties.push_back(&kIsolationDetectionFrames);
+}
+
+void NormalizeProperties() {
+  for (BaseProperty* p : kProperties) {
+    switch (p->v_type) {
+      case VType::kInt: {
+        auto* property = dynamic_cast<cfg::Property<int>*>(p);
+        property->value =
+            max(property->value_range.first,
+                min(property->value, property->value_range.second));
+        break;
+      }
+      case VType::kFloat: {
+        auto* property = dynamic_cast<cfg::Property<float>*>(p);
+        property->value =
+            fmax(property->value_range.first,
+                 fmin(property->value, property->value_range.second));
+        break;
+      }
+      case VType::kVec2: {
+        auto* property = dynamic_cast<cfg::Property<vec2>*>(p);
+        property->value.x =
+            max(property->value_range.first.x,
+                min(property->value.x, property->value_range.first.y));
+        property->value.y =
+            max(property->value_range.first.x,
+                min(property->value.y, property->value_range.first.y));
+        break;
+      }
+      case VType::kBool: {
+        break;
+      }
+    }
+  }
 }
 
 vector<BaseProperty*> kProperties{};

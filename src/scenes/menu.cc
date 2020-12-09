@@ -18,6 +18,7 @@ Menu::Menu(SceneManager* manager) : View(manager, true) {
 void Menu::Draw() {
   ImGui::Text("Epidemic");
   if (ImGui::Button("start")) {
+    cfg::NormalizeProperties();
     manager_->SetScene(make_unique<Game>(manager_));
   }
 
@@ -34,6 +35,9 @@ void Menu::DrawSettings() {
         ImGui::SliderInt(property->label.c_str(), &property->value,
                          property->value_range.first,
                          property->value_range.second);
+        if (property->label == "Population Size") {
+          cfg::kStartingSickCount.value_range.second = property->value;
+        }
         break;
       }
       case VType::kFloat: {

@@ -45,10 +45,13 @@ struct Property : public BaseProperty {
 };
 
 extern vector<BaseProperty*> kProperties;
+
 /**
  * Adds all properties defined within this function to kProperties
  */
 void PopulateProperties();
+
+void NormalizeProperties();
 
 // https://stackoverflow.com/questions/11055802/static-and-extern-global-variables-in-c-and-c#
 
