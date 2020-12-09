@@ -78,7 +78,7 @@ void NormalizeProperties() {
 vector<BaseProperty*> kProperties{};
 
 // App
-vec2 kWindowSize{1200, 800};
+vec2 kWindowSize{1600, 900};
 
 // Individual
 

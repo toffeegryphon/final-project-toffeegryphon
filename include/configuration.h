@@ -105,7 +105,7 @@ extern Property<float> kIsolationDeathFactor;
 extern Property<int> kIsolationDetectionFrames;
 
 // UI
-const Location::Data kCityData{vec2{500, 500}, vec2{20, 20}};
+const Location::Data kCityData{vec2{1280, 720}, vec2{20, 20}};
 
 constexpr float kInfoMargins = 50;
 constexpr float kInfoIndividualRadius = 10;
