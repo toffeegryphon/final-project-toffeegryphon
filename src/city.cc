@@ -37,7 +37,6 @@ void City::Update() {
   if (frame_ == 0) {
     UpdateSpread();
   }
-//  UpdateSpread();
 }
 
 void City::Draw(const vec2& offset) const {

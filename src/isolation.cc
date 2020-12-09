@@ -70,7 +70,6 @@ void epidemic::Isolation::Update() {
     if (frame_ == 0) {
       UpdateSpread();
     }
-    // UpdateSpread();
   }
 }
 
