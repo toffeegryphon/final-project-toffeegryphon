@@ -43,7 +43,6 @@ TEST_CASE("Game Constructor") {
 
   SECTION("Initializes correct number of Isolations") {
     REQUIRE(game.GetIsolations().size() == cfg::kIsolationCount.value);
-    // TODO Probably should check position and offset of Isolation as well
   }
 }
 

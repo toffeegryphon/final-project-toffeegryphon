@@ -35,7 +35,6 @@ class Location {
   explicit Location(Type type, const vec2& bounds);
 
   // Interaction
-  // TODO May need to test here too
 
   /**
    * Adds individuals to this, and returns an empty vector of Individual

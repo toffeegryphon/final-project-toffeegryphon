@@ -69,9 +69,7 @@ class Game : public View {
   Location::Data kCityData{vec2{500, 500}, vec2{20, 20}};
   City city_;
 
-  // TODO Vector tie to each Isolation
   Location::Data kTemplateIsolationData{vec2{200, 100}, vec2{20, 20}};
-  // TODO Maybe isolation manager
   vector<pair<Isolation, Location::Data>> isolations_;
   Hand hand_;
 

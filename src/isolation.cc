@@ -20,7 +20,6 @@ Isolation::Isolation(const vec2& bounds, size_t capacity)
 
 vector<Individual*> epidemic::Isolation::Add(
     const vector<Individual*>& individuals) {
-  // TODO Only pass required number of individuals
   vector<Individual*> rejected;
 
   size_t total = individuals_.size() + individuals.size();
@@ -109,7 +108,6 @@ void Isolation::UpdateAdmission() {
 }
 
 void Isolation::Discharge(vector<Individual*>* individuals) {
-  // TODO Automated discharge as powerup maybe
   for (Individual* individual : *individuals) {
     individual->SetDestinations(queue<vec2>());
     individual->SetRouteMode(Route::Mode::kContinuous);

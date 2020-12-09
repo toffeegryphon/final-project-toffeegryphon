@@ -62,7 +62,6 @@ void Individual::Update(const vec2& bounds, Location::Type location_type) {
     return;
   }
 
-  // TODO Maybe member variable
   float speed = length(bounds) / cfg::kTraversalFrames;
 
   if (!IsInLocation(route_.GetPosition(), Location::Data{bounds, vec2()})) {
