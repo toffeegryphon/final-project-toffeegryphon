@@ -90,4 +90,178 @@ TEST_CASE("Game Update") {
   }
 }
 
+TEST_CASE("Mouse Down") {
+  SceneManager manager;
+
+  size_t size = 3;
+  cfg::kPopulationSize.value = size;
+  cfg::kStartingSickCount.value = 0;
+  Game game(&manager);
+
+  SECTION("Does not move individuals if empty spot") {
+    MouseEvent event;
+    event.setPos(vec2(0, cfg::kCityData.size.y + cfg::kCityData.offset.y +
+                             3 * cfg::kDefaultIndividualRadius));
+    game.MouseDown(event);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+  }
+
+  SECTION("Removes individual at MouseEvent from city and adds to hand") {
+    size_t i = 0;
+    size_t id = game.GetIndividuals()[i].GetID();
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[i].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetHand().GetIndividuals()[0]->GetID() == id);
+
+    const vector<Individual*>& v_i = game.GetCity().GetIndividuals();
+    REQUIRE(v_i.size() == size - 1);
+    REQUIRE(std::find_if(v_i.begin(), v_i.end(), [id](Individual* i) {
+              return (i->GetID() == id);
+            }) == v_i.end());
+  }
+
+  SECTION("Removes individual at MouseEvent from isolation and adds to hand") {
+    size_t i = 0;
+    size_t id = game.GetIndividuals()[i].GetID();
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[i].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    event.setPos(game.GetIsolations()[0].second.offset + vec2(5, 5));
+    game.MouseUp(event);
+    REQUIRE(game.GetIsolations()[0].first.GetIndividuals().size() == 1);
+
+    game.MouseDown(event);
+    REQUIRE(game.GetIsolations()[0].first.GetIndividuals().empty());
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetHand().GetIndividuals()[0]->GetID() == id);
+  }
+}
+
+TEST_CASE("Mouse Up") {
+  SceneManager manager;
+
+  size_t size = 3;
+  cfg::kPopulationSize.value = size;
+  cfg::kStartingSickCount.value = 0;
+
+  SECTION("Does not move anything on empty hand") {
+    Game game(&manager);
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[0].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseUp(event);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+  }
+
+  SECTION(
+      "Removes all individuals from hand and adds to city if released in "
+      "city") {
+    Game game(&manager);
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[0].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size - 1);
+
+    event.setPos(cfg::kCityData.offset + vec2(10, 10));
+    game.MouseUp(event);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+    REQUIRE(game.GetCity().GetIndividuals().size() == size);
+  }
+
+  SECTION(
+      "Removes all individuals from hand and adds to isolation if released in "
+      "isolation") {
+    Game game(&manager);
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[0].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size - 1);
+
+    event.setPos(game.GetIsolations()[0].second.offset + vec2(5, 5));
+    game.MouseUp(event);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+    REQUIRE(game.GetCity().GetIndividuals().size() == size - 1);
+    REQUIRE(game.GetIsolations()[0].first.GetIndividuals().size() == 1);
+  }
+
+  SECTION(
+      "Removes all individuals from hand and adds to city if released in "
+      "isolation but overflows") {
+    cfg::kIsolationCapacity.value = 0;
+    Game game(&manager);
+
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[0].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size - 1);
+
+    event.setPos(game.GetIsolations()[0].second.offset + vec2(5, 5));
+    game.MouseUp(event);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+    REQUIRE(game.GetIsolations()[0].first.GetIndividuals().empty());
+    REQUIRE(game.GetCity().GetIndividuals().size() == size);
+  }
+
+  SECTION(
+      "Removes all individuals from hand and adds to city if released "
+      "elsewhere") {
+    Game game(&manager);
+    MouseEvent event;
+    event.setPos(game.GetIndividuals()[0].GetPosition() +
+                 cfg::kCityData.offset);
+    game.MouseDown(event);
+    REQUIRE(game.GetHand().GetIndividuals().size() == 1);
+    REQUIRE(game.GetCity().GetIndividuals().size() == size - 1);
+
+    event.setPos(cfg::kCityData.offset + cfg::kCityData.size + vec2(10, 10));
+    game.MouseUp(event);
+    REQUIRE(game.GetHand().GetIndividuals().empty());
+    REQUIRE(game.GetCity().GetIndividuals().size() == size);
+  }
+}
+
+TEST_CASE("Mouse Drag and Move") {
+  SceneManager manager;
+
+  size_t size = 3;
+  cfg::kPopulationSize.value = size;
+  cfg::kStartingSickCount.value = 0;
+  Game game(&manager);
+
+  MouseEvent event;
+  for (const Individual& individual : game.GetIndividuals()) {
+    event.setPos(individual.GetPosition() + cfg::kCityData.offset);
+    game.MouseDown(event);
+  }
+  REQUIRE(game.GetHand().GetIndividuals().size() == size);
+
+  vec2 pos(1000, 1000);
+  event.setPos(pos);
+  game.MouseMove(event);
+
+  SECTION("MouseDrag updates position of individuals in hand") {
+    for (const Individual& individual : game.GetIndividuals()) {
+      REQUIRE(individual.GetPosition() == pos);
+    }
+  }
+
+  SECTION("MouseMove updates position of individuals in hand") {
+    for (const Individual& individual : game.GetIndividuals()) {
+      REQUIRE(individual.GetPosition() == pos);
+    }
+  }
+}
+
 }  // namespace epidemic

@@ -131,8 +131,6 @@ Property<int> kPopulationSize{VType::kInt, "Population Size", 30,
                               pair<int, int>(1, 200)};
 Property<int> kStartingSickCount{VType::kInt, "Starting Sick Count", 1,
                                  pair<int, int>(1, kPopulationSize.value)};
-// TODO Need to fix overshooting or find some way to cap it
-// Probably can have a normalize function called before starting
 
 // Isolation
 Property<int> kIsolationCount{VType::kInt, "Isolation Count", 3,

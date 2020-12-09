@@ -61,12 +61,12 @@ class Game : public View {
   const vector<Individual>& GetIndividuals() const;
   const City& GetCity() const;
   const vector<pair<Isolation, Location::Data>>& GetIsolations() const;
+  const Hand& GetHand() const;
 
  private:
   // Cannot be reordered
   vector<Individual> individuals_;
 
-  Location::Data kCityData{vec2{500, 500}, vec2{20, 20}};
   City city_;
 
   Location::Data kTemplateIsolationData{vec2{200, 100}, vec2{20, 20}};

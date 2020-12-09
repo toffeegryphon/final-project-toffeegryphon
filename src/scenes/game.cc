@@ -8,6 +8,7 @@
 
 namespace epidemic {
 
+using cfg::kCityData;
 using cfg::kIsolationCount;
 using cfg::kPopulationSize;
 using cfg::kStartingSickCount;
@@ -55,8 +56,6 @@ void Game::Draw() {
 
   DrawIndividualInfo();
 }
-
-// TODO Test mouse interaction
 
 void Game::MouseDown(MouseEvent event) {
   vec2 pos = event.getPos();
@@ -113,6 +112,10 @@ const vector<Individual>& Game::GetIndividuals() const {
 }
 const City& Game::GetCity() const {
   return city_;
+}
+
+const Hand& Game::GetHand() const {
+  return hand_;
 }
 
 // Private

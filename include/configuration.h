@@ -3,6 +3,7 @@
 #include <cinder/gl/gl.h>
 
 #include <utility>
+#include <location.h>
 
 namespace epidemic {
 
@@ -104,6 +105,8 @@ extern Property<float> kIsolationDeathFactor;
 extern Property<int> kIsolationDetectionFrames;
 
 // UI
+const Location::Data kCityData{vec2{500, 500}, vec2{20, 20}};
+
 constexpr float kInfoMargins = 50;
 constexpr float kInfoIndividualRadius = 10;
 
