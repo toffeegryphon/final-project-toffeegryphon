@@ -4,6 +4,7 @@
 
 namespace epidemic {
 
+using ci::app::KeyEvent;
 using ci::app::MouseEvent;
 
 // https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c
@@ -36,12 +37,12 @@ class View {
    * Optional setup hook to be called by Cinder, only called for the very first
    * View
    */
-  virtual void Setup() {};
+  virtual void Setup(){};
 
   /**
    * Update hook to be called by Cinder
    */
-  virtual void Update() {};
+  virtual void Update(){};
 
   /**
    * Draw hook that clears screen and calls overridden Draw method, to be called
@@ -55,7 +56,7 @@ class View {
    *
    * @param event Mouse down MouseEvent
    */
-  virtual void MouseDown(MouseEvent event) {};
+  virtual void MouseDown(MouseEvent event){};
 
   /**
    * Optional MouseUp hook to be called by Cinder when a mouse up event is
@@ -63,7 +64,7 @@ class View {
    *
    * @param event Mouse up MouseEvent
    */
-  virtual void MouseUp(MouseEvent event) {};
+  virtual void MouseUp(MouseEvent event){};
 
   /**
    * Optional MouseMove hook to be called by Cinder when a mouse move event is
@@ -71,7 +72,7 @@ class View {
    *
    * @param event Mouse move MouseEvent
    */
-  virtual void MouseMove(MouseEvent event) {};
+  virtual void MouseMove(MouseEvent event){};
 
   /**
    * Optional MouseDrag hook to be called by Cinder when a mouse drag event is
@@ -79,7 +80,15 @@ class View {
    *
    * @param event Mouse drag MouseEvent
    */
-  virtual void MouseDrag(MouseEvent event) {};
+  virtual void MouseDrag(MouseEvent event){};
+
+  /**
+   * Optional KeyDown hook to be called by Cinder when a key down event is
+   * triggered
+   *
+   * @param event Key down KeyEvent
+   */
+  virtual void KeyDown(KeyEvent event){};
 
   /**
    * Returns unique ID of this View
@@ -106,7 +115,7 @@ class View {
    * Draw method to override to draw elements in this View, calling clear is not
    * required
    */
-  virtual void Draw() {};
+  virtual void Draw(){};
 };
 
 }  // namespace epidemic

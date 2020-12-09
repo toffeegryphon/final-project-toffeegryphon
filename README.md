@@ -51,6 +51,7 @@ To have the least number of infected, followed by recovered, followed by dead.
 |`Mouse Down`|Pick up Individual(s)|
 |`Mouse Up`|Release Individuals(s)|
 |`Mouse Drag` `Mouse Move`|Move currently held Individual(s)|
+|`esc`|Returns back to Menu (during Game)|
 
 ### Settings
 

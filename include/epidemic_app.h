@@ -26,6 +26,7 @@ class EpidemicApp : public App {
   void mouseUp(MouseEvent event) override;
   void mouseMove(MouseEvent event) override;
   void mouseDrag(MouseEvent event) override;
+  void keyDown(cinder::app::KeyEvent event) override;
 
  private:
   // https://stackoverflow.com/questions/57657546/how-to-downcast-in-c-to-call-a-child-function-from-a-parent-instance

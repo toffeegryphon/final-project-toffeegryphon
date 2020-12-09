@@ -7,6 +7,7 @@ using epidemic::EpidemicApp;
 
 void prepareSettings(EpidemicApp::Settings* settings) {
   settings->setResizable(false);
+  settings->setTitle("Epidemic");
 }
 
 CINDER_APP(EpidemicApp, RendererGl, prepareSettings);

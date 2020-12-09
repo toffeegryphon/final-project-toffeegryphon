@@ -57,6 +57,13 @@ class Game : public View {
    */
   void MouseMove(MouseEvent event) override;
 
+  /**
+   * Keyboard commands
+   *
+   * @param event Key down KeyEvent
+   */
+  void KeyDown(KeyEvent event) override;
+
   // Getters & Setters
   const vector<Individual>& GetIndividuals() const;
   const City& GetCity() const;

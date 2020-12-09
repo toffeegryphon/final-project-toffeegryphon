@@ -7,6 +7,7 @@ namespace epidemic {
 
 using cfg::PopulateProperties;
 using cinder::app::MouseEvent;
+using cinder::app::KeyEvent;
 using std::make_unique;
 
 EpidemicApp::EpidemicApp() {
@@ -47,6 +48,10 @@ void EpidemicApp::mouseMove(MouseEvent event) {
 
 void EpidemicApp::mouseDrag(MouseEvent event) {
   manager_.GetScene().MouseDrag(event);
+}
+
+void EpidemicApp::keyDown(KeyEvent event) {
+  manager_.GetScene().KeyDown(event);
 }
 
 }  // namespace epidemic

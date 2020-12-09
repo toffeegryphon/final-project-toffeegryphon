@@ -2,6 +2,7 @@
 #include <cinder/gl/gl.h>
 #include <configuration.h>
 #include <scenes/game.h>
+#include <scenes/menu.h>
 #include <utils.h>
 
 #include <unordered_set>
@@ -103,6 +104,12 @@ void Game::MouseDrag(MouseEvent event) {
 
 void Game::MouseMove(MouseEvent event) {
   hand_.Update(event.getPos());
+}
+
+void Game::KeyDown(KeyEvent event) {
+  if (event.getCode() == KeyEvent::KEY_ESCAPE) {
+    manager_->SetScene(make_unique<Menu>(manager_));
+  }
 }
 
 // Getters & Setters
